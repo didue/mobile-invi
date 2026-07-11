@@ -67,6 +67,7 @@ preconnect 2줄 포함.
 - 마운트 후 타이머로 애니메이션. 문구: `we are<br>getting married`.
 - 시퀀스: `350ms` 뒤 `.write` 추가(필기체 드러남) → `350+1500+2000ms` 뒤 `.hide` → `+900ms` 뒤 `display:none`.
 - React: `useEffect`에서 `setTimeout` 3개, state로 클래스 토글.
+- 메인 이미지 `src/assets/images/HJ2_7118.jpg`를 활용하여 모바일 디바이스 높이 full사이즈 배경 이미지 적용.
 
 ### 5.2 Hero
 - `.hero-arch` 안에 `<img src={HERO_IMAGE}>` + `.snow-layer`.
@@ -91,12 +92,10 @@ preconnect 2줄 포함.
 - 하단에 `연락하기` 버튼 → ContactModal 오픈.
 
 ### 5.6 Gallery
-- 슬롯 8개(`GALLERY_SLOTS=8`), 페이지당 4개(`PER_PAGE=4`) → 2페이지 캐러셀(2x2).
-- 각 슬롯: 저장된 사진 있으면 `<img>`(클릭 시 라이트박스), 없으면 `＋ 사진 추가`.
-- 업로드 → 캔버스 리사이즈(maxW 700, jpeg 0.78) → `storage.set('gallery:'+i, dataUrl, true)`, 토스트 `사진이 저장되었어요`.
+- 업로드 기능 없음(읽기 전용). 슬롯 개수 = `src/data/wedding.ts`의 `GALLERY` 배열 길이, 페이지당 4개(`PER_PAGE=4`) → 캐러셀(2x2 페이지).
+- 각 슬롯은 `GALLERY[i]` 경로를 `next/image`로 렌더링. 클릭 시 라이트박스 오픈.
 - 캐러셀 스크롤 시 dots active 갱신, `‹ ›` 버튼으로 `scrollBy(±clientWidth)`.
-- 라이트박스: 저장된 사진들만 순서대로(`Object.keys(galleryPhotos).sort`), `‹ ›`/스와이프(터치 50px)/오버레이 클릭 닫기, `pos+1 / total` 카운트.
-- React 주의: 갤러리 사진 상태를 컴포넌트 state(`Record<number,string>`)로 관리하고 라이트박스와 공유.
+- 라이트박스: `GALLERY` 순서 그대로, `‹ ›`/스와이프(터치 50px)/오버레이 클릭 닫기, `pos+1 / total` 카운트.
 
 ### 5.7 MapSection
 - 인포카드 텍스트(§3) + 지도 일러스트 SVG(원본 그대로) + 3개 지도앱 링크(a target=_blank) + 교통 3줄.
@@ -181,7 +180,6 @@ Next.js에는 이 API가 없으므로 **동일 인터페이스의 어댑터**를
 스토리지 키 규칙(원본과 동일 유지):
 ```
 profile:groom / profile:bride      (shared:true)
-gallery:0 ~ gallery:7              (shared:true)
 rsvp:{timestamp}                   (shared:true)
 guestbook:{timestamp}             (shared:true)
 ```
@@ -197,11 +195,11 @@ guestbook:{timestamp}             (shared:true)
 
 ## 9. 이미지 리사이즈 유틸 (공통)
 
-프로필/갤러리 업로드에 공용 함수:
+프로필 사진 업로드에 사용하는 함수(갤러리는 업로드가 없으므로 해당 없음):
 ```
 FileReader.readAsDataURL → new Image → canvas(maxW로 스케일, jpeg quality 0.78) → dataUrl
 ```
-- 프로필 maxW=600, 갤러리 maxW=700. 둘 다 quality 0.78.
+- 프로필 maxW=600, quality 0.78.
 
 ---
 
@@ -212,7 +210,7 @@ FileReader.readAsDataURL → new Image → canvas(maxW로 스케일, jpeg qualit
 - [ ] D-day가 1초마다 갱신되고, 예식일 이후엔 💐 WEDDING DAY 표시.
 - [ ] 2027년 1월 달력에서 9일이 rose로 강조.
 - [ ] 스크롤 시 각 섹션이 아래에서 위로 페이드인(reveal).
-- [ ] 프로필/갤러리 사진 업로드 후 새로고침해도 유지(스토리지).
+- [ ] 프로필 사진 업로드 후 새로고침해도 유지(스토리지).
 - [ ] 갤러리 캐러셀 스와이프/화살표/도트, 사진 클릭 시 라이트박스(스와이프 이동).
 - [ ] 지도앱 3버튼 링크가 주소 인코딩되어 열린다.
 - [ ] RSVP 모달 제출 → 상태 텍스트 갱신 + 저장.

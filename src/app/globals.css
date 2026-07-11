@@ -1,11 +1,1051 @@
 @import "tailwindcss";
 
-html {
-  background-color: #f5f4ef;
+:root {
+  --bg: #ffffff;
+  --blush: #fce8ea;
+  --pink-soft: #fbd3d9;
+  --pink: #f7b4bd;
+  --rose: #f59aa5;
+  --rose-deep: #c15a68;
+  --ink: #3a322e;
+  --ink-soft: #9c8f94;
 }
 
+html,
 body {
-  max-width: 36rem;
+  background: var(--blush);
+  color: var(--ink);
+}
+
+.app {
+  max-width: 480px;
   margin: 0 auto;
-  color: #2b2b2b;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+@media (min-width: 481px) {
+  .app {
+    box-shadow: 0 0 60px rgba(193, 90, 104, 0.14);
+  }
+}
+
+section {
+  position: relative;
+  padding: 72px 32px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-title {
+  text-align: center;
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 22px;
+  color: var(--rose-deep);
+  margin-bottom: 6px;
+}
+.section-sub {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+}
+
+/* Wedding Day: D-day + 달력 */
+.dday-box {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+.dday-cell {
+  background: #fff;
+  border: 1px solid var(--pink-soft);
+  border-radius: 14px;
+  padding: 12px 14px;
+  min-width: 58px;
+  text-align: center;
+  box-shadow: 0 8px 20px -12px rgba(193, 90, 104, 0.28);
+}
+.dday-num {
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 22px;
+  color: var(--rose-deep);
+  font-weight: 700;
+}
+.dday-label {
+  font-size: 10px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  letter-spacing: 0.05em;
+}
+.calendar {
+  margin: 34px auto 0;
+  width: 100%;
+  max-width: 280px;
+}
+.cal-title {
+  text-align: center;
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: var(--rose-deep);
+  margin-bottom: 14px;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 6px;
+}
+.cal-dow {
+  font-size: 10px;
+  color: var(--ink-soft);
+  text-align: center;
+  padding-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.cal-dow.sun {
+  color: var(--rose);
+}
+.cal-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cal-day span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 11.5px;
+  color: var(--ink);
+  border-radius: 50%;
+}
+.cal-day.muted span {
+  color: #dcd5ce;
+}
+.cal-day.sun span {
+  color: var(--rose);
+}
+.cal-day.highlight span {
+  background: var(--rose);
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Gallery */
+.gallery-wrap {
+  position: relative;
+}
+.gallery-arrow {
+  position: absolute;
+  top: 38%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--pink-soft);
+  color: var(--rose);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 4px 10px rgba(193, 90, 104, 0.12);
+}
+.gallery-arrow.left {
+  left: -6px;
+}
+.gallery-arrow.right {
+  right: -6px;
+}
+.gallery-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: 0 -32px;
+  padding: 0 32px;
+}
+.gallery-carousel::-webkit-scrollbar {
+  display: none;
+}
+.gallery-page {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 6px;
+  padding-right: 6px;
+}
+.g-slot {
+  aspect-ratio: 1 / 1;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  background: var(--blush);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.g-slot img {
+  object-fit: cover;
+}
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+.gallery-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--pink-soft);
+  transition: background 0.2s;
+}
+.gallery-dots span.active {
+  background: var(--rose);
+}
+.gallery-note {
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* 갤러리 라이트박스 */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 8, 7, 0.94);
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-overlay.show {
+  display: flex;
+}
+.lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  padding: 6px;
+}
+.lightbox-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.lightbox-stage img {
+  max-width: 88%;
+  max-height: 78%;
+  object-fit: contain;
+  border-radius: 2px;
+}
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.lightbox-arrow.left {
+  left: 14px;
+}
+.lightbox-arrow.right {
+  right: 14px;
+}
+.lightbox-count {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+/* 캡처/저장 방지 (최선의 노력, 완전 차단은 불가) */
+img,
+.g-slot {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+
+/* 토스트 */
+.toast {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: #fff;
+  font-size: 12.5px;
+  padding: 10px 18px;
+  border-radius: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+  z-index: 60;
+}
+.toast.show {
+  opacity: 0.94;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Location */
+.info-card {
+  background: #fff;
+  border-radius: 2px;
+  padding: 36px 20px;
+  border-top: 1px solid var(--pink-soft);
+  border-bottom: 1px solid var(--pink-soft);
+  text-align: center;
+}
+.info-date {
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 24px;
+  color: var(--rose-deep);
+}
+.info-time {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.info-place {
+  margin-top: 18px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.info-addr {
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.map-illust {
+  margin: 22px 0 6px;
+}
+.map-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.map-btn {
+  flex: 1;
+  text-decoration: none;
+  font-size: 12.5px;
+  padding: 11px 6px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid var(--pink);
+  color: var(--rose);
+  transition: background 0.2s;
+}
+.map-btn:active {
+  background: var(--blush);
+}
+.transit {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  border-top: 1px dashed var(--pink-soft);
+  padding-top: 16px;
+}
+.transit b {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Gift: 연락처 행 + 아코디언 */
+.contact-group + .contact-group {
+  margin-top: 38px;
+}
+.contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 2px;
+  border-top: 1px solid var(--pink-soft);
+}
+.contact-group .contact-row:last-child {
+  border-bottom: 1px solid var(--pink-soft);
+}
+.contact-row .who {
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.contact-row .who .tag {
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  display: block;
+  margin-top: 2px;
+}
+.contact-btns {
+  display: flex;
+  gap: 6px;
+}
+.contact-btn {
+  font-size: 11.5px;
+  padding: 7px 11px;
+  border-radius: 16px;
+  border: 1px solid var(--pink);
+  color: var(--rose);
+  background: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.contact-btn.fill {
+  background: var(--rose);
+  color: #fff;
+  border-color: var(--rose);
+}
+.contact-btn.kakao {
+  background: #fee500;
+  color: #3a1d1d;
+  border-color: #fee500;
+  font-weight: 500;
+}
+
+.acc-group {
+  border: 1px solid var(--pink-soft);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+}
+.acc-group + .acc-group {
+  margin-top: 12px;
+}
+.acc-head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 18px;
+  cursor: pointer;
+  background: #f3f3f3;
+  text-align: center;
+}
+.acc-head span {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--rose-deep);
+}
+.acc-head .chev {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+.acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.acc-group.open .acc-body {
+  max-height: 600px;
+}
+.acc-body .contact-row {
+  padding: 14px 18px;
+  border-top: 1px solid var(--pink-soft);
+  border-bottom: none;
+}
+.acc-body .contact-group {
+  margin: 0;
+}
+
+/* Notice: 갤러리와 동일한 스크롤/도트 캐러셀 패턴 */
+.notice-carousel-wrap {
+  position: relative;
+}
+.notice-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: 0 -32px;
+  padding: 0 32px;
+}
+.notice-carousel::-webkit-scrollbar {
+  display: none;
+}
+.notice-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  padding-right: 6px;
+}
+.notice-slide-title {
+  text-align: center;
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 15px;
+  color: var(--rose-deep);
+  margin-bottom: 20px;
+}
+
+/* Notice / RSVP / Guestbook 공용 리스트·폼 */
+.notice-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.notice-list li {
+  display: flex;
+  gap: 16px;
+}
+.notice-list .num {
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 13px;
+  color: var(--pink);
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.notice-list p {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.tab-empty {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  padding: 50px 0;
+}
+
+.form-card {
+  background: #fff;
+  border-radius: 2px;
+  padding: 30px 18px;
+  border-top: 1px solid var(--pink-soft);
+  border-bottom: 1px solid var(--pink-soft);
+}
+.field {
+  margin-bottom: 14px;
+}
+.field label {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+}
+.field input[type="text"],
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--pink-soft);
+  border-radius: 10px;
+  padding: 11px 12px;
+  font-size: 14px;
+  font-family: "Noto Sans KR", sans-serif;
+  color: var(--ink);
+  background: #fff;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+.seg {
+  display: flex;
+  gap: 8px;
+}
+.seg button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--pink-soft);
+  background: #fff;
+  font-size: 13px;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.seg button.active {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: #fff;
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+}
+.stepper button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--pink);
+  background: #fff;
+  color: var(--rose);
+  font-size: 16px;
+  cursor: pointer;
+}
+.stepper span {
+  font-size: 16px;
+  min-width: 24px;
+  text-align: center;
+}
+.submit-btn {
+  width: 100%;
+  margin-top: 6px;
+  background: var(--rose);
+  color: #fff;
+  border: none;
+  padding: 13px;
+  border-radius: 12px;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  font-family: "Noto Sans KR", sans-serif;
+}
+.submit-btn:active {
+  opacity: 0.85;
+}
+.thanks-msg {
+  text-align: center;
+  font-size: 13px;
+  color: var(--rose-deep);
+  margin-top: 10px;
+  display: none;
+}
+.thanks-msg.show {
+  display: block;
+}
+
+.rsvp-trigger-wrap {
+  text-align: center;
+}
+.rsvp-open-btn {
+  display: inline-block;
+  background: var(--rose);
+  color: #fff;
+  border: none;
+  padding: 15px 36px;
+  border-radius: 30px;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  font-family: "Noto Sans KR", sans-serif;
+}
+.rsvp-open-btn:active {
+  opacity: 0.85;
+}
+.rsvp-status {
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+.rsvp-status b {
+  color: var(--rose-deep);
+  font-weight: 500;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(58, 50, 46, 0.45);
+  z-index: 70;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.show {
+  display: flex;
+}
+.modal-sheet {
+  background: #fff;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 22px 22px 0 0;
+  padding: 26px 24px calc(28px + env(safe-area-inset-bottom));
+  max-height: 86vh;
+  overflow-y: auto;
+  animation: sheetUp 0.32s ease;
+}
+@keyframes sheetUp {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.modal-title {
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 18px;
+  color: var(--rose-deep);
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.gb-list {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.gb-item {
+  background: #fff;
+  border-top: 1px solid var(--pink-soft);
+  padding: 14px 4px;
+}
+.gb-list .gb-item:last-child {
+  border-bottom: 1px solid var(--pink-soft);
+}
+.gb-item .gb-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.gb-item .gb-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--rose-deep);
+}
+.gb-item .gb-time {
+  font-size: 10px;
+  color: var(--ink-soft);
+}
+.gb-item .gb-msg {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.gb-empty {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  padding: 20px 0;
+}
+
+/* Hero */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 28px;
+  position: relative;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 18% 12%, rgba(247, 180, 189, 0.45), transparent 45%),
+    radial-gradient(circle at 85% 88%, rgba(245, 154, 165, 0.22), transparent 45%);
+  z-index: 0;
+}
+.eyebrow {
+  letter-spacing: 0.35em;
+  font-size: 11px;
+  color: var(--rose);
+  text-transform: uppercase;
+  z-index: 1;
+  margin-bottom: 28px;
+}
+.hero-arch {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  aspect-ratio: 3 / 4.3;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 50% 50% 0 0 / 24% 24% 0 0;
+  box-shadow: 0 18px 40px -20px rgba(193, 90, 104, 0.35);
+  z-index: 1;
+}
+.hero-arch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.snow-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.snowflake {
+  position: absolute;
+  top: -8%;
+  color: #fff;
+  opacity: 0.9;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+  animation-name: snowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10%) translateX(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(560%) translateX(var(--drift));
+    opacity: 0.3;
+  }
+}
+.names {
+  position: relative;
+  z-index: 2;
+}
+.names .kr {
+  font-size: 19px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--rose-deep);
+}
+.amp {
+  display: block;
+  font-size: 11px;
+  color: var(--pink);
+  margin: 1px 0;
+  letter-spacing: 0.2em;
+}
+.hero-date {
+  margin-top: 30px;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  z-index: 1;
+}
+.hero-date b {
+  color: var(--ink);
+  font-weight: 500;
+}
+.scroll-cue {
+  position: absolute;
+  bottom: 28px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.15em;
+  z-index: 1;
+}
+.scroll-cue::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 26px;
+  background: var(--pink);
+  margin: 8px auto 0;
+  animation: cue 1.8s infinite;
+}
+@keyframes cue {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* Profiles */
+.profile-compact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.profile-col {
+  text-align: center;
+}
+.profile-photo {
+  width: 112px;
+  aspect-ratio: 1 / 1;
+  border-radius: 4px;
+  background: var(--blush);
+  border: 1px dashed var(--pink-soft);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0 auto 14px;
+}
+.profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.profile-photo .plus {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--rose);
+  font-size: 10.5px;
+  text-align: center;
+}
+.profile-photo input {
+  display: none;
+}
+.profile-col .role {
+  font-size: 10.5px;
+  color: var(--pink);
+  letter-spacing: 0.16em;
+}
+.profile-col .name {
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 19px;
+  color: var(--rose-deep);
+  margin: 5px 0 3px;
+}
+.profile-col .rel {
+  font-size: 11px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* Contact modal tabs */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--pink-soft);
+  margin-bottom: 26px;
+}
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px 4px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  position: relative;
+  font-family: "Noto Sans KR", sans-serif;
+}
+.tab-btn.active {
+  color: var(--rose-deep);
+  font-weight: 500;
+}
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -1px;
+  height: 2px;
+  background: var(--rose);
+}
+.tab-panel {
+  display: none;
+}
+.tab-panel.active {
+  display: block;
+}
+
+/* 인트로 오버레이 */
+.intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: 100svh;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.9s ease;
+}
+.intro-overlay.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+.intro-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.intro-dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 24, 18, 0.72);
+  z-index: 1;
+}
+.intro-text {
+  position: relative;
+  z-index: 2;
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  color: #fff;
+  font-size: 38px;
+  letter-spacing: 0.02em;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  padding: 0 20px;
+}
+.intro-text.write {
+  clip-path: inset(0 0% 0 0);
 }

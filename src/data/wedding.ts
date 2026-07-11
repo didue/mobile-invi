@@ -71,38 +71,28 @@ export const CONTACTS = {
 // 마음 전하실 곳(계좌) — 아코디언
 export const GIFTS = {
   groom: [
-    { name: '배기환', tag: '신랑 아버지', account: 'OO은행 000-0000-0000' },
-    { name: '이병애', tag: '신랑 어머니', account: 'OO은행 000-0000-0000' },
-    { name: '배정근', tag: 'GROOM',      account: 'OO은행 000-0000-0000' },
+    { name: '배기환', role: 'father', tag: '신랑 아버지', account: 'OO은행 000-0000-0000' },
+    { name: '이병애', role: 'mother', tag: '신랑 어머니', account: 'OO은행 000-0000-0000' },
+    { name: '배정근', role: 'groom',  tag: 'GROOM',      account: 'OO은행 000-0000-0000' },
   ],
   bride: [
-    { name: '한창희', tag: '신부 아버지', account: 'OO은행 000-0000-0000' },
-    { name: '이금이', tag: '신부 어머니', account: 'OO은행 000-0000-0000' },
-    { name: '한지수', tag: 'BRIDE',      account: 'OO은행 000-0000-0000' },
+    { name: '한창희', role: 'father', tag: '신부 아버지', account: 'OO은행 000-0000-0000' },
+    { name: '이금이', role: 'mother', tag: '신부 어머니', account: 'OO은행 000-0000-0000' },
+    { name: '한지수', role: 'bride',  tag: 'BRIDE',      account: 'OO은행 000-0000-0000' },
   ],
 };
 
 export const GALLERY = [
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
-  'src/assets/images/HJ2_.jpg',
+  '/images/gallery/HJ2_7118.jpg',
+  '/images/gallery/HJ2_7131.jpg',
+  '/images/gallery/HJ2_7351.jpg',
+  '/images/gallery/HJ2_7383.jpg',
+  '/images/gallery/HJ2_7569.jpg',
+  '/images/gallery/HJ2_7633.jpg',
+  '/images/gallery/HJ2_7797.jpg',
+  '/images/gallery/HJ2_8012.jpg',
+  '/images/gallery/HJ2_8460.jpg',
+  '/images/gallery/HJ2_8686.jpg',
 ];
 
 export const NOTICES = [
@@ -136,13 +126,13 @@ export const WEDDING_VENUE = {
 };
 
 export const MAPS = {
-  kakao : {
-    link : 'https://map.kakao.com/link/search/${encodeURIComponent(VENUE_ADDRESS)}'
+  kakao: {
+    link: () => `https://map.kakao.com/link/search/${encodeURIComponent(VENUE_ADDRESS)}`,
   },
-  naver : {
-    link : 'https://map.naver.com/v5/search/${encodeURIComponent(VENUE_ADDRESS)}'
-  }, 
-  tmap : {
-    link : 'https://tmap.life/2b1f6b'
-  }
+  naver: {
+    link: () => `https://map.naver.com/v5/search/${encodeURIComponent(VENUE_ADDRESS)}`,
+  },
+  tmap: {
+    link: () => 'https://tmap.life/2b1f6b',
+  },
 };
