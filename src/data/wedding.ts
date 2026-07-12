@@ -125,13 +125,14 @@ export const WEDDING_VENUE = {
   coords : { lat: 37.52810299154129, lng: 126.92278739271629 },
   station : {
     metro : [
-      '[도보] 지하철 9호선 국회의사당역 3번 출구 (도보 5분)'
+      '지하철 9호선 국회의사당역 3번 출구 (도보 5분)',
+      '지하철 5호선 여의나루역 1번 출구'
     ],
     bus : [
       '[셔틀] 여의나루역 1번 출구 (수시 운행)', 
       '[버스] 여의나루역 2번 출구 마을버스 10번, "기계회관" 정류장 하차'
     ],
-    car : ['<span class="color-rose">더파티움 여의도</span> 또는 <span class="color-rose">중소기업중앙회</span> 검색'],
+    car : ['"더파티움 여의도" 또는 "중소기업중앙회" 네비게이션 검색'],
     parking: ['예식장 건물 내 1주차장·2주차장 무료 주차'],
   }
 };
@@ -195,7 +196,7 @@ export const SECTION_TEXTS = {
 export const NOTICES = [
   {
     title: '연회장 안내',
-    image: '',
+    image: '/images/notice/grand-more1-1.jpg',
     items: [
       '신부 대기실은 B1 웨딩홀 오른쪽에 위치에 있습니다.',
       '식사는 뷔페식이 아닌 한정식 한 상 차림으로 제공되고 있습니다.<br/>한상차림 외에도 세미 뷔페가 준비되어 있습니다.',
@@ -206,7 +207,7 @@ export const NOTICES = [
   },
   {
     title: '주차안내',
-    image: '',
+    image: '/images/notice/grand-more2-1.jpg',
     items: [
       '예식장 건물 내 1주차장 90분 무료 주차 가능합니다.',
       '주차 등록은 B1층 안내데스크에 문의해 주세요.',
@@ -216,10 +217,10 @@ export const NOTICES = [
    },
   {
     title: '포토부스',
-    image: '',
+    image: '/images/notice/photo-booth.jpg',
     items: [
-      '소중한 날을 기록할 수 있도록\n 포토부스를 준비했습니다.',
-      '방문해주신 하객 분들의 사진을 찍어\n한 장은 방명록에, 한 장은 추억으로 간직해 주세요.'
+      '소중한 날을 기록할 수 있도록 포토부스를 준비했습니다.',
+      '방문해주신 하객 분들의 사진을 찍어<br/>한 장은 방명록에, 한 장은 추억으로 간직해 주세요.'
     ]
   },
 ];

@@ -84,7 +84,7 @@ import Image from 'next/image';
 
 # 데이터 원칙
 
-이 프로젝트는 백엔드/API가 없는 정적 청첩장 사이트다. 화면에 표시하는 데이터는 `src/data/wedding.ts`의 상수를 그대로 참조한다.
+이 프로젝트는 백엔드/API가 없는 정적 청첩장 사이트다. 화면에 표시하는 데이터는 `src/data/` 아래 상수를 그대로 참조한다(인물 정보는 `family.ts`, 그 외 콘텐츠 문구·설정은 `wedding.ts` — 자세한 구분은 `frontend/react.md`의 `상수 및 데이터` 절 참고).
 RSVP·방명록·업로드 사진처럼 사용자가 남기는 데이터는 서버 없이 브라우저 저장소(localStorage 등)에 저장한다. 자세한 저장 방식은 `frontend/react.md`의 스토리지 어댑터 절을 따른다.
 추후 실제 서버 공유가 필요해져 Route Handler나 외부 API를 도입하게 되면, 그때 입력값 검증·인증·캐시 정책을 다시 정의한다.
 

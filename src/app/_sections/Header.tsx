@@ -2,7 +2,8 @@
 
 import { useMemo, type CSSProperties } from "react";
 import Image from "next/image";
-import { COUPLE, WEDDING_DATE } from "@/data/wedding";
+import { COUPLE } from "@/data/family";
+import { WEDDING_DATE } from "@/data/wedding";
 import heroPhoto from "@/assets/images/hero.jpg";
 import { useMounted } from "@/hooks/useMounted";
 

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { COUPLE, GIFTS, SECTION_TEXTS } from "@/data/wedding";
+import { COUPLE, GIFTS } from "@/data/family";
+import { SECTION_TEXTS } from "@/data/wedding";
 import { toast } from "@/lib/toast";
 import { ROLE_LABEL } from "@/lib/roleLabel";
 import { useReveal } from "@/hooks/useReveal";

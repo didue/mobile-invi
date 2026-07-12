@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { COUPLE } from "@/data/wedding";
+import { COUPLE } from "@/data/family";
 import { IntroOverlay } from "@/components/common/IntroOverlay";
 import { KakaoSdk } from "@/components/common/KakaoSdk";
 import "./globals.css";

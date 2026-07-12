@@ -1,6 +1,7 @@
 "use client";
 
-import { COUPLE, SECTION_TEXTS } from "@/data/wedding";
+import { COUPLE } from "@/data/family";
+import { SECTION_TEXTS } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
 import { useDdayCells } from "@/hooks/useDdayCells";
 import { downloadWeddingCalendarEvent } from "@/lib/calendar";

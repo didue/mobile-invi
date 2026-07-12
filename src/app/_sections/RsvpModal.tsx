@@ -75,7 +75,10 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         </div>
 
         <div className="field">
-          <label htmlFor="rsvpName">성함</label>
+          <div className="field-box">
+            <label htmlFor="rsvpName">성함</label>
+            <span className="essential">*</span>
+          </div>
           <input
             type="text"
             id="rsvpName"
@@ -86,7 +89,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         </div>
 
         <div className="field">
-          <label>참석 여부</label>
+            <label>참석 여부</label>
           <div className="seg">
             {(["참석", "불참"] as const).map((value) => (
               <button
@@ -102,7 +105,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         </div>
 
         <div className="field">
-          <label>참석 인원 (본인 포함)</label>
+            <label>참석 인원 (본인 포함)</label>
           <div className="stepper">
             <button
               type="button"
@@ -123,7 +126,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         </div>
 
         <div className="field">
-          <label>신랑측 / 신부측</label>
+            <label>신랑측 / 신부측</label>
           <div className="seg">
             {(["신랑측", "신부측"] as const).map((value) => (
               <button
@@ -139,7 +142,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         </div>
 
         <button type="button" className="submit-btn" onClick={handleSubmit}>
-          회답 보내기
+          저장
         </button>
         <div className={`thanks-msg${showThanks ? " show" : ""}`}>소중한 회답 감사합니다 💗</div>
       </div>

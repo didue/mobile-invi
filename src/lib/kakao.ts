@@ -1,4 +1,5 @@
-import { COUPLE, GALLERY, WEDDING_DATE } from "@/data/wedding";
+import { COUPLE } from "@/data/family";
+import { GALLERY, WEDDING_DATE } from "@/data/wedding";
 import { formatWeddingDate } from "@/lib/date";
 import { toast } from "@/lib/toast";
 

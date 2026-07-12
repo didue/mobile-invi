@@ -66,7 +66,10 @@ export const GuestbookModal = ({ open, onClose, onSubmitted }: GuestbookModalPro
         </div>
 
         <div className="field">
-          <label htmlFor="gbmName">성함</label>
+          <div className="field-box">
+            <label htmlFor="gbmName">성함</label>
+            <span className="essential">*</span>
+          </div>
           <input
             type="text"
             id="gbmName"
@@ -76,7 +79,10 @@ export const GuestbookModal = ({ open, onClose, onSubmitted }: GuestbookModalPro
           />
         </div>
         <div className="field">
-          <label htmlFor="gbmContact">연락처 뒷자리</label>
+          <div className="field-box">
+            <label htmlFor="gbmContact">연락처 뒷자리</label>
+            <span className="essential">*</span>
+          </div>
           <input
             type="text"
             id="gbmContact"
@@ -86,16 +92,19 @@ export const GuestbookModal = ({ open, onClose, onSubmitted }: GuestbookModalPro
           />
         </div>
         <div className="field">
-          <label htmlFor="gbmMsg">축하 메시지</label>
+          <div className="field-box">
+            <label htmlFor="gbmMsg">축하 메시지</label>
+            <span className="essential">*</span>
+          </div>
           <textarea
             id="gbmMsg"
-            placeholder="두 사람에게 전하고 싶은 말을 남겨주세요"
+            placeholder="두 사람에게 전하고 싶은 말을 남겨주세요!"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
         </div>
         <button type="button" className="submit-btn" onClick={handleSubmit}>
-          메시지 남기기
+          저장
         </button>
       </div>
     </div>,

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { COUPLE, CONTACTS, SECTION_TEXTS } from "@/data/wedding";
+import { COUPLE, CONTACTS } from "@/data/family";
+import { SECTION_TEXTS } from "@/data/wedding";
 import { formatParentsRel } from "@/lib/family";
 import { useReveal } from "@/hooks/useReveal";
 import { ContactModal } from "@/app/_sections/ContactModal";

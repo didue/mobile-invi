@@ -1,4 +1,5 @@
-import { COUPLE, WEDDING_DATE, WEDDING_VENUE } from "@/data/wedding";
+import { COUPLE } from "@/data/family";
+import { WEDDING_DATE, WEDDING_VENUE } from "@/data/wedding";
 
 const EVENT_DURATION_MS = 2 * 60 * 60 * 1000;
 

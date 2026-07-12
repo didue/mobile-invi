@@ -23,7 +23,10 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 → App Router에서는 export const viewport = { width:'device-width', initialScale:1, maximumScale:1 } 로 지정.
 
 ## 상수 및 데이터
-- 화면에 표시하는 정보는 `src/data/wedding.ts`의 상수를 참조한다.
+- 화면에 표시하는 정보는 `src/data/` 아래 상수를 참조하며, 역할에 따라 두 파일로 나뉜다.
+  - `src/data/family.ts`: 신랑·신부·가족 인물 정보 — `COUPLE`(이름/역할/프로필 사진/소개), `CONTACTS`(연락하기 모달용 아버지·어머니·본인 연락처), `GIFTS`(마음 전하실 곳 계좌 정보).
+  - `src/data/wedding.ts`: 그 외 화면 노출 콘텐츠 문구·설정 — `WEDDING_DATE`, `VENUE_ADDRESS`, `GALLERY`, `WEDDING_VENUE`(좌표 포함), `MAPS`, `SECTION_TEXTS`, `NOTICES`.
+  - 인물 정보가 필요 없는 컴포넌트가 `family.ts`를 불필요하게 import하지 않도록, 두 파일의 상수는 각자 필요한 곳에서 개별 import한다(하나로 합쳐서 재수출하지 않는다).
 - 각 섹션의 `.section-title`/`.section-sub` 문구는 컴포넌트에 하드코딩하지 않고 `wedding.ts`의 `SECTION_TEXTS`(섹션 키별 `{ title, sub: string[] }`)에 모아서 관리한다. `sub`는 줄 단위 배열이며 빈 배열이면 `.section-sub` 자체를 렌더링하지 않는다. 렌더링은 공용 컴포넌트 `components/common/SectionHeading.tsx`(`<SectionHeading {...SECTION_TEXTS.xxx} />`)를 통해 통일한다.
 
 ---
@@ -97,7 +100,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 ### 5.5 Profiles
 - 업로드 기능 없음(읽기 전용). 2열. 각 열: 프로필 사진 / role / name(Nanum) / rel(줄바꿈).
-- 프로필 이미지는 `src/data/wedding.ts`의 `COUPLE.groom.profile` / `COUPLE.bride.profile` 경로를 `next/image`로 렌더링.
+- 프로필 이미지는 `src/data/family.ts`의 `COUPLE.groom.profile` / `COUPLE.bride.profile` 경로를 `next/image`로 렌더링.
 - 하단에 `연락하기` 버튼 → ContactModal 오픈.
 
 ### 5.6 Gallery
@@ -222,7 +225,7 @@ guestbook:{timestamp}             (shared:true)
 
 ## 9. 이미지 업로드
 
-프로필/갤러리 모두 업로드 기능이 없다(읽기 전용, `wedding.ts`의 정적 경로만 사용). 이미지 리사이즈 유틸은 해당 없음.
+프로필/갤러리 모두 업로드 기능이 없다(읽기 전용, `family.ts`/`wedding.ts`의 정적 경로만 사용). 이미지 리사이즈 유틸은 해당 없음.
 
 ---
 

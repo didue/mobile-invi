@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { CONTACTS } from "@/data/wedding";
+import { CONTACTS } from "@/data/family";
 import { ROLE_LABEL } from "@/lib/roleLabel";
 import { useMounted } from "@/hooks/useMounted";
 
