@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { storeGet, storeList, storeSet } from "@/lib/storage";
+import { storeDelete, storeGet, storeList } from "@/lib/storage";
 import { toast } from "@/lib/toast";
 import { useReveal } from "@/hooks/useReveal";
+import { GuestbookModal } from "@/app/_sections/GuestbookModal";
 
 type GuestbookEntry = {
+  key: string;
   name: string;
+  contact: string;
   msg: string;
   time: string;
 };
@@ -23,7 +26,7 @@ async function loadGuestbook(): Promise<GuestbookEntry[]> {
       const raw = await storeGet(key, true);
       if (!raw) return null;
       try {
-        return JSON.parse(raw) as GuestbookEntry;
+        return { key, ...JSON.parse(raw) } as GuestbookEntry;
       } catch {
         return null;
       }
@@ -35,35 +38,59 @@ async function loadGuestbook(): Promise<GuestbookEntry[]> {
     .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 }
 
+function DeleteVerifyForm({
+  onCancel,
+  onConfirm,
+}: {
+  onCancel: () => void;
+  onConfirm: (name: string, contact: string) => void;
+}) {
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+
+  return (
+    <div className="gb-delete-form">
+      <input
+        type="text"
+        placeholder="성함"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="연락처 뒷자리"
+        value={contact}
+        onChange={(e) => setContact(e.target.value)}
+      />
+      <button type="button" onClick={() => onConfirm(name.trim(), contact.trim())}>
+        확인
+      </button>
+      <button type="button" onClick={onCancel}>
+        취소
+      </button>
+    </div>
+  );
+}
+
 export const Guestbook = () => {
   const sectionRef = useReveal<HTMLElement>();
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [deletingKey, setDeletingKey] = useState<string | null>(null);
 
   useEffect(() => {
     loadGuestbook().then(setEntries);
   }, []);
 
-  const handleSubmit = async () => {
-    const trimmedName = name.trim();
-    const trimmedMessage = message.trim();
-    if (!trimmedName || !trimmedMessage) {
-      toast("이름과 메시지를 모두 입력해주세요");
+  const handleConfirmDelete = async (entry: GuestbookEntry, name: string, contact: string) => {
+    if (name !== entry.name || contact !== entry.contact) {
+      toast("이름과 연락처가 일치하지 않아요");
       return;
     }
-
-    const payload = JSON.stringify({
-      name: trimmedName,
-      msg: trimmedMessage,
-      time: new Date().toISOString(),
-    });
-    const res = await storeSet(`guestbook:${Date.now()}`, payload, true);
-    if (!res) return;
-
-    setName("");
-    setMessage("");
-    toast("메시지가 등록되었어요");
+    const ok = await storeDelete(entry.key);
+    if (!ok) return;
+    setDeletingKey(null);
+    toast("메시지가 삭제되었어요");
     setEntries(await loadGuestbook());
   };
 
@@ -72,28 +99,9 @@ export const Guestbook = () => {
       <div className="section-title">Guestbook</div>
       <div className="section-sub">따뜻한 축하 메시지를 남겨주세요</div>
 
-      <div className="form-card">
-        <div className="field">
-          <label htmlFor="gbName">성함</label>
-          <input
-            type="text"
-            id="gbName"
-            placeholder="이름을 입력해주세요"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="gbMsg">축하 메시지</label>
-          <textarea
-            id="gbMsg"
-            placeholder="두 사람에게 전하고 싶은 말을 남겨주세요"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </div>
-        <button type="button" className="submit-btn" onClick={handleSubmit}>
-          메시지 남기기
+      <div className="rsvp-trigger-wrap">
+        <button type="button" className="rsvp-open-btn" onClick={() => setModalOpen(true)}>
+          축하 메시지 남기기
         </button>
       </div>
 
@@ -102,16 +110,37 @@ export const Guestbook = () => {
           <div className="gb-empty">첫 번째 축하 메시지를 남겨주세요 🤍</div>
         ) : (
           entries.map((entry) => (
-            <div className="gb-item" key={`${entry.name}-${entry.time}`}>
+            <div className="gb-item" key={entry.key}>
               <div className="gb-top">
                 <span className="gb-name">{entry.name}</span>
-                <span className="gb-time">{formatTime(entry.time)}</span>
+                <span className="gb-meta">
+                  <span className="gb-time">{formatTime(entry.time)}</span>
+                  <button
+                    type="button"
+                    className="gb-delete"
+                    onClick={() => setDeletingKey(entry.key === deletingKey ? null : entry.key)}
+                  >
+                    삭제
+                  </button>
+                </span>
               </div>
               <div className="gb-msg">{entry.msg}</div>
+              {deletingKey === entry.key && (
+                <DeleteVerifyForm
+                  onCancel={() => setDeletingKey(null)}
+                  onConfirm={(name, contact) => handleConfirmDelete(entry, name, contact)}
+                />
+              )}
             </div>
           ))
         )}
       </div>
+
+      <GuestbookModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmitted={async () => setEntries(await loadGuestbook())}
+      />
     </section>
   );
 };

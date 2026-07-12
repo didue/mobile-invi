@@ -1,9 +1,7 @@
 
 # 목표 및 제약
-이 문서는 `.claude/rules/reference/wedding-invitation.html`과 픽셀 단위로 동일한 결과물을
-Next.js 프로젝트로 구현하기 위한 완전한 명세다. 이 문서만 보고 처음부터 끝까지 재현할 수 있어야 한다.
+이 문서는 Next.js 프로젝트로 구현하기 위한 완전한 명세다. 이 문서만 보고 처음부터 끝까지 재현할 수 있어야 한다.
 
-- 동일 결과: 레이아웃·색상·폰트·애니메이션·인터랙션이 원본 HTML과 동일해야 한다.
 - 모바일 전용 UI: 최대 폭 480px 중앙 정렬 카드형(.app). 481px 이상에서 그림자만 추가.
 - 단일 페이지: 라우팅 없음. 하나의 스크롤 페이지에 모든 섹션.
 - 클라이언트 전용: 애니메이션·업로드·스토리지가 전부 브라우저에서 동작 → 최상위 컴포넌트는 'use client'.
@@ -42,7 +40,7 @@ preconnect 2줄 포함.
 - `.dday-cell`, `.dday-num`(Nanum, 22px, rose-deep).
 - 달력 `.cal-grid`(7열 grid), `.cal-dow.sun`/`.cal-day.sun` 붉은색, `.cal-day.muted`(회색 #DCD5CE), `.cal-day.highlight`(rose 배경 흰글씨).
 - `.msg-body`(line-height 2.05), `.signature`(Nanum).
-- `.profile-photo`(112px, aspect 1/1, dashed 테두리, cursor pointer), `.plus`.
+- `.profile-photo`(112px, aspect 1/1). 기본 `display`가 `inline`인 태그(예: label)로 만들면 width/aspect-ratio가 무시되니 `display:block` 필수.
 - **연락처/버튼**: `.contact-btn`(라운드, pink 테두리), `.contact-btn.fill`(rose 배경), `.contact-btn.kakao`(#FEE500).
 - **아코디언**: `.acc-group`(라운드 박스), `.acc-body{max-height:0;transition:.35s}`, `.acc-group.open .acc-body{max-height:600px}`.
 - **갤러리**: `.gallery-carousel`(flex, scroll-snap-x, `margin:0 -32px;padding:0 32px`), `.gallery-page`(2x2 grid), `.g-slot`(aspect 1/1, dashed), `.gallery-dots span.active`.
@@ -73,7 +71,7 @@ preconnect 2줄 포함.
 - `.hero-arch` 안에 `<img src={HERO_IMAGE}>` + `.snow-layer`.
 - 눈꽃 24개 동적 생성: 각 flake `left`=rand 0~100%, `fontSize`=9~18px, `animationDuration`=7~14s, `animationDelay`=`-`(0~10)s, `--drift`=(-25~25)px. 텍스트 `❄`.
   - React: `useEffect`에서 24개 배열 만들어 렌더하거나 DOM append. **랜덤값은 마운트 시 1회 고정**(SSR 불일치 방지 위해 `useEffect` 내부에서만 생성).
-- 이름: `.names`(배정근 / & / 한지수), 날짜: `2027. 01. 09. SAT · 오후 12시 40분`, `.scroll-cue`(SCROLL, 애니메이션 바).
+- 이름: `.names`(배정근 & 한지수), 날짜: `2027. 01. 09. SAT · 오후 12시 40분`
 
 ### 5.3 WeddingDay
 - **D-day**: `renderDday()`를 `setInterval(...,1000)`로. `diff = WEDDING_DATE - now`.
@@ -86,9 +84,8 @@ preconnect 2줄 포함.
 - 초대 문구(`.msg-body`, `<b>새로운 하루</b>` 볼드), 서명 2줄, divider SVG(원본 path 그대로).
 
 ### 5.5 Profiles
-- 2열. 각 열: 프로필 사진(label+file input) / role / name(Nanum) / rel(줄바꿈).
-- 사진 업로드 → 캔버스 리사이즈(maxW 600, jpeg 0.78) → `storage.set('profile:'+key, dataUrl, true)`, 토스트 `프로필 사진이 저장되었어요`.
-- 마운트 시 `storage.get('profile:'+key)` 있으면 이미지 표시.
+- 업로드 기능 없음(읽기 전용). 2열. 각 열: 프로필 사진 / role / name(Nanum) / rel(줄바꿈).
+- 프로필 이미지는 `src/data/wedding.ts`의 `COUPLE.groom.profile` / `COUPLE.bride.profile` 경로를 `next/image`로 렌더링.
 - 하단에 `연락하기` 버튼 → ContactModal 오픈.
 
 ### 5.6 Gallery
@@ -122,18 +119,24 @@ preconnect 2줄 포함.
 - 탭 전환은 스코프 내에서 active 토글. 닫기 ✕/오버레이.
 
 ### 5.12 Guestbook
-- 폼: 성함(text) + 축하 메시지(textarea) + `메시지 남기기` 버튼.
-- 제출: 둘 중 하나라도 비면 토스트 `이름과 메시지를 모두 입력해주세요`.
-  `storage.set('guestbook:'+Date.now(), JSON.stringify({name,msg,time:ISO}), true)` → 입력 초기화, 토스트 `메시지가 등록되었어요`, 목록 새로고침.
+- `축하 메시지 남기기` 버튼 → GuestbookModal 오픈.
 - 목록: `storage.list('guestbook:', true)` → 각 get → `time` 최신순 정렬 → `.gb-item`(이름 / `M.D` / 메시지). 비면 `첫 번째 축하 메시지를 남겨주세요 🤍`.
 - **XSS 방지**: 원본은 `escapeHtml` 사용. React는 기본 이스케이프되므로 `{it.name}`, `{it.msg}` 그대로 렌더하면 됨(dangerouslySetInnerHTML 금지).
 - `formatTime(iso)` = `${month+1}.${date}`.
+- 목록 우측 상단에 `삭제` 버튼 → 버튼 클릭시 `성함 + 연락처 뒷자리` 입력 검증 확인 후 삭제하는 로직 추가
 
-### 5.13 Notice
+### 5.13 GuestbookModal
+- 폼: 성함(text) + 연락처 뒷자리(text) + 축하 메시지(textarea)
+- 연락처 뒷자리의 `placeholder`로 `동명이인 확인을 위해 연락처 뒷자리를 입력해주세요` 표기
+- 제출: 셋 중 하나라도 비면 토스트 `이름과 연락처, 메시지를 모두 입력해주세요`.
+  `storage.set('guestbook:'+Date.now(), JSON.stringify({name,msg,time:ISO}), true)` → 입력 초기화, 토스트 `메시지가 등록되었어요`, GuestbookModal 닫힘.
+- 제출 후 GuestbookModald이 닫히면서 이모지 컨페티 애니메이션 효과 실행. 이모지 리스트(`["🎉", "👰🏻‍♀️", "🤵🏻‍♂️", "✨", "💛", "💜", "💞", "🌸"]`)를 `js-confetti` 라이브러리를 활용하여 `emojiSize : 50`, `confettiNumber : 50`으로 이벤트 핸들러 설정. 
+
+### 5.14 Notice
 - 3슬라이드 캐러셀(스크롤 스냅) + dots + `‹ ›`. 슬라이드1은 안내 리스트(번호 01~04), 2·3은 `추후 업데이트될 예정입니다.`
   (원본은 `.notice-carousel` 사용 — 갤러리와 동일한 스크롤/도트 패턴.)
 
-### 5.14 Footer
+### 5.15 Footer
 - `Thank you`(Nanum) + `저희의 새로운 시작을 함께해주셔서 진심으로 감사합니다.`
 
 ---
@@ -152,6 +155,7 @@ preconnect 2줄 포함.
    - `dragstart` → IMG면 `preventDefault`.
    - `visibilitychange` → 숨김이면 `body.zoom-blur` 추가, 복귀 시 제거.
 4. **인트로**: IntroOverlay 내부에서 처리(§5.1).
+5. 모달 팝업, dimm이 열릴 때는 스크롤이 되지않도록 이벤트 주입 처리. 모달과 dimm이 닫히면 다시 스크롤이 가능하도록 이벤트 주입.
 
 > 이 리스너들은 반드시 클라이언트에서만(`useEffect`) 등록. `document`/`window` 접근이 SSR에서 터지지 않도록 주의.
 
@@ -177,9 +181,8 @@ Next.js에는 이 API가 없으므로 **동일 인터페이스의 어댑터**를
 
 원본 헬퍼(`storeGet/storeSet/storeList`)와 동일하게 try/catch로 감싸고, set 실패 시 토스트 `저장에 실패했어요. 다시 시도해주세요.`.
 
-스토리지 키 규칙(원본과 동일 유지):
+스토리지 키 규칙(원본과 동일 유지, 프로필/갤러리는 업로드가 없으므로 해당 없음):
 ```
-profile:groom / profile:bride      (shared:true)
 rsvp:{timestamp}                   (shared:true)
 guestbook:{timestamp}             (shared:true)
 ```
@@ -193,13 +196,9 @@ guestbook:{timestamp}             (shared:true)
 
 ---
 
-## 9. 이미지 리사이즈 유틸 (공통)
+## 9. 이미지 업로드
 
-프로필 사진 업로드에 사용하는 함수(갤러리는 업로드가 없으므로 해당 없음):
-```
-FileReader.readAsDataURL → new Image → canvas(maxW로 스케일, jpeg quality 0.78) → dataUrl
-```
-- 프로필 maxW=600, quality 0.78.
+프로필/갤러리 모두 업로드 기능이 없다(읽기 전용, `wedding.ts`의 정적 경로만 사용). 이미지 리사이즈 유틸은 해당 없음.
 
 ---
 
@@ -210,7 +209,7 @@ FileReader.readAsDataURL → new Image → canvas(maxW로 스케일, jpeg qualit
 - [ ] D-day가 1초마다 갱신되고, 예식일 이후엔 💐 WEDDING DAY 표시.
 - [ ] 2027년 1월 달력에서 9일이 rose로 강조.
 - [ ] 스크롤 시 각 섹션이 아래에서 위로 페이드인(reveal).
-- [ ] 프로필 사진 업로드 후 새로고침해도 유지(스토리지).
+- [ ] 프로필 사진이 `COUPLE.groom.profile`/`COUPLE.bride.profile` 경로로 정확히 표시된다.
 - [ ] 갤러리 캐러셀 스와이프/화살표/도트, 사진 클릭 시 라이트박스(스와이프 이동).
 - [ ] 지도앱 3버튼 링크가 주소 인코딩되어 열린다.
 - [ ] RSVP 모달 제출 → 상태 텍스트 갱신 + 저장.

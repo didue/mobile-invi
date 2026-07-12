@@ -2,8 +2,26 @@ export const WEDDING_DATE = new Date('2027-01-09T12:40:00+09:00');
 export const VENUE_ADDRESS = '서울특별시 영등포구 은행로 30 더파티움 여의도';
 
 export const COUPLE = {
-  groom: { name: '배정근', role: '신랑', father: '배기환', mother: '이병애', rel: '배기환 · 이병애의\n장남', tel: '01052459812' },
-  bride: { name: '한지수', role: '신부', father: '한창희', mother: '이금이', rel: '한창희 · 이금이의\n장녀', tel: '01085278040' },
+  groom: { 
+    name: '배정근', 
+    role: 'groom', 
+    profile: '/images/profile/HJ2_7888.jpg',
+    description : [
+      '90년 4월 28일',
+      '다정다감 섬세한 ISFJ',
+      '',
+    ],
+  },
+  bride: { 
+    name: '한지수', 
+    role: 'bride', 
+    profile: '/images/profile/HJ2_6987.jpg',
+    description : [
+      '93년 5월 26일',
+      '명랑발랄 꼼꼼한 ENTJ',
+      '',
+    ],
+  },
 };
 
 // 연락하기 모달 (신랑측/신부측 각각 아버지·어머니·본인)
@@ -11,7 +29,8 @@ export const CONTACTS = {
   groom: [
     { 
       name: '배기환', 
-      role : 'father', 
+      role : 'father',
+      rel : '아버지',
       tag: '신랑 아버지', 
       tel: '01000000001', 
       bank: '', 
@@ -21,6 +40,7 @@ export const CONTACTS = {
     { 
       name: '이병애', 
       role : 'mother', 
+      rel: '어머니',
       tag: '신랑 어머니', 
       tel: '01000000002', 
       bank: '', 
@@ -30,6 +50,7 @@ export const CONTACTS = {
     { 
       name: '배정근',
       role : 'groom', 
+      rel: '차남',
       tag: '신랑', 
       tel: '01052459812', 
       bank: '', 
@@ -41,6 +62,7 @@ export const CONTACTS = {
     { 
       name: '한창희', 
       role : 'father', 
+      rel : '아버지',
       tag: '신부 아버지', 
       tel: '01054026326', 
       bank: '우리은행', 
@@ -50,6 +72,7 @@ export const CONTACTS = {
     { 
       name: '이금이', 
       role : 'mother', 
+      rel : '어머니',
       tag: '신부 어머니', 
       tel: '01063217952', 
       bank: '국민은행', 
@@ -59,6 +82,7 @@ export const CONTACTS = {
     { 
       name: '한지수', 
       role : 'bride', 
+      rel : '차녀',
       tag: '신부', 
       tel: '01085278040', 
       bank: '우리은행', 
@@ -97,16 +121,32 @@ export const GALLERY = [
 
 export const NOTICES = [
   {
-    title: '웨딩홀 안내',
+    title: '안내 사항',
     items: [
-      '신부대기실은 7층 세인트룸에 위치해있습니다.',
-      '식사는 뷔페식이 아닌 함께한상 브랜드의 한정식 한 상 차림입니다.',
-      '5세 이하의 어린이는 어린이 식권을 받아주시기 바랍니다. 6세 이상의 어린이는 성인과 동일한 식권을 사용합니다.',
-      '병원에 주차하신 분들은 예약실에서 주차권을 수령하시기 바랍니다.',
+      '신부 대기실은 B1 웨딩홀 오른쪽에 위치에 있습니다.',
+      '식사는 뷔페식이 아닌 한정식 한 상 차림입니다.',
+      '한상차림 외에도 세미 뷔페가 준비되어 있습니다.',
+      '갈비탕을 포함하여 음식 리필이 가능합니다. (제외:전복/칠리새우/모듬회) 가까운 직원에게 문의해 주세요.',
+      '꼭 4인으로 앉지 않으셔도 됩니다. 합석을 원치 않으시거나 1인상을 원하시는 분께서는 직원에게 편하게 말씀해주세요.',
+      '5세 이하의 어린이는 어린이 식권을 받아주시기 바랍니다.(6세 이상의 어린이는 성인과 동일)',
     ],
   },
-  { title: '안내 2', empty: '추후 업데이트될 예정입니다.' },
-  { title: '안내 3', empty: '추후 업데이트될 예정입니다.' },
+  { 
+    title: '주차안내',
+    items: [      
+      '예식장 건물 내 90분 무료 주차 가능합니다.',
+      '주차 등록은 B1층 안내데스크에 문의해 주세요.',
+      '본관 1주차장 만차시 2주차장으로 안내드리고 있습니다. (2주차장 120분 무료)',
+      '2주차장 주차시 1주차장에 주차 번호판 등록 후 이동하셔야 정산 가능함을 알려드립니다.'
+    ],
+   },
+  { 
+    title: '포토부스',
+    items: [
+      '소중한 날을 기록할 수 있도록\n 포토부스를 준비했습니다.',
+      '방문해주신 하객 분들의 사진을 찍어\n한 장은 방명록에, 한 장은 추억으로 간직해 주세요.'
+    ]
+  },
 ];
 
 export const WEDDING_VENUE = {

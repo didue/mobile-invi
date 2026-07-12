@@ -1,16 +1,12 @@
 "use client";
 
-import JSConfetti from "js-confetti";
+import { fireConfetti } from "@/lib/confetti";
+
+const FOOTER_CONFETTI_EMOJI_SIZE = 70;
 
 export const Footer = () => {
   const handleConfetti = () => {
-    const confetti = new JSConfetti();
-
-    confetti.addConfetti({
-      emojis: ["🎉", "👰🏻‍♀️", "🤵🏻‍♂️", "✨", "💛", "💜", "💞", "🌸"],
-      emojiSize: 70,
-      confettiNumber: 50,
-    });
+    fireConfetti(FOOTER_CONFETTI_EMOJI_SIZE);
   };
 
   return (

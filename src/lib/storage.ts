@@ -70,3 +70,12 @@ export async function storeList(prefix = ""): Promise<string[]> {
     return [];
   }
 }
+
+export async function storeDelete(key: string): Promise<boolean> {
+  try {
+    await storage.delete(key);
+    return true;
+  } catch {
+    return false;
+  }
+}

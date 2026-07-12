@@ -89,8 +89,6 @@ export const Header = () => {
       <div className="hero-date">
         <b>{heroDate.datePart}</b> {heroDate.restPart}
       </div>
-
-      <div className="scroll-cue">SCROLL</div>
     </section>
   );
 };

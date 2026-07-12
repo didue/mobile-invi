@@ -6,10 +6,10 @@ import { WEDDING_DATE } from "@/data/wedding";
 export type DdayCell = { n: string; l: string };
 
 const SERVER_SNAPSHOT: DdayCell[] = [
-  { n: "--", l: "DAYS" },
-  { n: "--", l: "HOURS" },
-  { n: "--", l: "MIN" },
-  { n: "--", l: "SEC" },
+  { n: "--", l: "일" },
+  { n: "--", l: "시간" },
+  { n: "--", l: "분" },
+  { n: "--", l: "초" },
 ];
 
 function computeDdayCells(): DdayCell[] {
@@ -25,10 +25,10 @@ function computeDdayCells(): DdayCell[] {
   const s = Math.floor((diff % 60000) / 1000);
 
   return [
-    { n: String(d), l: "DAYS" },
-    { n: String(h).padStart(2, "0"), l: "HOURS" },
-    { n: String(m).padStart(2, "0"), l: "MIN" },
-    { n: String(s).padStart(2, "0"), l: "SEC" },
+    { n: String(d), l: "일" },
+    { n: String(h).padStart(2, "0"), l: "시간" },
+    { n: String(m).padStart(2, "0"), l: "분" },
+    { n: String(s).padStart(2, "0"), l: "초" },
   ];
 }
 

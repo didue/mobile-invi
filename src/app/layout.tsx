@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { COUPLE } from "@/data/wedding";
 import { IntroOverlay } from "@/components/common/IntroOverlay";
 import "./globals.css";
@@ -6,6 +6,13 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: `${COUPLE.groom.name} ♥ ${COUPLE.bride.name} 결혼합니다`,
   description: `${COUPLE.groom.name}과 ${COUPLE.bride.name}의 결혼식에 초대합니다.`,
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

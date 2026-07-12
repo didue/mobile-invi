@@ -36,7 +36,7 @@ export const Notice = () => {
                   ))}
                 </ol>
               ) : (
-                <div className="tab-empty">{notice.empty}</div>
+                <div className="tab-empty">추후 업데이트 될 예정입니다.</div>
               )}
             </div>
           ))}
