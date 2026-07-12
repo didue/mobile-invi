@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { SECTION_TEXTS } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
 import { RsvpModal, type RsvpResult } from "@/app/_sections/RsvpModal";
+import { SectionHeading } from "@/components/common/SectionHeading";
 
 export const Rsvp = () => {
   const sectionRef = useReveal<HTMLElement>();
@@ -11,8 +13,7 @@ export const Rsvp = () => {
 
   return (
     <section ref={sectionRef} className="reveal">
-      <div className="section-title">RSVP</div>
-      <div className="section-sub">참석 여부를 알려주세요</div>
+      <SectionHeading {...SECTION_TEXTS.rsvp} />
       <div className="rsvp-trigger-wrap">
         <button type="button" className="rsvp-open-btn" onClick={() => setOpen(true)}>
           참석여부 알리기

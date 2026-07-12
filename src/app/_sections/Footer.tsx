@@ -1,8 +1,9 @@
 "use client";
 
 import { fireConfetti } from "@/lib/confetti";
+import { copyShareLink, shareToKakao } from "@/lib/kakao";
 
-const FOOTER_CONFETTI_EMOJI_SIZE = 70;
+const FOOTER_CONFETTI_EMOJI_SIZE = 60;
 
 export const Footer = () => {
   const handleConfetti = () => {
@@ -12,9 +13,9 @@ export const Footer = () => {
   return (
     <footer className="flex flex-col items-center gap-4 bg-neutral-100 px-8 py-16 text-center text-neutral-700">
       <p>
-        항상 저희를 지켜봐주시고 지원해주신 부모님과 가족,
+        항상 저희를 지켜봐주시고
         <br />
-        그리고 응원과 축하의 마음을 전해주신 모든 분들께
+        응원과 축하의 마음을 전해주신 모든 분들께
         <br />
         진심으로 감사드립니다.
         <br />
@@ -27,6 +28,22 @@ export const Footer = () => {
       >
         축하해주세요
       </button>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={shareToKakao}
+          className="rounded-full bg-[#FEE500] px-6 py-2 text-sm font-medium text-[#3A1D1D]"
+        >
+          카카오톡 공유하기
+        </button>
+        <button
+          type="button"
+          onClick={copyShareLink}
+          className="rounded-full border border-neutral-300 px-6 py-2 text-sm text-neutral-700"
+        >
+          링크 복사하기
+        </button>
+      </div>
     </footer>
   );
 };

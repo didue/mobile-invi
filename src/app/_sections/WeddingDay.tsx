@@ -1,7 +1,10 @@
 "use client";
 
+import { COUPLE, SECTION_TEXTS } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
 import { useDdayCells } from "@/hooks/useDdayCells";
+import { downloadWeddingCalendarEvent } from "@/lib/calendar";
+import { SectionHeading } from "@/components/common/SectionHeading";
 
 type CalendarCell = { day: number; muted?: boolean; highlight?: boolean };
 
@@ -16,21 +19,34 @@ const CALENDAR_ROWS: CalendarCell[][] = [
 
 const DOW = ["일", "월", "화", "수", "목", "금", "토"];
 
+const groomGivenName = COUPLE.groom.name.slice(1);
+const brideGivenName = COUPLE.bride.name.slice(1);
+
 export const WeddingDay = () => {
   const sectionRef = useReveal<HTMLElement>();
   const cells = useDdayCells();
+  const daysRemaining = cells.find((cell) => cell.l === "일")?.n;
 
   return (
     <section ref={sectionRef} className="reveal">
-      <div className="section-title">Wedding Day</div>
-      <div className="section-sub">함께해 주실 그 날</div>
+      <SectionHeading {...SECTION_TEXTS.weddingDay} />
       <div className="dday-box">
-        {cells.map((cell) => (
-          <div className="dday-cell" key={cell.l}>
-            <div className="dday-num">{cell.n}</div>
-            <div className="dday-label">{cell.l}</div>
-          </div>
-        ))}
+        {cells.flatMap((cell, index) => {
+          const items = [
+            <div className="dday-cell" key={cell.l}>
+              <div className="dday-num">{cell.n}</div>
+              <div className="dday-label">{cell.l}</div>
+            </div>,
+          ];
+          if (index < cells.length - 1) {
+            items.push(
+              <span className="dday-sep" key={`${cell.l}-sep`} aria-hidden="true">
+                :
+              </span>
+            );
+          }
+          return items;
+        })}
       </div>
 
       <div className="calendar">
@@ -61,6 +77,24 @@ export const WeddingDay = () => {
           )}
         </div>
       </div>
+
+      {daysRemaining && (
+        <>
+          <p className="dday-message">
+            {daysRemaining === "0" ? (
+              "결혼식 날입니다"
+            ) : (
+              <>
+                {groomGivenName}&{brideGivenName}의 결혼식이{" "}
+                <span className="dday-highlight">{daysRemaining}일</span> 남았습니다
+              </>
+            )}
+          </p>
+          <button type="button" className="dday-calendar-btn shadow-btn" onClick={downloadWeddingCalendarEvent}>
+            캘린더에 추가하기
+          </button>
+        </>
+      )}
     </section>
   );
 };

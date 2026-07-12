@@ -4,10 +4,11 @@ import { useRef, useState } from "react";
 import type { TouchEvent } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { GALLERY } from "@/data/wedding";
+import { GALLERY, SECTION_TEXTS } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
 import { useMounted } from "@/hooks/useMounted";
 import { useCarousel } from "@/hooks/useCarousel";
+import { SectionHeading } from "@/components/common/SectionHeading";
 
 const PER_PAGE = 4;
 const PAGE_COUNT = Math.ceil(GALLERY.length / PER_PAGE);
@@ -41,8 +42,7 @@ export const Gallery = () => {
 
   return (
     <section ref={sectionRef} className="reveal">
-      <div className="section-title">Gallery</div>
-      <div className="section-sub">두 사람의 순간들</div>
+      <SectionHeading {...SECTION_TEXTS.gallery} />
 
       <div className="gallery-wrap">
         <button

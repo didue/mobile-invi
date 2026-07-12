@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SECTION_TEXTS } from "@/data/wedding";
 import { storeDelete, storeGet, storeList } from "@/lib/storage";
 import { toast } from "@/lib/toast";
 import { useReveal } from "@/hooks/useReveal";
 import { GuestbookModal } from "@/app/_sections/GuestbookModal";
+import { SectionHeading } from "@/components/common/SectionHeading";
 
 type GuestbookEntry = {
   key: string;
@@ -14,9 +16,16 @@ type GuestbookEntry = {
   time: string;
 };
 
+const PAGE_SIZE = 5;
+
 function formatTime(iso: string): string {
   const date = new Date(iso);
-  return `${date.getMonth() + 1}.${date.getDate()}`;
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  const hh = String(date.getHours()).padStart(2, "0");
+  const mi = String(date.getMinutes()).padStart(2, "0");
+  return `${yyyy}.${mm}.${dd} ${hh}:${mi}`;
 }
 
 async function loadGuestbook(): Promise<GuestbookEntry[]> {
@@ -62,10 +71,10 @@ function DeleteVerifyForm({
         value={contact}
         onChange={(e) => setContact(e.target.value)}
       />
-      <button type="button" onClick={() => onConfirm(name.trim(), contact.trim())}>
+      <button type="button" className="confirm" onClick={() => onConfirm(name.trim(), contact.trim())}>
         확인
       </button>
-      <button type="button" onClick={onCancel}>
+      <button type="button" className="cancle" onClick={onCancel}>
         취소
       </button>
     </div>
@@ -75,6 +84,7 @@ function DeleteVerifyForm({
 export const Guestbook = () => {
   const sectionRef = useReveal<HTMLElement>();
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [modalOpen, setModalOpen] = useState(false);
   const [deletingKey, setDeletingKey] = useState<string | null>(null);
 
@@ -94,10 +104,12 @@ export const Guestbook = () => {
     setEntries(await loadGuestbook());
   };
 
+  const visibleEntries = entries.slice(0, visibleCount);
+  const hasMore = visibleCount < entries.length;
+
   return (
     <section ref={sectionRef} className="reveal" id="guestbookSection">
-      <div className="section-title">Guestbook</div>
-      <div className="section-sub">따뜻한 축하 메시지를 남겨주세요</div>
+      <SectionHeading {...SECTION_TEXTS.guestbook} />
 
       <div className="rsvp-trigger-wrap">
         <button type="button" className="rsvp-open-btn" onClick={() => setModalOpen(true)}>
@@ -109,7 +121,7 @@ export const Guestbook = () => {
         {entries.length === 0 ? (
           <div className="gb-empty">첫 번째 축하 메시지를 남겨주세요 🤍</div>
         ) : (
-          entries.map((entry) => (
+          visibleEntries.map((entry) => (
             <div className="gb-item" key={entry.key}>
               <div className="gb-top">
                 <span className="gb-name">{entry.name}</span>
@@ -135,6 +147,16 @@ export const Guestbook = () => {
           ))
         )}
       </div>
+
+      {hasMore && (
+        <button
+          type="button"
+          className="gb-load-more"
+          onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+        >
+          더보기
+        </button>
+      )}
 
       <GuestbookModal
         open={modalOpen}

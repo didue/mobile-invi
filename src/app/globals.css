@@ -1,14 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #ffffff;
+  --white: #ffffff;
   --blush: #fce8ea;
   --pink-soft: #fbd3d9;
   --pink: #f7b4bd;
   --rose: #f59aa5;
   --rose-deep: #c15a68;
+  --red : #dd4241;
+  --ivory: #f5f3ed;
   --ink: #3a322e;
-  --ink-soft: #9c8f94;
+  --ink-soft : #d2d2d2;
+  --ink-medium : #6f6f6f;
+  --ink-hard : #595555;
+  --ink-dark : #111111;
+  --light-blue: #497bf8;
+  --dark-blue : #5f8b9b;
+  --box-shadow : 1px 1px 4px 1px rgba(0, 0, 0, 0.1);
+
+  --font-gowun-batang: "Gowun Batang", serif;
+  --font-nanum-gothic-coding: "Nanum Gothic Coding", monospace;
+  --font-chiron-goround-tc: "Chiron GoRound TC", sans-serif;
+  --font-orbit: "Orbit", sans-serif;
+  --font-nanum-myeongju : "Nanum Myeongjo", serif;
+  --font-ibm-plex-sans-kr: "IBM Plex Sans KR", sans-serif;
 }
 
 html,
@@ -20,7 +35,7 @@ body {
 .app {
   max-width: 480px;
   margin: 0 auto;
-  background: var(--bg);
+  background: var(--white);
   min-height: 100vh;
 }
 
@@ -47,44 +62,69 @@ section {
 
 .section-title {
   text-align: center;
-  font-family: "Nanum Myeongjo", serif;
-  font-size: 22px;
+  font-family: var(--font-chiron-goround-tc);
+  font-size: 20px;
   color: var(--rose-deep);
   margin-bottom: 6px;
 }
 .section-sub {
   text-align: center;
   font-size: 12.5px;
-  color: var(--ink-soft);
+  font-family: var(--font-gowun-batang);
+  color: var(--ink-medium);
   margin-bottom: 32px;
 }
+
+.shadow-btn {
+  margin: 30px auto 0;
+  padding: 8px 16px;
+  border-radius: 5px;
+  color: var(--ink-medium);
+  background: #fff;
+  font-size: 12.5px;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+}
+
+.color-pink {color: var(--pink);}
+.color-rose {color: var(--rose);}
+.color-rose-deep {color: var(--rose-deep);}
+.color-red {color: var(--red);}
+.color-ink {color: var(--ink);}
+.color-ink-soft {color: var(--ink-soft);}
+.color-ink-medium {color: var(--ink-medium);}
+
 
 /* Wedding Day: D-day + 달력 */
 .dday-box {
   display: flex;
-  gap: 14px;
+  gap: 2px;
   justify-content: center;
 }
 .dday-cell {
-  background: #fff;
-  border: 1px solid var(--pink-soft);
-  border-radius: 14px;
-  padding: 12px 14px;
+  padding: 12px 12px;
   min-width: 58px;
   text-align: center;
-  box-shadow: 0 8px 20px -12px rgba(193, 90, 104, 0.28);
 }
 .dday-num {
-  font-family: "Nanum Myeongjo", serif;
+  font-family: var(--font-chiron-goround-tc);
   font-size: 22px;
   color: var(--rose-deep);
-  font-weight: 700;
+  font-weight: 600;
 }
 .dday-label {
   font-size: 10px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   margin-top: 2px;
   letter-spacing: 0.05em;
+}
+.dday-sep {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-chiron-goround-tc);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--rose-deep);
 }
 .calendar {
   margin: 34px auto 0;
@@ -93,10 +133,10 @@ section {
 }
 .cal-title {
   text-align: center;
-  font-family: "Nanum Myeongjo", serif;
+  font-family: var(--font-ibm-plex-sans-kr);
   font-size: 14px;
   letter-spacing: 0.12em;
-  color: var(--rose-deep);
+  color: var(--ink-hard);
   margin-bottom: 14px;
 }
 .cal-grid {
@@ -106,7 +146,7 @@ section {
 }
 .cal-dow {
   font-size: 10px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   text-align: center;
   padding-bottom: 8px;
   letter-spacing: 0.02em;
@@ -139,6 +179,20 @@ section {
   background: var(--rose);
   color: #fff;
   font-weight: 500;
+}
+.dday-message {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-medium);
+}
+.dday-highlight {
+  color: var(--rose-deep);
+  font-weight: 700;
+}
+.dday-calendar-btn {
+  display: block;
+  min-width: 150px;
 }
 
 /* Gallery */
@@ -223,7 +277,7 @@ section {
 .gallery-note {
   margin-top: 16px;
   font-size: 11px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   text-align: center;
 }
 
@@ -337,7 +391,6 @@ img,
   background: #fff;
   border-radius: 2px;
   padding: 36px 20px;
-  border-top: 1px solid var(--pink-soft);
   border-bottom: 1px solid var(--pink-soft);
   text-align: center;
 }
@@ -349,21 +402,24 @@ img,
 .info-time {
   margin-top: 6px;
   font-size: 13px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
 }
 .info-place {
-  margin-top: 18px;
   font-size: 16px;
   font-weight: 500;
+  font-family: var(--font-gowun-batang);
 }
 .info-addr {
-  margin-top: 4px;
+  margin-top: 8px;
   font-size: 12.5px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   line-height: 1.6;
 }
 .map-illust {
   margin: 22px 0 6px;
+  width: 100%;
+  min-height: 300px;
+  border: 1px solid var(--ink-soft);
 }
 .map-btns {
   display: flex;
@@ -373,13 +429,11 @@ img,
 .map-btn {
   flex: 1;
   text-decoration: none;
-  font-size: 12.5px;
-  padding: 11px 6px;
-  border-radius: 10px;
+  font-size: 12px;
+  padding: 8px 6px;
   text-align: center;
-  border: 1px solid var(--pink);
-  color: var(--rose);
   transition: background 0.2s;
+  margin-top: 5px !important;
 }
 .map-btn:active {
   background: var(--blush);
@@ -388,7 +442,7 @@ img,
   margin-top: 20px;
   text-align: left;
   font-size: 12px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   line-height: 1.8;
   border-top: 1px dashed var(--pink-soft);
   padding-top: 16px;
@@ -396,6 +450,16 @@ img,
 .transit b {
   color: var(--ink);
   font-weight: 500;
+}
+.transit-item {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.transit-way {
+  display: grid;
+}
+.transit-way span {
+  margin-left: 10px;
 }
 
 /* Gift: 연락처 행 + 아코디언 */
@@ -407,7 +471,7 @@ img,
   align-items: center;
   justify-content: space-between;
   padding: 14px 2px;
-  border-top: 1px solid var(--pink-soft);
+  border-bottom: 1px solid var(--ink-soft);
 }
 .contact-group .contact-row:last-child {
   border-bottom: 1px solid var(--pink-soft);
@@ -417,8 +481,8 @@ img,
   color: var(--ink);
 }
 .contact-row .who .tag {
-  font-size: 10.5px;
-  color: var(--ink-soft);
+  font-size: 11.5px;
+  color: var(--ink-medium);
   display: block;
   margin-top: 2px;
 }
@@ -448,10 +512,28 @@ img,
   border-color: #fee500;
   font-weight: 500;
 }
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+.icon-btn.copy {
+  border: #3e3e3e;
+  color: var(--ink-medium);
+}
+.icon-btn.kakao {
+  background: #fee500;
+  border: none;
+  color: #3a1d1d;
+}
 
 .acc-group {
-  border: 1px solid var(--pink-soft);
-  border-radius: 16px;
+  border-radius: 6px;
   overflow: hidden;
   background: #fff;
 }
@@ -459,6 +541,7 @@ img,
   margin-top: 12px;
 }
 .acc-head {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -474,7 +557,7 @@ img,
   color: var(--rose-deep);
 }
 .acc-head .chev {
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   font-size: 13px;
 }
 .acc-body {
@@ -487,40 +570,36 @@ img,
 }
 .acc-body .contact-row {
   padding: 14px 18px;
-  border-top: 1px solid var(--pink-soft);
+  border-top: 1px solid #e5e5e5;
   border-bottom: none;
 }
 .acc-body .contact-group {
   margin: 0;
 }
 
-/* Notice: 갤러리와 동일한 스크롤/도트 캐러셀 패턴 */
-.notice-carousel-wrap {
+/* Notice: 탭 UI + 상단 이미지 */
+.notice-image {
   position: relative;
-}
-.notice-carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  margin: 0 -32px;
-  padding: 0 32px;
-}
-.notice-carousel::-webkit-scrollbar {
-  display: none;
-}
-.notice-slide {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-  padding-right: 6px;
-}
-.notice-slide-title {
-  text-align: center;
-  font-family: "Nanum Myeongjo", serif;
-  font-size: 15px;
-  color: var(--rose-deep);
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--blush);
   margin-bottom: 20px;
+}
+.notice-image img {
+  object-fit: cover;
+}
+.notice-image-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--pink-soft);
+  border-radius: 12px;
+  color: var(--ink-soft);
+  font-size: 12px;
 }
 
 /* Notice / RSVP / Guestbook 공용 리스트·폼 */
@@ -528,18 +607,21 @@ img,
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 18px;
 }
 .notice-list li {
   display: flex;
-  gap: 16px;
+  gap: 12px;
+  margin-left: 10px;
 }
 .notice-list .num {
-  font-family: "Nanum Myeongjo", serif;
-  font-size: 13px;
-  color: var(--pink);
+  font-family: var(--font-gowun-batang);
+  font-size: 15px;
+  color: var(--ink-soft);
   flex-shrink: 0;
   padding-top: 1px;
+  font-weight: 600;
+  font-style: italic;
 }
 .notice-list p {
   font-size: 13px;
@@ -549,7 +631,7 @@ img,
 .tab-empty {
   text-align: center;
   font-size: 12.5px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   padding: 50px 0;
 }
 
@@ -566,7 +648,7 @@ img,
 .field label {
   display: block;
   font-size: 11.5px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   margin-bottom: 6px;
   letter-spacing: 0.03em;
 }
@@ -577,9 +659,8 @@ img,
   border: 1px solid var(--pink-soft);
   border-radius: 10px;
   padding: 11px 12px;
-  /* 16px 미만이면 iOS Safari가 포커스 시 자동으로 확대한다 */
-  font-size: 16px;
   font-family: "Noto Sans KR", sans-serif;
+  font-size: 12px;
   color: var(--ink);
   background: #fff;
 }
@@ -587,18 +668,21 @@ img,
   resize: vertical;
   min-height: 70px;
 }
+.essential {
+  color: var(--red);
+}
 .seg {
   display: flex;
   gap: 8px;
 }
 .seg button {
   flex: 1;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 8px;
+  border-radius: 2rem;
   border: 1px solid var(--pink-soft);
   background: #fff;
   font-size: 13px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   cursor: pointer;
 }
 .seg button.active {
@@ -658,16 +742,17 @@ img,
   text-align: center;
 }
 .rsvp-open-btn {
+  min-width: 150px;
   display: inline-block;
   background: var(--rose);
   color: #fff;
   border: none;
-  padding: 15px 36px;
-  border-radius: 30px;
-  font-size: 14px;
-  letter-spacing: 0.08em;
+  padding: 11px 30px;
+  border-radius: 5px;
+  font-size: 12.5px;
+  letter-spacing: 0.03em;
   cursor: pointer;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-ibm-plex-sans-kr)
 }
 .rsvp-open-btn:active {
   opacity: 0.85;
@@ -675,7 +760,7 @@ img,
 .rsvp-status {
   margin-top: 14px;
   font-size: 12.5px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
 }
 .rsvp-status b {
   color: var(--rose-deep);
@@ -688,8 +773,9 @@ img,
   background: rgba(58, 50, 46, 0.45);
   z-index: 70;
   display: none;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
+  padding: 24px;
 }
 .modal-overlay.show {
   display: flex;
@@ -697,20 +783,19 @@ img,
 .modal-sheet {
   background: #fff;
   width: 100%;
-  max-width: 480px;
-  border-radius: 22px 22px 0 0;
-  padding: 26px 24px calc(28px + env(safe-area-inset-bottom));
-  max-height: 86vh;
+  max-width: 360px;
+  padding: 26px 24px;
+  max-height: 80vh;
   overflow-y: auto;
-  animation: sheetUp 0.32s ease;
+  animation: popupIn 0.24s ease;
 }
-@keyframes sheetUp {
+@keyframes popupIn {
   from {
-    transform: translateY(24px);
+    transform: scale(0.94);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: scale(1);
     opacity: 1;
   }
 }
@@ -730,26 +815,23 @@ img,
   border: none;
   font-size: 20px;
   line-height: 1;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   cursor: pointer;
   padding: 4px;
 }
 
 .gb-list {
-  margin-top: 22px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
-  max-height: 320px;
-  overflow-y: auto;
-  padding-right: 2px;
+  gap: 10px;
+  border-top: 1px solid var(--pink-soft);
+  padding-top: 35px;
 }
 .gb-item {
-  background: #fff;
-  border-top: 1px solid var(--pink-soft);
-  padding: 14px 4px;
-}
-.gb-list .gb-item:last-child {
-  border-bottom: 1px solid var(--pink-soft);
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  padding: 14px 16px;
 }
 .gb-item .gb-top {
   display: flex;
@@ -758,24 +840,35 @@ img,
   margin-bottom: 6px;
 }
 .gb-item .gb-name {
-  font-size: 13px;
+  font-size: 10.5px;
   font-weight: 500;
-  color: var(--rose-deep);
+  color: var(--ink-medium);
 }
 .gb-item .gb-time {
   font-size: 10px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
 }
 .gb-item .gb-msg {
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.6;
   color: var(--ink);
+  font-family: var(--font-ibm-plex-sans-kr);
 }
 .gb-empty {
   text-align: center;
   font-size: 12.5px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   padding: 20px 0;
+}
+.gb-load-more {
+  display: block;
+  margin: 14px auto 0;
+  padding: 10px 24px;
+  text-decoration: underline;
+  color: var(--ink-medium);
+  background: #fff;
+  font-size: 12.5px;
+  cursor: pointer;
 }
 .gb-meta {
   display: flex;
@@ -784,7 +877,7 @@ img,
 }
 .gb-delete {
   font-size: 10px;
-  color: var(--ink-soft);
+  color: var(--rose-deep);
   background: none;
   border: none;
   cursor: pointer;
@@ -800,10 +893,10 @@ img,
 .gb-delete-form input {
   flex: 1;
   min-width: 90px;
-  border: 1px solid var(--pink-soft);
-  border-radius: 8px;
+  border: 1px solid var(--ink-soft);
+  border-radius: 5px;
   padding: 7px 9px;
-  font-size: 12px;
+  font-size: 11px;
   font-family: "Noto Sans KR", sans-serif;
   color: var(--ink);
   background: #fff;
@@ -811,12 +904,19 @@ img,
 .gb-delete-form button {
   font-size: 11.5px;
   padding: 7px 11px;
-  border-radius: 16px;
-  border: 1px solid var(--pink);
-  color: var(--rose);
+  border-radius: 2rem;
   background: #fff;
   cursor: pointer;
   white-space: nowrap;
+}
+
+.gb-delete-form button.confirm {
+  color: var(--white);
+  background-color: var(--pink);
+}
+.gb-delete-form button.cancle {
+  border: 1px solid var(--pink);
+  color: var(--rose);
 }
 
 /* Hero */
@@ -912,7 +1012,7 @@ img,
   margin-top: 30px;
   font-size: 14px;
   letter-spacing: 0.12em;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   z-index: 1;
 }
 .hero-date b {
@@ -957,8 +1057,13 @@ img,
 }
 .profile-col .rel {
   font-size: 11px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   line-height: 1.5;
+}
+.profile-contact-btn {
+  letter-spacing: 0.08em;
+  min-width: 150px;
+  display: inline-block;
 }
 
 /* Contact modal tabs */
@@ -973,7 +1078,7 @@ img,
   border: none;
   padding: 12px 4px;
   font-size: 12.5px;
-  color: var(--ink-soft);
+  color: var(--ink-medium);
   cursor: pointer;
   position: relative;
   font-family: "Noto Sans KR", sans-serif;

@@ -7,7 +7,7 @@ import { toast } from "@/lib/toast";
 import { fireConfetti } from "@/lib/confetti";
 import { useMounted } from "@/hooks/useMounted";
 
-const GUESTBOOK_CONFETTI_EMOJI_SIZE = 50;
+const GUESTBOOK_CONFETTI_EMOJI_SIZE = 60;
 
 type GuestbookModalProps = {
   open: boolean;

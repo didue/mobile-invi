@@ -1,61 +1,55 @@
 "use client";
 
-import { NOTICES } from "@/data/wedding";
+import { useState } from "react";
+import Image from "next/image";
+import { NOTICES, SECTION_TEXTS } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
-import { useCarousel } from "@/hooks/useCarousel";
+import { SectionHeading } from "@/components/common/SectionHeading";
 
 export const Notice = () => {
   const sectionRef = useReveal<HTMLElement>();
-  const { carouselRef, activePage, scrollByPage, handleScroll } = useCarousel();
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <section ref={sectionRef} className="reveal" id="noticeSection">
-      <div className="section-title">안내사항</div>
-      <div className="section-sub">참고해주세요</div>
+      <SectionHeading {...SECTION_TEXTS.notice} />
 
-      <div className="notice-carousel-wrap">
-        <button
-          type="button"
-          className="gallery-arrow left"
-          onClick={() => scrollByPage(-1)}
-          aria-label="이전 안내"
-        >
-          ‹
-        </button>
-        <div className="notice-carousel" ref={carouselRef} onScroll={handleScroll}>
-          {NOTICES.map((notice) => (
-            <div className="notice-slide" key={notice.title}>
-              <div className="notice-slide-title">{notice.title}</div>
-              {notice.items ? (
-                <ol className="notice-list">
-                  {notice.items.map((item, index) => (
-                    <li key={item}>
-                      <span className="num">{String(index + 1).padStart(2, "0")}</span>
-                      <p>{item}</p>
-                    </li>
-                  ))}
-                </ol>
-              ) : (
-                <div className="tab-empty">추후 업데이트 될 예정입니다.</div>
-              )}
-            </div>
-          ))}
-        </div>
-        <button
-          type="button"
-          className="gallery-arrow right"
-          onClick={() => scrollByPage(1)}
-          aria-label="다음 안내"
-        >
-          ›
-        </button>
-      </div>
-
-      <div className="gallery-dots">
+      <div className="tab-bar">
         {NOTICES.map((notice, index) => (
-          <span key={notice.title} className={index === activePage ? "active" : undefined} />
+          <button
+            type="button"
+            key={notice.title}
+            className={`tab-btn${index === activeIndex ? " active" : ""}`}
+            onClick={() => setActiveIndex(index)}
+          >
+            {notice.title}
+          </button>
         ))}
       </div>
+
+      {NOTICES.map((notice, index) => (
+        <div className={`tab-panel${index === activeIndex ? " active" : ""}`} key={notice.title}>
+          <div className="notice-image">
+            {notice.image ? (
+              <Image src={notice.image} alt="" fill sizes="(max-width: 480px) 100vw, 416px" />
+            ) : (
+              <div className="notice-image-empty">이미지 준비 중</div>
+            )}
+          </div>
+          {notice.items ? (
+            <ol className="notice-list">
+              {notice.items.map((item, itemIndex) => (
+                <li key={item}>
+                  <span className="num">{String(itemIndex + 1).padStart(2, "0")}</span>
+                  <p dangerouslySetInnerHTML={{__html:item}}/>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <div className="tab-empty">추후 업데이트 될 예정입니다.</div>
+          )}
+        </div>
+      ))}
     </section>
   );
 };

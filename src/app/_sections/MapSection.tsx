@@ -1,14 +1,15 @@
 "use client";
 
-import { MAPS, VENUE_ADDRESS, WEDDING_DATE, WEDDING_VENUE } from "@/data/wedding";
+import { MAPS, SECTION_TEXTS, VENUE_ADDRESS, WEDDING_DATE, WEDDING_VENUE } from "@/data/wedding";
 import { formatWeddingDate } from "@/lib/date";
 import { useReveal } from "@/hooks/useReveal";
+import { SectionHeading } from "@/components/common/SectionHeading";
 
 const TRANSIT_GROUPS: { label: string; items: string[] }[] = [
-  { label: "지하철", items: WEDDING_VENUE.station.metro },
-  { label: "버스", items: WEDDING_VENUE.station.bus },
-  { label: "자가용", items: WEDDING_VENUE.station.car },
-  { label: "주차", items: WEDDING_VENUE.station.parking },
+  { label: "🚆 지하철", items: WEDDING_VENUE.station.metro },
+  { label: "🚌 버스", items: WEDDING_VENUE.station.bus },
+  { label: "🚗 자가용", items: WEDDING_VENUE.station.car },
+  { label: "🅿️ 주차", items: WEDDING_VENUE.station.parking },
 ];
 
 function formatWeddingTime(date: Date): string {
@@ -22,11 +23,8 @@ export const MapSection = () => {
 
   return (
     <section ref={sectionRef} className="reveal" id="mapSection">
-      <div className="section-title">Location</div>
-      <div className="section-sub">오시는 길</div>
+      <SectionHeading {...SECTION_TEXTS.mapSection} />
       <div className="info-card">
-        <div className="info-date">{formatWeddingDate(WEDDING_DATE)}</div>
-        <div className="info-time">{formatWeddingTime(WEDDING_DATE)}</div>
         <div className="info-place">{WEDDING_VENUE.floor}</div>
         <div className="info-addr">{WEDDING_VENUE.address}</div>
 
@@ -48,7 +46,7 @@ export const MapSection = () => {
 
         <div className="map-btns">
           <a
-            className="map-btn"
+            className="map-btn shadow-btn"
             href={MAPS.naver.link()}
             target="_blank"
             rel="noopener noreferrer"
@@ -57,7 +55,7 @@ export const MapSection = () => {
             네이버지도
           </a>
           <a
-            className="map-btn"
+            className="map-btn shadow-btn"
             href={MAPS.kakao.link()}
             target="_blank"
             rel="noopener noreferrer"
@@ -66,7 +64,7 @@ export const MapSection = () => {
             카카오맵
           </a>
           <a
-            className="map-btn"
+            className="map-btn shadow-btn"
             href={MAPS.tmap.link()}
             target="_blank"
             rel="noopener noreferrer"
@@ -77,11 +75,14 @@ export const MapSection = () => {
 
         <div className="transit">
           {TRANSIT_GROUPS.flatMap(({ label, items }) =>
-            items.map((item, index) => (
-              <div key={`${label}-${index}`}>
-                <b>{label}</b> — {item}
-              </div>
-            ))
+            <div className="transit-item" key={`${label}-item`}> 
+              <b>{label}</b>
+              {items.map((item, index) => (
+                <div key={`${label}-${index}`} className="transit-way">
+                  <span dangerouslySetInnerHTML={{__html:item}}/>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>
