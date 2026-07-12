@@ -1,4 +1,5 @@
 import { Toast } from "@/components/common/Toast";
+import { FloatingButton } from "@/app/_sections/FloatingButton";
 import { Header } from "@/app/_sections/Header";
 import { WeddingDay } from "@/app/_sections/WeddingDay";
 import { Intro } from "@/app/_sections/Intro";
@@ -26,6 +27,7 @@ export default function Home() {
       <Guestbook />
       <Footer />
       <Toast />
+      <FloatingButton />
     </main>
   );
 }

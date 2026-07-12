@@ -5,8 +5,9 @@ import { KakaoSdk } from "@/components/common/KakaoSdk";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: `${COUPLE.groom.name} ♥ ${COUPLE.bride.name} 결혼합니다`,
-  description: `${COUPLE.groom.name}과 ${COUPLE.bride.name}의 결혼식에 초대합니다.`,
+  title: `${COUPLE.groom.name} ♥ ${COUPLE.bride.name} 결혼합니다.`,
+  description : `2027년 1월 9일 토요일 오후 12시 40분`
+  //description: `${COUPLE.groom.name}과 ${COUPLE.bride.name}의 결혼식에 초대합니다.`,
 };
 
 export const viewport: Viewport = {

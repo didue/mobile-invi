@@ -3,7 +3,7 @@ import { formatParentsRel } from "@/lib/family";
 
 export const Intro = () => {
   return (
-    <section className="px-8 py-16 text-center leading-relaxed text-neutral-700">
+    <section className="px-4 py-16 text-center leading-relaxed text-neutral-700">
       <p>
         {formatParentsRel(CONTACTS.groom, "groom").replace("\n", " ")} {COUPLE.groom.name}
         <br />

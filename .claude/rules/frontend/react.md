@@ -32,10 +32,15 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 **원본 `<style>` 블록 전체를 그대로 이식한다.** 아래는 반드시 유지할 핵심 규칙 요약(누락 방지용 체크리스트):
 
-- CSS 변수(:root): `--bg:#FFFFFF; --blush:#FCE8EA; --pink-soft:#FBD3D9; --pink:#F7B4BD; --rose:#F59AA5; --rose-deep:#C15A68; --ink:#3A322E; --ink-soft:#9C8F94;`
+- CSS 변수(:root):
+  - 색상: `--white:#ffffff; --blush:#FCE8EA; --pink-soft:#FBD3D9; --pink:#F7B4BD; --rose:#F59AA5; --rose-deep:#C15A68; --red:#DD4241; --ivory:#F5F3ED; --ink:#3A322E; --ink-soft:#D2D2D2; --ink-medium:#6F6F6F; --ink-hard:#595555; --ink-dark:#111111; --light-blue:#497BF8; --dark-blue:#5F8B9B;`
+  - 그림자: `--box-shadow: 1px 1px 4px 1px rgba(0,0,0,.1);`
+  - 폰트 크기 스케일(10단계, 작은 순): `--font-size-xxs:.6rem; --font-size-xs:.7rem; --font-size-sm:.8rem; --font-size-md-s:.9rem; --font-size-md:.95rem; --font-size-regualr:1.05rem; --font-size-lg:1.2rem; --font-size-xl-s:1.375rem; --font-size-xl:1.6rem; --font-size-xxl:2.4rem;`(변수명 `regualr`는 오타이지만 실제 코드와 동일하게 유지). `globals.css` 전체의 하드코딩된 `font-size` px 값은 이 스케일 중 가장 가까운 변수로 전부 치환되어 있다. 매칭되는 값이 없던 22px는 `lg`(19.2px)와 `xl`(25.6px) 사이 간격이 너무 커서 `--font-size-xl-s`(22px)를 새로 추가해 대응했다.
+  - 폰트 패밀리: `--font-gowun-batang: "Gowun Batang", serif; --font-nanum-gothic-coding: "Nanum Gothic Coding", monospace; --font-chiron-goround-tc: "Chiron GoRound TC", sans-serif; --font-orbit: "Orbit", sans-serif; --font-nanum-myeongju: "Nanum Myeongjo", serif; --font-ibm-plex-sans-kr: "IBM Plex Sans KR", sans-serif;`
+  - 새 텍스트에 크기를 지정할 때는 항상 위 `--font-size-*` 스케일 중 하나를 사용하고 임의의 px/rem 값을 반복해서 추가하지 않는다. 폰트도 마찬가지로 위 `--font-*` 변수를 사용한다.
 - `html,body`: 배경 `var(--blush)`, `Noto Sans KR` 300, `overflow-x:hidden`, 스크롤바 숨김(webkit/ms/firefox).
 - `.app`: `max-width:480px; margin:0 auto; background:#fff; min-height:100vh;` / `@media(min-width:481px)` 그림자.
-- `.serif` = Nanum Myeongjo. `section{ padding:72px 32px; }`
+- `.serif` = Nanum Myeongjo. `section{ padding:72px 16px; }`(모바일 좌우 여백 최소화를 위해 원본 32px에서 축소 — `.hero`/`.gallery-carousel`/`footer`/Intro의 좌우 패딩도 동일하게 16px로 맞춤).
 - **reveal 애니메이션**: `.reveal{opacity:0;transform:translateY(24px);transition:.9s}` → `.show` 로 노출.
 - `.hero` `min-height:100svh`, 방사형 그라디언트 배경(`.hero-bg`), `.eyebrow`(letter-spacing 0.35em).
 - **아치 커버**: `.hero-arch{ width:80%; aspect-ratio:3/4.3; border-radius:50% 50% 0 0 / 24% 24% 0 0; box-shadow:0 18px 40px -20px rgba(193,90,104,.35);}`
@@ -55,8 +60,9 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - **라이트박스**: `.lightbox-overlay`(z-index 80, 어두운 배경), `.lightbox-stage img{max-width:88%;max-height:78%}`, `.lightbox-arrow`, `.lightbox-count`.
 - **방명록**: `.gb-list`(max-height 320 스크롤), `.gb-item`, `.gb-empty`.
 - **탭바**: `.tab-btn.active::after`(밑줄), `.tab-panel.active{display:block}`.
-- `footer`, `.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%)...}` `.show{opacity:.94}`.
+- `footer`, `.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%)...}` `.show{opacity:.94}` (z-index 60).
 - **인트로**: `.intro-overlay{position:fixed;background:rgba(20,24,18,.72);z-index:100;transition:opacity .9s}` `.hide{opacity:0}`, `.intro-text{font-family:'Dancing Script';font-size:38px;clip-path:inset(0 100% 0 0);transition:clip-path 1.5s cubic-bezier(.4,0,.2,1)}` `.write{clip-path:inset(0 0% 0 0)}`.
+- **플로팅 버튼**: `.floating-btns{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);width:100%;max-width:480px;display:flex;flex-direction:column;align-items:flex-end;gap:10px;padding:0 16px;z-index:50}`(모달/토스트와 겹치지 않도록 `.app`과 동일한 480px 중앙 정렬 컨테이너를 재사용). `.fab-btn`(44px 원형, 반투명 어두운 배경 `rgba(58,50,46,.55)`, 흰색 아이콘, `opacity:0`→`.show{opacity:1}`으로 페이드).
 
 > React에서 `onClick` 등 인라인 핸들러를 쓰되, **클래스명/구조는 원본 DOM과 동일**하게 유지해야 CSS가 그대로 먹는다.
 
@@ -101,7 +107,8 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 라이트박스: `GALLERY` 순서 그대로, `‹ ›`/스와이프(터치 50px)/오버레이 클릭 닫기, `pos+1 / total` 카운트.
 
 ### 5.7 MapSection
-- 인포카드 텍스트(§3) + 지도 일러스트 SVG(원본 그대로) + 3개 지도앱 링크(a target=_blank) + 교통 3줄.
+- 인포카드 텍스트(§3) + 네이버 지도(§13) + 3개 지도앱 링크(a target=_blank) + 교통 3줄.
+- `div#map.map-illust`에 네이버 지도(Maps JavaScript API v3)를 렌더링한다. 중심 좌표와 마커 위치는 `src/data/wedding.ts`의 `WEDDING_VENUE.coords`(위도 37.52810299154129, 경도 126.92278739271629), 줌 레벨은 16으로 고정한다.
 
 ### 5.8 Rsvp
 - `참석여부 알리기` 버튼 → RsvpModal. 제출 후 `.rsvp-status`에 `${name}님, 회답이 전달되었어요 (${attend} · ${count}명)`.
@@ -148,6 +155,13 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 감사 인사 문구 + `축하해주세요` 버튼(`js-confetti`로 이모지 컨페티, `lib/confetti.ts` 공용 유틸 사용).
 - `카카오톡 공유하기` 버튼: 카카오 공유 SDK로 현재 페이지 링크를 피드 템플릿(제목/설명/대표 이미지/링크)으로 공유(§12).
 - `링크 복사하기` 버튼: `navigator.clipboard.writeText(location.href)` → 토스트 `링크가 복사되었어요` / 실패 시 `복사에 실패했어요`.
+
+### 5.16 FloatingButton
+- 화면 우측 하단에 고정으로 떠있는 버튼 → `top` 버튼 + `공유하기` 버튼
+- `top` 버튼은 `공유하기` 버튼 아이콘으로 표시된 반투명한 원형 버튼으로 구현.
+- 화면 스크롤이 `Header` 영역을 벗어났을 경우 노출.
+- `top` 버튼 → 클릭시 화면 스크롤을 최상단으로 이동. 
+- `공유하기` 버튼 → 클릭시 링크 클립보드 복사
 
 ---
 
@@ -223,6 +237,7 @@ guestbook:{timestamp}             (shared:true)
 - [ ] 프로필 사진이 `COUPLE.groom.profile`/`COUPLE.bride.profile` 경로로 정확히 표시된다.
 - [ ] 갤러리 캐러셀 스와이프/화살표/도트, 사진 클릭 시 라이트박스(스와이프 이동).
 - [ ] 지도앱 3버튼 링크가 주소 인코딩되어 열린다.
+- [ ] `#map`에 네이버 지도가 실제로 렌더링되고, `WEDDING_VENUE.coords` 위치에 마커가 표시된다.
 - [ ] RSVP 모달 제출 → 상태 텍스트 갱신 + 저장.
 - [ ] 마음 전하실 곳 아코디언 토글, 계좌 복사/카카오 공유 동작.
 - [ ] 방명록 등록/목록/최신순 정렬/빈 상태 문구.
@@ -231,6 +246,7 @@ guestbook:{timestamp}             (shared:true)
 - [ ] 핀치줌 시 화면 blur, 우클릭/드래그/탭전환 시 캡처 방지 blur.
 - [ ] 481px 이상에서 카드 그림자, 그 외 480px 폭 유지.
 - [ ] 카카오톡 공유하기로 피드 템플릿 공유, 링크 복사하기로 클립보드 복사 + 토스트.
+- [ ] Header 영역을 스크롤로 벗어나면 우측 하단 플로팅 버튼(맨 위로/공유하기)이 나타나고, 맨 위로 클릭 시 스크롤 최상단 이동·공유하기 클릭 시 링크 복사.
 
 ---
 
@@ -248,5 +264,17 @@ guestbook:{timestamp}             (shared:true)
 - Kakao JS SDK를 `next/script`(`strategy="afterInteractive"`)로 로드하고, 로드 완료 시 `Kakao.init(NEXT_PUBLIC_KAKAO_JS_KEY)`를 1회만 호출한다(`isInitialized()`로 중복 초기화 방지).
 - JS 키는 `.env`의 `NEXT_PUBLIC_KAKAO_JS_KEY`로 관리한다(브라우저에서 SDK 초기화에 써야 하므로 `NEXT_PUBLIC_` 접두사 필수). 키가 없으면 SDK 스크립트를 아예 로드하지 않는다.
 - `shareToKakao()`: `Kakao.Share.sendDefault({ objectType:'feed', content:{ title, description, imageUrl, link }, buttons })`로 현재 페이지 URL을 공유한다. 제목은 `${신랑} ♥ ${신부} 결혼합니다`, 설명은 예식 일시, 대표 이미지는 `GALLERY[0]`의 절대 URL. SDK가 초기화되지 않았으면 토스트로 안내하고 종료한다.
-- `copyShareLink()`: `navigator.clipboard.writeText(location.href)` → 성공 시 토스트 `링크가 복사되었어요`, 실패 시 `복사에 실패했어요`.
+- `copyShareLink()`: `navigator.clipboard.writeText(location.href)` → 성공 시 토스트 `링크가 복사되었어요😉`, 실패 시 `복사에 실패했어요😣`.
 - `window.Kakao` 타입은 `src/types/kakao.d.ts`에 최소 인터페이스로 선언한다(`any` 금지).
+
+---
+
+## 13. 네이버 지도 SDK (MapSection.tsx)
+
+- 네이버 지도(Maps JavaScript API v3)를 `next/script`(`strategy="afterInteractive"`)로 로드한다. 스크립트 URL은 `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`.
+- Client ID는 `.env`의 `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID`로 관리한다(브라우저에서 SDK 로드에 써야 하므로 `NEXT_PUBLIC_` 접두사 필수). 키가 없으면 `<Script>` 자체를 렌더링하지 않는다.
+- **Client Secret은 사용하지 않는다.** Maps JavaScript API(브라우저 지도 렌더링)는 Client ID만으로 동작하며, Secret은 서버 사이드 REST API(Geocoding 등) 전용이다. 이 프로젝트의 `.env`는 git에 커밋되는 파일(`.env.local`만 gitignore 대상)이므로 Secret처럼 노출되면 안 되는 값은 `.env`에 저장하지 않는다. 추후 서버 사이드 연동이 필요해지면 `.env.local`에 `NEXT_PUBLIC_` 접두사 없이 저장한다.
+- `Script`의 `onReady` 콜백에서 지도를 초기화한다: `new naver.maps.Map(el, { center: new naver.maps.LatLng(lat, lng), zoom: 16 })` 생성 후 동일 좌표로 `new naver.maps.Marker({ position: center, map })`를 생성해 중심에 마커를 표시한다.
+- 중심 좌표/마커 위치는 `src/data/wedding.ts`의 `WEDDING_VENUE.coords`(`{ lat, lng }`)를 참조한다(§5.7).
+- 지도 컨테이너는 기존 `#map.map-illust`(`min-height:300px`) `div`를 그대로 재사용하고 `ref`로 DOM 엘리먼트를 얻어 `naver.maps.Map`에 전달한다. 별도 스타일 추가는 불필요하다.
+- `window.naver` 타입은 `src/types/naver-maps.d.ts`에 최소 인터페이스(`LatLng`/`Map`/`Marker`)로 선언한다(`any` 금지).

@@ -1,5 +1,7 @@
 "use client";
 
+import Script from "next/script";
+import { useRef } from "react";
 import { MAPS, SECTION_TEXTS, VENUE_ADDRESS, WEDDING_DATE, WEDDING_VENUE } from "@/data/wedding";
 import { formatWeddingDate } from "@/lib/date";
 import { useReveal } from "@/hooks/useReveal";
@@ -12,6 +14,11 @@ const TRANSIT_GROUPS: { label: string; items: string[] }[] = [
   { label: "🅿️ 주차", items: WEDDING_VENUE.station.parking },
 ];
 
+const NAVER_MAP_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID;
+const NAVER_MAP_SDK_SRC = NAVER_MAP_CLIENT_ID
+  ? `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NAVER_MAP_CLIENT_ID}`
+  : "";
+
 function formatWeddingTime(date: Date): string {
   const hour = date.getHours();
   const minute = date.getMinutes();
@@ -20,6 +27,16 @@ function formatWeddingTime(date: Date): string {
 
 export const MapSection = () => {
   const sectionRef = useReveal<HTMLElement>();
+  const mapElRef = useRef<HTMLDivElement>(null);
+
+  const initNaverMap = () => {
+    const el = mapElRef.current;
+    if (!el || !window.naver) return;
+
+    const center = new window.naver.maps.LatLng(WEDDING_VENUE.coords.lat, WEDDING_VENUE.coords.lng);
+    const map = new window.naver.maps.Map(el, { center, zoom: 16 });
+    new window.naver.maps.Marker({ position: center, map });
+  };
 
   return (
     <section ref={sectionRef} className="reveal" id="mapSection">
@@ -28,21 +45,10 @@ export const MapSection = () => {
         <div className="info-place">{WEDDING_VENUE.floor}</div>
         <div className="info-addr">{WEDDING_VENUE.address}</div>
 
-        <div className="map-illust">
-          <svg viewBox="0 0 260 130" width="100%" height="110">
-            <rect x="0" y="0" width="260" height="130" rx="14" fill="#FCE8EA" />
-            <path
-              d="M10,100 C60,60 100,110 150,70 C190,40 220,80 250,50"
-              stroke="#FBD3D9"
-              strokeWidth="6"
-              fill="none"
-              strokeLinecap="round"
-            />
-            <circle cx="150" cy="55" r="9" fill="#F59AA5" />
-            <path d="M150,55 a9,9 0 1,1 -0.1,0 Z" fill="#F59AA5" />
-            <path d="M150,64 L150,80" stroke="#F59AA5" strokeWidth="3" />
-          </svg>
-        </div>
+        <div className="map-illust" id="map" ref={mapElRef} />
+        {NAVER_MAP_SDK_SRC && (
+          <Script src={NAVER_MAP_SDK_SRC} strategy="afterInteractive" onReady={initNaverMap} />
+        )}
 
         <div className="map-btns">
           <a

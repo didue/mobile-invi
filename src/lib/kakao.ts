@@ -26,8 +26,8 @@ export function shareToKakao() {
 export async function copyShareLink() {
   try {
     await navigator.clipboard.writeText(window.location.href);
-    toast("링크가 복사되었어요");
+    toast("링크가 복사되었어요 😉");
   } catch {
-    toast("복사에 실패했어요");
+    toast("복사에 실패했어요😣");
   }
 }
