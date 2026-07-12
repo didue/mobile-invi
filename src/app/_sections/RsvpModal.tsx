@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { storeSet } from "@/lib/storage";
+import { apiPost } from "@/lib/api";
 import { toast } from "@/lib/toast";
 import { useMounted } from "@/hooks/useMounted";
 
@@ -10,8 +10,8 @@ const MIN_COUNT = 1;
 const MAX_COUNT = 10;
 const CLOSE_DELAY_MS = 900;
 
-export type RsvpAttend = "참석" | "불참";
-export type RsvpSide = "신랑측" | "신부측";
+export type RsvpAttend = "Y" | "N";
+export type RsvpSide = "groom" | "bride";
 
 export type RsvpResult = {
   name: string;
@@ -29,8 +29,8 @@ type RsvpModalProps = {
 export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
   const mounted = useMounted();
   const [name, setName] = useState("");
-  const [attend, setAttend] = useState<RsvpAttend>("참석");
-  const [side, setSide] = useState<RsvpSide>("신랑측");
+  const [attend, setAttend] = useState<RsvpAttend>("Y");
+  const [side, setSide] = useState<RsvpSide>("groom");
   const [count, setCount] = useState(MIN_COUNT);
   const [showThanks, setShowThanks] = useState(false);
 
@@ -42,8 +42,8 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
     }
 
     const result: RsvpResult = { name: trimmedName, attend, count, side };
-    const payload = JSON.stringify({ ...result, time: new Date().toISOString() });
-    const res = await storeSet(`rsvp:${Date.now()}`, payload, true);
+    const payload = { ...result, time: new Date().toISOString() };
+    const res = await apiPost("/rsvp", payload);
     if (!res) return;
 
     setShowThanks(true);
@@ -91,14 +91,16 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         <div className="field">
             <label>참석 여부</label>
           <div className="seg">
-            {(["참석", "불참"] as const).map((value) => (
+            {(["Y", 
+            "N"
+            ] as const).map((value) => (
               <button
                 type="button"
                 key={value}
                 className={attend === value ? "active" : undefined}
                 onClick={() => setAttend(value)}
               >
-                {value === "참석" ? "참석합니다" : "참석이 어려워요"}
+                {value === "Y" ? "참석합니다" : "참석이 어려워요"}
               </button>
             ))}
           </div>
@@ -128,14 +130,14 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         <div className="field">
             <label>신랑측 / 신부측</label>
           <div className="seg">
-            {(["신랑측", "신부측"] as const).map((value) => (
+            {(["groom", "bride"] as const).map((value) => (
               <button
                 type="button"
                 key={value}
                 className={side === value ? "active" : undefined}
                 onClick={() => setSide(value)}
               >
-                {value === "신랑측" ? "신랑측 하객" : "신부측 하객"}
+                {value === "groom" ? "신랑측 하객" : "신부측 하객"}
               </button>
             ))}
           </div>

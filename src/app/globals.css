@@ -41,6 +41,12 @@ html,
 body {
   background: var(--blush);
   color: var(--ink);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 .app {
@@ -850,9 +856,14 @@ img,
   width: 100%;
   max-width: 360px;
   padding: 26px 24px;
-  max-height: 80vh;
+  max-height: calc(100svh - 48px);
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   animation: popupIn 0.24s ease;
+}
+.modal-sheet::-webkit-scrollbar {
+  display: none;
 }
 @keyframes popupIn {
   from {

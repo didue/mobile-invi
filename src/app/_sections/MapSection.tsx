@@ -2,8 +2,7 @@
 
 import Script from "next/script";
 import { useRef } from "react";
-import { MAPS, SECTION_TEXTS, VENUE_ADDRESS, WEDDING_DATE, WEDDING_VENUE } from "@/data/wedding";
-import { formatWeddingDate } from "@/lib/date";
+import { MAPS, SECTION_TEXTS, VENUE_ADDRESS, WEDDING_VENUE } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
 import { SectionHeading } from "@/components/common/SectionHeading";
 

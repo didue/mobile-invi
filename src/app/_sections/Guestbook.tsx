@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { SECTION_TEXTS } from "@/data/wedding";
-import { storeDelete, storeGet, storeList } from "@/lib/storage";
+import { apiDelete, apiGet } from "@/lib/api";
 import { toast } from "@/lib/toast";
 import { useReveal } from "@/hooks/useReveal";
 import { GuestbookModal } from "@/app/_sections/GuestbookModal";
 import { SectionHeading } from "@/components/common/SectionHeading";
 
 type GuestbookEntry = {
-  key: string;
+  id: string;
   name: string;
   contact: string;
-  msg: string;
-  time: string;
+  message: string;
+  timestamp: string;
 };
 
 const PAGE_SIZE = 5;
@@ -29,22 +29,9 @@ function formatTime(iso: string): string {
 }
 
 async function loadGuestbook(): Promise<GuestbookEntry[]> {
-  const keys = await storeList("guestbook:");
-  const entries = await Promise.all(
-    keys.map(async (key) => {
-      const raw = await storeGet(key, true);
-      if (!raw) return null;
-      try {
-        return { key, ...JSON.parse(raw) } as GuestbookEntry;
-      } catch {
-        return null;
-      }
-    })
-  );
-
-  return entries
-    .filter((entry): entry is GuestbookEntry => entry !== null)
-    .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+  const entries = await apiGet<GuestbookEntry[]>("/guestbook");
+  if (!entries) return [];
+  return [...entries].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 }
 
 function DeleteVerifyForm({
@@ -86,7 +73,7 @@ export const Guestbook = () => {
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [modalOpen, setModalOpen] = useState(false);
-  const [deletingKey, setDeletingKey] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     loadGuestbook().then(setEntries);
@@ -97,9 +84,9 @@ export const Guestbook = () => {
       toast("이름과 연락처가 일치하지 않아요");
       return;
     }
-    const ok = await storeDelete(entry.key);
+    const ok = await apiDelete(`/guestbook/${entry.id}`);
     if (!ok) return;
-    setDeletingKey(null);
+    setDeletingId(null);
     toast("메시지가 삭제되었어요");
     setEntries(await loadGuestbook());
   };
@@ -122,24 +109,24 @@ export const Guestbook = () => {
           <div className="gb-empty">첫 번째 축하 메시지를 남겨주세요 🤍</div>
         ) : (
           visibleEntries.map((entry) => (
-            <div className="gb-item" key={entry.key}>
+            <div className="gb-item" key={entry.id}>
               <div className="gb-top">
                 <span className="gb-name">{entry.name}</span>
                 <span className="gb-meta">
-                  <span className="gb-time">{formatTime(entry.time)}</span>
+                  <span className="gb-time">{formatTime(entry.timestamp)}</span>
                   <button
                     type="button"
                     className="gb-delete"
-                    onClick={() => setDeletingKey(entry.key === deletingKey ? null : entry.key)}
+                    onClick={() => setDeletingId(entry.id === deletingId ? null : entry.id)}
                   >
                     삭제
                   </button>
                 </span>
               </div>
-              <div className="gb-msg">{entry.msg}</div>
-              {deletingKey === entry.key && (
+              <div className="gb-msg">{entry.message}</div>
+              {deletingId === entry.id && (
                 <DeleteVerifyForm
-                  onCancel={() => setDeletingKey(null)}
+                  onCancel={() => setDeletingId(null)}
                   onConfirm={(name, contact) => handleConfirmDelete(entry, name, contact)}
                 />
               )}

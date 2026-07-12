@@ -145,8 +145,7 @@ export const MAPS = {
     link: () => `https://map.naver.com/v5/search/${encodeURIComponent(VENUE_ADDRESS)}`,
   },
   tmap: {
-    link: () => 'https://tmap.life/2b1f6b',
-  },
+    link: () => `https://apis.openapi.sk.com/tmap/app/routes?appKey=${process.env.NEXT_PUBLIC_TMAP_APP_KEY}&goalname=더파티움여의도&goalx=${WEDDING_VENUE.coords.lng}&goaly=${WEDDING_VENUE.coords.lat}`},
 };
 
 // 각 섹션의 section-title / section-sub 문구. sub은 줄 단위 배열(빈 배열이면 렌더링하지 않음).

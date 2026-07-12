@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { storeSet } from "@/lib/storage";
+import { apiPost } from "@/lib/api";
 import { toast } from "@/lib/toast";
 import { fireConfetti } from "@/lib/confetti";
 import { useMounted } from "@/hooks/useMounted";
@@ -30,13 +30,14 @@ export const GuestbookModal = ({ open, onClose, onSubmitted }: GuestbookModalPro
       return;
     }
 
-    const payload = JSON.stringify({
+    const payload = {
+      id: crypto.randomUUID(),
       name: trimmedName,
       contact: trimmedContact,
-      msg: trimmedMessage,
-      time: new Date().toISOString(),
-    });
-    const res = await storeSet(`guestbook:${Date.now()}`, payload, true);
+      message: trimmedMessage,
+      timestamp: new Date().toISOString(),
+    };
+    const res = await apiPost("/guestbook", payload);
     if (!res) return;
 
     setName("");

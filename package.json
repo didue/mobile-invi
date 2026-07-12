@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently -n next,api -c blue,green \"npm:dev:next\" \"npm:dev:api\"",
+    "dev:next": "next dev -p 3000",
+    "dev:api": "json-server --watch src/data/db.json --port 8001",
     "build": "next build",
-    "start": "next start",
+    "start": "concurrently -n next,api -c blue,green \"npm:start:next\" \"npm:start:api\"",
+    "start:next": "next start -p 3000",
+    "start:api": "json-server --watch src/data/db.json --port 8001",
     "lint": "eslint ."
   },
   "dependencies": {
+    "concurrently": "^10.0.3",
     "js-confetti": "^0.13.1",
+    "json-server": "^0.17.4",
     "next": "^16.2.10",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"

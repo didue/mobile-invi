@@ -13,7 +13,7 @@ export const Footer = () => {
   return (
     <footer className="flex flex-col items-center gap-4 bg-neutral-100 px-4 py-16 text-center text-neutral-700">
       <p className="footer-msg">
-        항상 저희를 지켜봐주시고
+        저희를 지켜봐주시고
         <br />
         응원과 축하의 마음을 전해주신 모든 분들께
         <br />
