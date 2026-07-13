@@ -30,9 +30,9 @@ function KakaoIcon() {
 async function copyAccount(entry: GiftEntry) {
   try {
     await navigator.clipboard.writeText(`${entry.account} (${entry.name})`);
-    toast(`${entry.name}님의 계좌번호가 복사되었어요`);
+    toast(`${entry.name}님의 계좌번호가 복사되었어요☺️`);
   } catch {
-    toast("복사에 실패했어요");
+    toast("복사에 실패했어요 😣");
   }
 }
 

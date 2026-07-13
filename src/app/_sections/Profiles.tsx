@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { COUPLE, CONTACTS } from "@/data/family";
+import { COUPLE } from "@/data/family";
 import { SECTION_TEXTS } from "@/data/wedding";
-import { formatParentsRel } from "@/lib/family";
 import { useReveal } from "@/hooks/useReveal";
 import { ContactModal } from "@/app/_sections/ContactModal";
 import { SectionHeading } from "@/components/common/SectionHeading";
@@ -18,7 +17,7 @@ function ProfileColumn({
   photo: string;
   role: string;
   name: string;
-  rel: string;
+  rel: string[];
 }) {
   return (
     <div className="profile-col">
@@ -28,8 +27,8 @@ function ProfileColumn({
       <div className="role">{role}</div>
       <div className="name">{name}</div>
       <div className="rel">
-        {rel.split("\n").map((line, index) => (
-          <span key={line}>{line}{' '}</span>
+        {rel.map((line, index) => (
+          <p key={index}>{line}{' '}</p>
         ))}
       </div>
     </div>
@@ -48,13 +47,13 @@ export const Profiles = () => {
           photo={COUPLE.groom.profile}
           role="GROOM"
           name={COUPLE.groom.name}
-          rel={formatParentsRel(CONTACTS.groom, "groom")}
+          rel={COUPLE.groom.description}
         />
         <ProfileColumn
           photo={COUPLE.bride.profile}
           role="BRIDE"
           name={COUPLE.bride.name}
-          rel={formatParentsRel(CONTACTS.bride, "bride")}
+          rel={COUPLE.bride.description}
         />
       </div>
       <div className="rsvp-trigger-wrap" style={{ marginTop: 25 }}>

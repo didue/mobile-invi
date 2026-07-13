@@ -4,14 +4,15 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { apiPost } from "@/lib/api";
 import { toast } from "@/lib/toast";
+import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
 import { useMounted } from "@/hooks/useMounted";
 
 const MIN_COUNT = 1;
 const MAX_COUNT = 10;
 const CLOSE_DELAY_MS = 900;
 
-export type RsvpAttend = "Y" | "N";
-export type RsvpSide = "groom" | "bride";
+export type RsvpAttend = "참석" | "불참";
+export type RsvpSide = "신랑측" | "신부측";
 
 export type RsvpResult = {
   name: string;
@@ -28,9 +29,10 @@ type RsvpModalProps = {
 
 export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
   const mounted = useMounted();
+  useModalBackgroundLock(open);
   const [name, setName] = useState("");
-  const [attend, setAttend] = useState<RsvpAttend>("Y");
-  const [side, setSide] = useState<RsvpSide>("groom");
+  const [attend, setAttend] = useState<RsvpAttend>("참석");
+  const [side, setSide] = useState<RsvpSide>("신랑측");
   const [count, setCount] = useState(MIN_COUNT);
   const [showThanks, setShowThanks] = useState(false);
 
@@ -91,16 +93,14 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         <div className="field">
             <label>참석 여부</label>
           <div className="seg">
-            {(["Y", 
-            "N"
-            ] as const).map((value) => (
+            {(["참석", "불참"] as const).map((value) => (
               <button
                 type="button"
                 key={value}
                 className={attend === value ? "active" : undefined}
                 onClick={() => setAttend(value)}
               >
-                {value === "Y" ? "참석합니다" : "참석이 어려워요"}
+                {value === "참석" ? "참석합니다" : "참석이 어려워요"}
               </button>
             ))}
           </div>
@@ -130,14 +130,14 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         <div className="field">
             <label>신랑측 / 신부측</label>
           <div className="seg">
-            {(["groom", "bride"] as const).map((value) => (
+            {(["신랑측", "신부측"] as const).map((value) => (
               <button
                 type="button"
                 key={value}
                 className={side === value ? "active" : undefined}
                 onClick={() => setSide(value)}
               >
-                {value === "groom" ? "신랑측 하객" : "신부측 하객"}
+                {value === "신랑측" ? "신랑측 하객" : "신부측 하객"}
               </button>
             ))}
           </div>

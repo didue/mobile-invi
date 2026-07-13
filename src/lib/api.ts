@@ -1,6 +1,6 @@
 import { toast } from "@/lib/toast";
 
-const API_BASE = process.env.NEXT_PUBLIC_JSON_SERVER_URL ?? "http://localhost:8001";
+const API_BASE = "/api";
 
 export async function apiGet<T>(path: string): Promise<T | null> {
   try {

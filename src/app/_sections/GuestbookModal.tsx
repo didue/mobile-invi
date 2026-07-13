@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { apiPost } from "@/lib/api";
 import { toast } from "@/lib/toast";
 import { fireConfetti } from "@/lib/confetti";
+import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
 import { useMounted } from "@/hooks/useMounted";
 
 const GUESTBOOK_CONFETTI_EMOJI_SIZE = 60;
@@ -17,6 +18,7 @@ type GuestbookModalProps = {
 
 export const GuestbookModal = ({ open, onClose, onSubmitted }: GuestbookModalProps) => {
   const mounted = useMounted();
+  useModalBackgroundLock(open);
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [message, setMessage] = useState("");
