@@ -12,7 +12,7 @@ export const COUPLE = {
   bride: {
     name: '한지수',
     role: 'bride',
-    profile: '/images/profile/HJ2_6987.jpg',
+    profile: '/images/profile/IMG_0040.jpg',
     description : [
       '93년 5월 26일',
       '명랑발랄 꼼꼼한 ENTJ',

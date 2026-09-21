@@ -1,46 +1,73 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { GALLERY } from "@/data/wedding";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
 
-// react.md §5.1: 인트로 배경은 HJ2_7118.jpg 고정 — 현재 GALLERY[0]과 동일한 파일이다.
-const INTRO_BG_PHOTO = GALLERY[0];
+const INTRO_VIDEO = "/intro/envelope.mp4";
+const INTRO_POSTER = "/intro/envelope.webp";
 
-const WRITE_DELAY_MS = 350;
-const HIDE_DELAY_MS = WRITE_DELAY_MS + 1500 + 2000;
-const REMOVE_DELAY_MS = HIDE_DELAY_MS + 900;
+// 봉투가 완전히 열리는 시점(초). 영상 길이는 9.33초지만 뒷부분은 정지 화면이라
+// 리본이 풀리고 봉투가 열린 직후에 페이드아웃해서 대기 시간을 줄인다.
+const FADE_AT_SEC = 5.3;
+// .intro-overlay 의 opacity transition(0.9s)이 끝난 뒤 DOM 에서 제거한다.
+const REMOVE_DELAY_MS = 900;
 
 export const IntroOverlay = () => {
-  const [write, setWrite] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [hide, setHide] = useState(false);
   const [removed, setRemoved] = useState(false);
 
-  useEffect(() => {
-    const writeTimer = setTimeout(() => setWrite(true), WRITE_DELAY_MS);
-    const hideTimer = setTimeout(() => setHide(true), HIDE_DELAY_MS);
-    const removeTimer = setTimeout(() => setRemoved(true), REMOVE_DELAY_MS);
+  useModalBackgroundLock(!removed);
 
-    return () => {
-      clearTimeout(writeTimer);
-      clearTimeout(hideTimer);
-      clearTimeout(removeTimer);
-    };
+  const close = useCallback(() => setHide(true), []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // iOS 저전력 모드 등에서 autoPlay 속성만으로는 재생이 시작되지 않는다.
+    // 실패해도 포스터 위에서 탭/건너뛰기로 넘어갈 수 있으므로 오류는 무시한다.
+    void video.play().catch(() => undefined);
+
+    let frame = requestAnimationFrame(function check() {
+      if (video.currentTime >= FADE_AT_SEC) {
+        setHide(true);
+        return;
+      }
+      frame = requestAnimationFrame(check);
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, []);
+
+  useEffect(() => {
+    if (!hide) return;
+
+    const timer = setTimeout(() => setRemoved(true), REMOVE_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [hide]);
 
   if (removed) return null;
 
   return (
     <div className={`intro-overlay${hide ? " hide" : ""}`}>
-      <div className="intro-bg">
-        <Image src={INTRO_BG_PHOTO} alt="" fill sizes="480px" priority style={{ objectFit: "cover" }} />
-      </div>
-      <div className="intro-dim" />
-      <div className={`intro-text${write ? " write" : ""}`}>
-        we are
-        <br />
-        getting married
-      </div>
+      <button type="button" className="intro-open" aria-label="청첩장 열기" onClick={close}>
+        <video
+          ref={videoRef}
+          className="intro-video"
+          src={INTRO_VIDEO}
+          poster={INTRO_POSTER}
+          muted
+          playsInline
+          autoPlay
+          preload="auto"
+          onEnded={close}
+          onError={close}
+        />
+      </button>
+      <button type="button" className="intro-skip" onClick={close}>
+        건너뛰기
+      </button>
     </div>
   );
 };

@@ -64,7 +64,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - **방명록**: `.gb-list`(max-height 320 스크롤), `.gb-item`, `.gb-empty`.
 - **탭바**: `.tab-btn.active::after`(밑줄), `.tab-panel.active{display:block}`.
 - `footer`, `.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%)...}` `.show{opacity:.94}` (z-index 60).
-- **인트로**: `.intro-overlay{position:fixed;background:rgba(20,24,18,.72);z-index:100;transition:opacity .9s}` `.hide{opacity:0}`, `.intro-text{font-family:'Dancing Script';font-size:38px;clip-path:inset(0 100% 0 0);transition:clip-path 1.5s cubic-bezier(.4,0,.2,1)}` `.write{clip-path:inset(0 0% 0 0)}`.
+- **인트로**: `.intro-overlay{position:fixed;z-index:100;transition:opacity .9s}` `.hide{opacity:0}`, `.intro-open`(영상 전체를 덮는 버튼, 배경 `var(--ivory)` — 영상 로드 전/레터박스 영역이 봉투 종이색과 이어지도록), `.intro-video{object-fit:cover}`, `.intro-skip`(우측 상단 반투명 라운드 버튼).
 - **플로팅 버튼**: `.floating-btns{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);width:100%;max-width:480px;display:flex;flex-direction:column;align-items:flex-end;gap:10px;padding:0 16px;z-index:50}`(모달/토스트와 겹치지 않도록 `.app`과 동일한 480px 중앙 정렬 컨테이너를 재사용). `.fab-btn`(44px 원형, 반투명 어두운 배경 `rgba(58,50,46,.55)`, 흰색 아이콘, `opacity:0`→`.show{opacity:1}`으로 페이드).
 
 > React에서 `onClick` 등 인라인 핸들러를 쓰되, **클래스명/구조는 원본 DOM과 동일**하게 유지해야 CSS가 그대로 먹는다.
@@ -74,10 +74,11 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 ## 5. 컴포넌트별 동작 명세
 
 ### 5.1 IntroOverlay
-- 마운트 후 타이머로 애니메이션. 문구: `we are<br>getting married`.
-- 시퀀스: `350ms` 뒤 `.write` 추가(필기체 드러남) → `350+1500+2000ms` 뒤 `.hide` → `+900ms` 뒤 `display:none`.
-- React: `useEffect`에서 `setTimeout` 3개, state로 클래스 토글.
-- 메인 이미지 `src/assets/images/HJ2_7118.jpg`를 활용하여 모바일 디바이스 높이 full사이즈 배경 이미지 적용.
+- 오간자 리본 봉투가 풀리며 열리는 영상(`public/intro/envelope.mp4`, 1080×1920 · 9.33초 · 무음)을 화면 전체에 재생한다. 포스터 이미지는 `public/intro/envelope.webp`.
+- `<video muted playsInline autoPlay preload="auto">` + `object-fit:cover`. iOS 저전력 모드 등에서 autoPlay 속성만으로 시작되지 않을 수 있으므로 마운트 시 `play()`를 한 번 호출하고 실패는 무시한다(포스터 위에서 탭으로 진행 가능).
+- 시퀀스: `currentTime >= 5.3초`(봉투가 다 열리는 시점)에 `.hide` 추가 → `+900ms` 뒤 DOM에서 제거. `requestAnimationFrame` 루프로 시점을 감지하고, `onEnded`/`onError`도 같은 닫기 동작에 연결한다.
+- 영상 영역 전체가 `청첩장 열기` 버튼이고 우측 상단에 `건너뛰기` 버튼을 둔다. 둘 다 즉시 `.hide`로 진입한다.
+- 오버레이가 떠 있는 동안에는 `useModalBackgroundLock`으로 배경 스크롤을 잠근다.
 
 ### 5.2 Hero
 - `.hero-arch` 안에 `<img src={HERO_IMAGE}>` + `.snow-layer`.
@@ -231,8 +232,8 @@ guestbook:{timestamp}             (shared:true)
 
 ## 10. 검증 체크리스트 (완료 기준)
 
-- [ ] 인트로 오버레이가 필기체로 쓰이고 약 3.85초 후 사라진다.
-- [ ] 히어로 아치 사진(원본 base64)과 눈꽃 24개가 떨어진다.
+- [ ] 인트로 오버레이에서 봉투 영상이 자동 재생되고 약 5.3초(봉투가 열리는 시점)에 페이드아웃된다. 화면 탭 또는 `건너뛰기`로 즉시 넘어간다.
+- [ ] 히어로 아치에 대문 사진(`src/assets/images/hero.jpg`)이 `next/image`로 표시되고 눈꽃 24개가 떨어진다.
 - [ ] D-day가 1초마다 갱신되고, 예식일 이후엔 💐 WEDDING DAY 표시.
 - [ ] 2027년 1월 달력에서 9일이 rose로 강조.
 - [ ] D-day 문구의 남은 일수가 포인트 컬러로 강조되고, 캘린더에 추가하기로 .ics 파일이 정상 다운로드된다.
@@ -245,7 +246,7 @@ guestbook:{timestamp}             (shared:true)
 - [ ] 마음 전하실 곳 아코디언 토글, 계좌 복사/카카오 공유 동작.
 - [ ] 방명록 등록/목록/최신순 정렬/빈 상태 문구.
 - [ ] 연락하기 모달 탭 전환, tel/sms 링크.
-- [ ] 안내사항 3슬라이드 캐러셀.
+- [ ] 안내사항이 `NOTICES` 3개 항목의 제목으로 탭이 만들어지고, 탭 전환 시 각 패널의 이미지와 번호 리스트가 함께 바뀐다.
 - [ ] 핀치줌 시 화면 blur, 우클릭/드래그/탭전환 시 캡처 방지 blur.
 - [ ] 481px 이상에서 카드 그림자, 그 외 480px 폭 유지.
 - [ ] 카카오톡 공유하기로 피드 템플릿 공유, 링크 복사하기로 클립보드 복사 + 토스트.
