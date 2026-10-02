@@ -36,7 +36,9 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 **원본 `<style>` 블록 전체를 그대로 이식한다.** 아래는 반드시 유지할 핵심 규칙 요약(누락 방지용 체크리스트):
 
 - CSS 변수(:root):
-  - 색상: `--white:#ffffff; --blush:#FCE8EA; --pink-soft:#FBD3D9; --pink:#F7B4BD; --rose:#F59AA5; --rose-deep:#C15A68; --red:#DD4241; --ivory:#F5F3ED; --ink:#3A322E; --ink-soft:#D2D2D2; --ink-medium:#6F6F6F; --ink-hard:#595555; --ink-dark:#111111; --light-blue:#497BF8; --dark-blue:#5F8B9B;`
+  - 색상(아이보리·크림·브라운 팔레트): `--white:#ffffff; --blush:#F4EBDD; --pink-soft:#E4D8C3; --pink:#C5AB86; --rose:#8D6F4C; --rose-deep:#6B4F34; --red:#C0553F; --ivory:#F3ECE0; --paper:#FDFAF5; --ink:#3A322E; --ink-soft:#D2D2D2; --ink-medium:#6F6F6F; --ink-hard:#595555; --ink-dark:#111111; --light-blue:#497BF8; --dark-blue:#5F8B9B;`
+    - 토큰명 `blush`/`pink`/`pink-soft`/`rose`/`rose-deep`는 초기 핑크 팔레트에서 유래했으나 참조가 많아 이름은 유지하고 값만 브라운 계열로 교체했다. 실제 역할은 각각 `페이지 배경`/`보조 테두리·장식`/`구분선`/`메인 키 컬러`/`제목·강조 텍스트`다.
+    - `--paper`는 `.app` 카드 본문 배경(아이보리 페이퍼)이며, `--ivory`는 카드 안쪽 보조 면(`.dday-message`, `.intro-open`)에 쓴다.
   - 그림자: `--box-shadow: 1px 1px 4px 1px rgba(0,0,0,.1);`
   - 폰트 크기 스케일(10단계, 작은 순): `--font-size-xxs:.6rem; --font-size-xs:.7rem; --font-size-sm:.8rem; --font-size-md-s:.9rem; --font-size-md:.95rem; --font-size-regualr:1.05rem; --font-size-lg:1.2rem; --font-size-xl-s:1.375rem; --font-size-xl:1.6rem; --font-size-xxl:2.4rem;`(변수명 `regualr`는 오타이지만 실제 코드와 동일하게 유지). `globals.css` 전체의 하드코딩된 `font-size` px 값은 이 스케일 중 가장 가까운 변수로 전부 치환되어 있다. 매칭되는 값이 없던 22px는 `lg`(19.2px)와 `xl`(25.6px) 사이 간격이 너무 커서 `--font-size-xl-s`(22px)를 새로 추가해 대응했다.
   - 폰트 패밀리: `--font-gowun-batang: "Gowun Batang", serif; --font-nanum-gothic-coding: "Nanum Gothic Coding", monospace; --font-chiron-goround-tc: "Chiron GoRound TC", sans-serif; --font-orbit: "Orbit", sans-serif; --font-nanum-myeongju: "Nanum Myeongjo", serif; --font-ibm-plex-sans-kr: "IBM Plex Sans KR", sans-serif;`
@@ -46,7 +48,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - `.serif` = Nanum Myeongjo. `section{ padding:72px 16px; }`(모바일 좌우 여백 최소화를 위해 원본 32px에서 축소 — `.hero`/`.gallery-carousel`/`footer`/Intro의 좌우 패딩도 동일하게 16px로 맞춤).
 - **reveal 애니메이션**: `.reveal{opacity:0;transform:translateY(24px);transition:.9s}` → `.show` 로 노출.
 - `.hero` `min-height:100svh`, 방사형 그라디언트 배경(`.hero-bg`), `.eyebrow`(letter-spacing 0.35em).
-- **아치 커버**: `.hero-arch{ width:80%; aspect-ratio:3/4.3; border-radius:50% 50% 0 0 / 24% 24% 0 0; box-shadow:0 18px 40px -20px rgba(193,90,104,.35);}`
+- **대문 커버**: `.hero-arch{ width:80%; aspect-ratio:3/4.3; border-radius:0; box-shadow:0 18px 40px -20px rgba(107,79,52,.38);}` — 초기에는 아치(반원) 프레임이었으나 사각 프레임으로 변경했다. 클래스명 `.hero-arch`는 참조처(globals.css 캡처 방지 규칙, Header.tsx)가 있어 그대로 둔다.
 - **눈꽃**: `.snowflake` + `@keyframes snowfall{0%{translateY(-10%)...opacity:0}12%{opacity:.9}100%{translateY(560%) translateX(var(--drift));opacity:.3}}`
 - `.dday-cell`, `.dday-num`(Nanum, 22px, rose-deep).
 - 달력 `.cal-grid`(7열 grid), `.cal-dow.sun`/`.cal-day.sun` 붉은색, `.cal-day.muted`(회색 #DCD5CE), `.cal-day.highlight`(rose 배경 흰글씨).
@@ -233,7 +235,7 @@ guestbook:{timestamp}             (shared:true)
 ## 10. 검증 체크리스트 (완료 기준)
 
 - [ ] 인트로 오버레이에서 봉투 영상이 자동 재생되고 약 5.3초(봉투가 열리는 시점)에 페이드아웃된다. 화면 탭 또는 `건너뛰기`로 즉시 넘어간다.
-- [ ] 히어로 아치에 대문 사진(`src/assets/images/hero.jpg`)이 `next/image`로 표시되고 눈꽃 24개가 떨어진다.
+- [ ] 히어로 사각 프레임에 대문 사진(`src/assets/images/hero.jpg`)이 `next/image`로 표시되고 눈꽃 24개가 떨어진다.
 - [ ] D-day가 1초마다 갱신되고, 예식일 이후엔 💐 WEDDING DAY 표시.
 - [ ] 2027년 1월 달력에서 9일이 rose로 강조.
 - [ ] D-day 문구의 남은 일수가 포인트 컬러로 강조되고, 캘린더에 추가하기로 .ics 파일이 정상 다운로드된다.

@@ -4,7 +4,7 @@ import { formatParentName, formatRel } from "@/lib/family";
 export const Intro = () => {
 
   return (
-    <section className="px-4 py-16 text-center leading-relaxed text-neutral-700">
+    <section className="px-4 py-16 text-center leading-relaxed text-[var(--ink-hard)]">
       <p className="intro-box">
         
         {`${formatParentName(CONTACTS.groom, "father")} · ${formatParentName(CONTACTS.groom, "mother")} `}

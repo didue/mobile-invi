@@ -1,0 +1,8 @@
+# Netlify 빌드 설정
+# 대시보드의 Publish directory 가 저장소 루트로 잡혀 있어 소스 파일이 정적 파일로 배포되고 / 가 404 였다.
+# 이 파일의 값은 대시보드 설정보다 우선하므로, Next.js 빌드 결과물(.next)을 배포하도록 고정한다.
+# Netlify 는 publish 가 .next 인 Next.js 프로젝트에 Next.js 런타임(OpenNext 어댑터)을 자동 적용해
+# 페이지 SSR 과 Route Handler(/api/*) 를 Netlify Functions 로 실행한다.
+[build]
+  command = "npm run build"
+  publish = ".next"
