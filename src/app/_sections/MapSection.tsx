@@ -15,7 +15,7 @@ const TRANSIT_GROUPS: { label: string; items: string[] }[] = [
 
 const NAVER_MAP_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID;
 const NAVER_MAP_SDK_SRC = NAVER_MAP_CLIENT_ID
-  ? `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NAVER_MAP_CLIENT_ID}`
+  ? `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_CLIENT_ID}`
   : "";
 
 function NaverMapIcon() {
