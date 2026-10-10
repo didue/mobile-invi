@@ -140,6 +140,9 @@ async function convertNotice() {
   console.log(`  원본 ${formatBytes(sourceBytes)} → 변환본 ${formatBytes(outputBytes)}`);
 }
 
+// 카카오톡/OG 공유 미리보기에 쓸 소스 사진(originals/gallery 기준 파일명, 대소문자 무관).
+const SHARE_THUMBNAIL_SOURCE = "HJ2_7867.jpg";
+
 /** 공유 썸네일은 카카오 피드 템플릿·OG 메타용이라 원본 대신 전용 파일을 쓴다. */
 async function convertShareThumbnail(gallery) {
   if (!gallery) {
@@ -147,7 +150,10 @@ async function convertShareThumbnail(gallery) {
     return;
   }
 
-  const source = gallery.files[0];
+  const source =
+    gallery.files.find(
+      (file) => file.toLowerCase() === SHARE_THUMBNAIL_SOURCE.toLowerCase()
+    ) ?? gallery.files[0];
   const inputPath = join(gallery.sourceDir, source);
   const outputPath = "public/images/og-share.webp";
 
