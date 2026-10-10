@@ -29,9 +29,9 @@ export const CONTACTS = {
       role : 'father',
       rel : '아버지',
       tag: '신랑 아버지',
-      tel: '01000000001',
-      bank: '',
-      account : '',
+      tel: '01027359812',
+      bank: '기업은행',
+      account : '010-2735-9812',
       kakaoId: ''
     },
     {
@@ -39,9 +39,9 @@ export const CONTACTS = {
       role : 'mother',
       rel: '어머니',
       tag: '신랑 어머니',
-      tel: '01000000002',
-      bank: '',
-      account : '',
+      tel: '01038943232',
+      bank: '기업은행',
+      account : '010-3894-3232',
       kakaoId: ''
     },
     {
@@ -50,8 +50,8 @@ export const CONTACTS = {
       rel: '차남',
       tag: '신랑',
       tel: '01052459812',
-      bank: '',
-      account : '',
+      bank: '우리은행',
+      account : '1002-162-524423',
       kakaoId: ''
     },
   ],
@@ -63,7 +63,7 @@ export const CONTACTS = {
       tag: '신부 아버지',
       tel: '01054026326',
       bank: '우리은행',
-      account : '',
+      account : '164-156368-02-008',
       kakaoId: ''
     },
     {
@@ -73,7 +73,7 @@ export const CONTACTS = {
       tag: '신부 어머니',
       tel: '01063217952',
       bank: '국민은행',
-      account : '',
+      account : '714002-01-458084',
       kakaoId: ''
     },
     {
@@ -92,9 +92,9 @@ export const CONTACTS = {
 // 마음 전하실 곳(계좌) — 아코디언
 export const GIFTS = {
   groom: [
-    { name: '배기환', role: 'father', tag: '신랑 아버지', account: '기업은행 000-0000-0000' },
-    { name: '이병애', role: 'mother', tag: '신랑 어머니', account: '기업은행 000-0000-0000' },
-    { name: '배정근', role: 'groom',  tag: 'GROOM',      account: '우리은행 000-0000-0000' },
+    { name: '배기환', role: 'father', tag: '신랑 아버지', account: '기업은행 010-2735-9812' },
+    { name: '이병애', role: 'mother', tag: '신랑 어머니', account: '기업은행 010-3894-3232' },
+    { name: '배정근', role: 'groom',  tag: 'GROOM',      account: '우리은행 1002-162-524423' },
   ],
   bride: [
     { name: '한창희', role: 'father', tag: '신부 아버지', account: '우리은행 164-156368-02-008' },

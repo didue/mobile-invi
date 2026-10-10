@@ -5,7 +5,7 @@
 - 모바일 전용 UI: 최대 폭 480px 중앙 정렬 카드형(.app). 481px 이상에서 그림자만 추가.
 - 단일 페이지: 라우팅 없음. 하나의 스크롤 페이지에 모든 섹션.
 - 클라이언트 전용: 애니메이션·업로드·스토리지가 전부 브라우저에서 동작 → 최상위 컴포넌트는 'use client'.
-- 정적 배포 가능: next export(output: 'export') 호환. 서버 API 불필요(스토리지 어댑터로 대체, §7).
+- 이미지는 런타임 최적화를 쓰지 않는다: `next.config.ts`에 `images.unoptimized: true`를 두고, 배포용 WebP를 `scripts/optimize-images.mjs`로 미리 생성한다(§9). 뷰포트가 480px로 고정이라 반응형 srcset의 이점이 없고, Vercel Image Transformation 과금과 원본 재fetch 비용을 없애기 위한 선택이다.
 
 ## 폰트
 `app/layout.tsx` `<head>`에 원본과 동일하게 Google Fonts 로드(next/font 대신 link 태그 유지가 안전):
@@ -25,7 +25,8 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 ## 상수 및 데이터
 - 화면에 표시하는 정보는 `src/data/` 아래 상수를 참조하며, 역할에 따라 두 파일로 나뉜다.
   - `src/data/family.ts`: 신랑·신부·가족 인물 정보 — `COUPLE`(이름/역할/프로필 사진/소개), `CONTACTS`(연락하기 모달용 아버지·어머니·본인 연락처), `GIFTS`(마음 전하실 곳 계좌 정보).
-  - `src/data/wedding.ts`: 그 외 화면 노출 콘텐츠 문구·설정 — `WEDDING_DATE`, `VENUE_ADDRESS`, `GALLERY`, `WEDDING_VENUE`(좌표 포함), `MAPS`, `SECTION_TEXTS`, `NOTICES`.
+  - `src/data/wedding.ts`: 그 외 화면 노출 콘텐츠 문구·설정 — `WEDDING_DATE`, `VENUE_ADDRESS`, `GALLERY`, `OG_SHARE_IMAGE`, `WEDDING_VENUE`(좌표 포함), `MAPS`, `SECTION_TEXTS`, `NOTICES`.
+  - `GALLERY`는 경로 문자열을 직접 나열하지 않는다. 확장자 없는 파일명 배열 `GALLERY_FILES`에서 `GalleryPhoto`(`{ thumb, full }`)를 생성한다. 과거 `'HJ2_8247.JPG'`처럼 실제 파일(`.jpg`)과 확장자 대소문자가 어긋나 대소문자를 구분하는 Linux 배포 환경에서만 404 가 났던 사고가 있었으므로, 경로는 반드시 파일명에서 생성하고 변환 산출물 파일명은 소문자로 통일한다.
   - 인물 정보가 필요 없는 컴포넌트가 `family.ts`를 불필요하게 import하지 않도록, 두 파일의 상수는 각자 필요한 곳에서 개별 import한다(하나로 합쳐서 재수출하지 않는다).
 - 각 섹션의 `.section-title`/`.section-sub` 문구는 컴포넌트에 하드코딩하지 않고 `wedding.ts`의 `SECTION_TEXTS`(섹션 키별 `{ title, sub: string[] }`)에 모아서 관리한다. `sub`는 줄 단위 배열이며 빈 배열이면 `.section-sub` 자체를 렌더링하지 않는다. 렌더링은 공용 컴포넌트 `components/common/SectionHeading.tsx`(`<SectionHeading {...SECTION_TEXTS.xxx} />`)를 통해 통일한다.
 
@@ -76,7 +77,17 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 ## 5. 컴포넌트별 동작 명세
 
 ### 5.1 IntroOverlay
-- 오간자 리본 봉투가 풀리며 열리는 영상(`public/intro/envelope.mp4`, 1080×1920 · 9.33초 · 무음)을 화면 전체에 재생한다. 포스터 이미지는 `public/intro/envelope.webp`.
+- 오간자 리본 봉투가 풀리며 열리는 영상(`public/intro/envelope.mp4`, 1080×1920 · 6.33초 · 무음 · 약 915KB)을 화면 전체에 재생한다. 포스터 이미지는 `public/intro/envelope.webp`.
+- 이 영상은 모든 방문자가 전량 받는 가장 큰 단일 자산이므로 배포본은 반드시 최적화 상태를 유지한다. 원본(9.33초 · 5.6MB · 4.96Mbps)은 `originals/intro/`에 보관하며, 배포본은 뒷부분 정지 화면을 잘라내고 재인코딩해 만든다. 해상도는 전체화면 재생이라 1080×1920을 유지한다(720p로 낮추면 380KB를 더 아끼지만 고DPR 화면에서 흐려진다).
+
+  ```
+  ffmpeg -i originals/intro/envelope.mp4 -t 6.3 -c:v libx264 -crf 30 -preset slow \
+    -pix_fmt yuv420p -an -movflags +faststart public/intro/envelope.mp4
+  ```
+
+  - `-t 6.3`: 페이드가 5.3초에 시작해 6.2초에 DOM에서 제거되므로, 페이드가 끝날 때까지 화면이 멈추지 않도록 6.3초까지만 남긴다.
+  - `-movflags +faststart`: `moov` atom을 `mdat` 앞으로 보내 첫 프레임 표시를 앞당긴다.
+  - `preload`는 `auto`를 유지한다. 마운트 시 `play()`를 호출해 어차피 즉시 스트리밍이 시작되므로 `metadata`로 바꿔도 절약 효과는 거의 없고, 첫 프레임 지연과 재생 중 끊김 위험만 생긴다.
 - `<video muted playsInline autoPlay preload="auto">` + `object-fit:cover`. iOS 저전력 모드 등에서 autoPlay 속성만으로 시작되지 않을 수 있으므로 마운트 시 `play()`를 한 번 호출하고 실패는 무시한다(포스터 위에서 탭으로 진행 가능).
 - 시퀀스: `currentTime >= 5.3초`(봉투가 다 열리는 시점)에 `.hide` 추가 → `+900ms` 뒤 DOM에서 제거. `requestAnimationFrame` 루프로 시점을 감지하고, `onEnded`/`onError`도 같은 닫기 동작에 연결한다.
 - 영상 영역 전체가 `청첩장 열기` 버튼이고 우측 상단에 `건너뛰기` 버튼을 둔다. 둘 다 즉시 `.hide`로 진입한다.
@@ -108,9 +119,10 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 ### 5.6 Gallery
 - 업로드 기능 없음(읽기 전용). 슬롯 개수 = `src/data/wedding.ts`의 `GALLERY` 배열 길이, 페이지당 4개(`PER_PAGE=4`) → 캐러셀(2x2 페이지).
-- 각 슬롯은 `GALLERY[i]` 경로를 `next/image`로 렌더링. 클릭 시 라이트박스 오픈.
+- 각 슬롯은 `GALLERY[i].thumb`(긴 변 640px)를 `next/image`로 렌더링. 클릭 시 라이트박스 오픈.
+- 격자와 라이트박스가 서로 다른 크기를 쓰는 이유: 24장이 모두 DOM에 있어 격자에 큰 파일을 쓰면 첫 로드 전송량이 급증한다. 큰 파일(`full`)은 라이트박스에서만 받는다. 격자는 `next/image` 기본 lazy loading에 의존해 1페이지 4장만 먼저 받으므로 `loading` 속성을 임의로 바꾸지 않는다.
 - 캐러셀 스크롤 시 dots active 갱신, `‹ ›` 버튼으로 `scrollBy(±clientWidth)`.
-- 라이트박스: `GALLERY` 순서 그대로, `‹ ›`/스와이프(터치 50px)/오버레이 클릭 닫기, `pos+1 / total` 카운트.
+- 라이트박스: `GALLERY[i].full`(긴 변 1600px)을 `GALLERY` 순서 그대로, `‹ ›`/스와이프(터치 50px)/오버레이 클릭 닫기, `pos+1 / total` 카운트.
 
 ### 5.7 MapSection
 - 인포카드 텍스트(§3) + 네이버 지도(§13) + 3개 지도앱 링크(a target=_blank) + 교통 3줄.
@@ -226,9 +238,31 @@ guestbook:{timestamp}             (shared:true)
 
 ---
 
-## 9. 이미지 업로드
+## 9. 이미지 파이프라인 (scripts/optimize-images.mjs)
 
-프로필/갤러리 모두 업로드 기능이 없다(읽기 전용, `family.ts`/`wedding.ts`의 정적 경로만 사용). 이미지 리사이즈 유틸은 해당 없음.
+프로필/갤러리 모두 업로드 기능이 없다(읽기 전용, `family.ts`/`wedding.ts`의 정적 경로만 사용). 런타임 업로드 리사이즈는 해당 없지만, **배포 자산은 전부 빌드 전에 미리 변환해 둔다.**
+
+카메라 원본(장당 8~47MB, 최대 60MP)을 그대로 배포하면 Vercel의 이미지 변환·전송 비용이 급격히 늘어난다. `.app` 카드는 최대 폭 480px이므로 원본 해상도가 전혀 필요 없다. 실제로 갤러리 24장 509.6MB → 4.1MB(124배)로 줄였다.
+
+```
+node scripts/optimize-images.mjs
+```
+
+| 출력 | 사양 | 용도 |
+|---|---|---|
+| `public/images/gallery/thumb/<name>.webp` | 긴 변 640px, q75 | 갤러리 격자(2x2) |
+| `public/images/gallery/full/<name>.webp` | 긴 변 1600px, q80 | 라이트박스 |
+| `public/images/notice/<name>.webp` | 긴 변 1200px, q80 | 안내사항 탭 이미지 |
+| `public/images/og-share.webp` | 800×800 중앙 크롭, q80 | 카카오·OG 공유 썸네일(§12) |
+
+규칙:
+
+- **원본은 커밋하지 않는다.** `originals/`(gitignore 대상)에 보관하고 배포에는 변환본만 쓴다. 스크립트는 `originals/<종류>` → `public/images/<종류>` 순으로 입력 경로를 탐색하므로 원본을 옮긴 뒤에도 그대로 재실행된다.
+- 출력 파일명은 **소문자 `.webp`로 통일**한다(대소문자 404 사고 방지, §상수 및 데이터 참고).
+- `.rotate()`를 먼저 적용해 EXIF 회전값을 픽셀에 반영하고, `withMetadata()`를 쓰지 않아 EXIF(촬영 장비·GPS 등)가 함께 제거된다.
+- 사진을 추가·교체할 때는 원본을 `originals/gallery/`에 넣고 스크립트를 다시 돌린 뒤 `wedding.ts`의 `GALLERY_FILES`에 파일명(확장자 없이, 소문자)을 추가한다.
+- `src/assets/images/hero.jpg`(133KB · 1200×1800)는 이미 적정 용량이고 정적 import로 쓰이므로 변환 대상이 아니다.
+- sharp는 이미 의존성에 있으므로 이 스크립트를 위해 패키지를 새로 설치하지 않는다.
 
 ---
 
@@ -242,6 +276,7 @@ guestbook:{timestamp}             (shared:true)
 - [ ] 스크롤 시 각 섹션이 아래에서 위로 페이드인(reveal).
 - [ ] 프로필 사진이 `COUPLE.groom.profile`/`COUPLE.bride.profile` 경로로 정확히 표시된다.
 - [ ] 갤러리 캐러셀 스와이프/화살표/도트, 사진 클릭 시 라이트박스(스와이프 이동).
+- [ ] 갤러리 격자는 `thumb`, 라이트박스는 `full`을 받는다. 첫 로드에서 갤러리 이미지 요청이 1페이지 4장만 발생하고, 각 응답이 수십 KB다.
 - [ ] 지도앱 3버튼 링크가 주소 인코딩되어 열린다.
 - [ ] `#map`에 네이버 지도가 실제로 렌더링되고, `WEDDING_VENUE.coords` 위치에 마커가 표시된다.
 - [ ] RSVP 모달 제출 → 상태 텍스트 갱신 + 저장.
@@ -251,8 +286,15 @@ guestbook:{timestamp}             (shared:true)
 - [ ] 안내사항이 `NOTICES` 3개 항목의 제목으로 탭이 만들어지고, 탭 전환 시 각 패널의 이미지와 번호 리스트가 함께 바뀐다.
 - [ ] 핀치줌 시 화면 blur, 우클릭/드래그/탭전환 시 캡처 방지 blur.
 - [ ] 481px 이상에서 카드 그림자, 그 외 480px 폭 유지.
-- [ ] 카카오톡 공유하기로 피드 템플릿 공유, 링크 복사하기로 클립보드 복사 + 토스트.
+- [ ] 카카오톡 공유하기로 피드 템플릿 공유, 링크 복사하기로 클립보드 복사 + 토스트. 공유 썸네일이 `og-share.webp`이고 갤러리 원본이 아니다.
 - [ ] Header 영역을 스크롤로 벗어나면 우측 하단 플로팅 버튼(맨 위로/공유하기)이 나타나고, 맨 위로 클릭 시 스크롤 최상단 이동·공유하기 클릭 시 링크 복사.
+
+배포 비용·환경 관련(§9 변경 시 함께 확인):
+
+- [ ] `public` 총 용량이 수MB 수준이다(원본 유입 시 수백MB로 튀므로 `du -sh public`으로 확인).
+- [ ] 렌더된 HTML에 `/_next/image` 요청이 **0건**이다(= `images.unoptimized`가 적용되어 Image Transformation 과금이 발생하지 않는다).
+- [ ] `wedding.ts`/`family.ts`가 참조하는 모든 이미지 경로가 실제 파일과 **대소문자까지** 일치한다. Windows 로컬에서는 불일치가 드러나지 않고 Linux 배포에서만 404 가 되므로 배포 전 필수로 교차 검증한다.
+- [ ] `public/intro/envelope.mp4`가 최적화본(약 915KB · 6.33초)이다. 원본(5.6MB)이 그대로 들어가 있지 않다.
 
 ---
 
@@ -269,7 +311,9 @@ guestbook:{timestamp}             (shared:true)
 
 - Kakao JS SDK를 `next/script`(`strategy="afterInteractive"`)로 로드하고, 로드 완료 시 `Kakao.init(NEXT_PUBLIC_KAKAO_JS_KEY)`를 1회만 호출한다(`isInitialized()`로 중복 초기화 방지).
 - JS 키는 `.env`의 `NEXT_PUBLIC_KAKAO_JS_KEY`로 관리한다(브라우저에서 SDK 초기화에 써야 하므로 `NEXT_PUBLIC_` 접두사 필수). 키가 없으면 SDK 스크립트를 아예 로드하지 않는다.
-- `shareToKakao()`: `Kakao.Share.sendDefault({ objectType:'feed', content:{ title, description, imageUrl, link }, buttons })`로 현재 페이지 URL을 공유한다. 제목은 `${신랑} ♥ ${신부} 결혼합니다`, 설명은 예식 일시, 대표 이미지는 `GALLERY[0]`의 절대 URL. SDK가 초기화되지 않았으면 토스트로 안내하고 종료한다.
+- `shareToKakao()`: `Kakao.Share.sendDefault({ objectType:'feed', content:{ title, description, imageUrl, link }, buttons })`로 현재 페이지 URL을 공유한다. 제목은 `${신랑} ♥ ${신부} 결혼합니다`, 설명은 예식 일시, 대표 이미지는 **`OG_SHARE_IMAGE`(= `/images/og-share.webp`, 800×800 · 약 48KB)의 절대 URL**. SDK가 초기화되지 않았으면 토스트로 안내하고 종료한다.
+  - 공유 썸네일로 `GALLERY` 원본을 쓰지 않는다. 과거 `GALLERY[0]`(8.4MB 원본)을 지정해 공유 미리보기마다 수MB가 전송됐고, 카카오 썸네일 한도를 넘겨 미리보기 자체가 안 뜰 위험도 있었다. 전용 썸네일은 §9 스크립트가 생성한다.
+- `src/app/layout.tsx`의 `metadata.openGraph`에도 같은 `OG_SHARE_IMAGE`를 지정해 카카오 외 플랫폼의 미리보기도 원본을 긁지 않게 한다. `og:image`를 절대 URL로 만들기 위한 `metadataBase`는 Vercel이 빌드 시 자동 주입하는 `VERCEL_PROJECT_PRODUCTION_URL`에서 만들고, 없으면 `http://localhost:3000`으로 떨어진다(`.env` 수정 금지 규칙을 지키기 위한 선택).
 - `copyShareLink()`: `navigator.clipboard.writeText(location.href)` → 성공 시 토스트 `링크가 복사되었어요😉`, 실패 시 `복사에 실패했어요😣`.
 - `window.Kakao` 타입은 `src/types/kakao.d.ts`에 최소 인터페이스로 선언한다(`any` 금지).
 
@@ -277,7 +321,7 @@ guestbook:{timestamp}             (shared:true)
 
 ## 13. 네이버 지도 SDK (MapSection.tsx)
 
-- 네이버 지도(Maps JavaScript API v3)를 `next/script`(`strategy="afterInteractive"`)로 로드한다. 스크립트 URL은 `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`.
+- 네이버 지도(Maps JavaScript API v3)를 `next/script`(`strategy="afterInteractive"`)로 로드한다. 스크립트 URL은 `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`. 네이버 클라우드 플랫폼 신규 Maps 애플리케이션은 `ncpKeyId` 파라미터로 인증한다(구 `ncpClientId`로 요청하면 `200 / Authentication Failed`).
 - Client ID는 `.env`의 `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID`로 관리한다(브라우저에서 SDK 로드에 써야 하므로 `NEXT_PUBLIC_` 접두사 필수). 키가 없으면 `<Script>` 자체를 렌더링하지 않는다.
 - **Client Secret은 사용하지 않는다.** Maps JavaScript API(브라우저 지도 렌더링)는 Client ID만으로 동작하며, Secret은 서버 사이드 REST API(Geocoding 등) 전용이다. 이 프로젝트의 `.env`는 git에 커밋되는 파일(`.env.local`만 gitignore 대상)이므로 Secret처럼 노출되면 안 되는 값은 `.env`에 저장하지 않는다. 추후 서버 사이드 연동이 필요해지면 `.env.local`에 `NEXT_PUBLIC_` 접두사 없이 저장한다.
 - `Script`의 `onReady` 콜백에서 지도를 초기화한다: `new naver.maps.Map(el, { center: new naver.maps.LatLng(lat, lng), zoom: 16 })` 생성 후 동일 좌표로 `new naver.maps.Marker({ position: center, map })`를 생성해 중심에 마커를 표시한다.

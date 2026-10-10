@@ -89,6 +89,8 @@ project/
   assets
     images
     styles
+  scripts                ← 빌드 전 자산 변환 스크립트
+  originals              ← 사진·영상 원본 (gitignore, 커밋 금지)
 
 디렉터리 역할
 - app: 라우트, 레이아웃, 페이지, Route Handler
@@ -104,6 +106,8 @@ project/
 - constants: 공통 상수
 - assets/images : 이미지 요소
 - assets/styles : css 스타일 요소
+- scripts : 배포 자산을 빌드 전에 변환하는 Node 스크립트(`optimize-images.mjs` 등). 자세한 규칙은 `.claude/rules/frontend/react.md` §9
+- originals : 카메라 원본 사진·영상 보관용. 용량이 매우 커 `.gitignore` 대상이며 절대 커밋하지 않는다. 배포에는 `public/` 하위 변환본만 사용한다
 
 라우트에서만 사용하는 컴포넌트는 해당 라우트 디렉터리에 함께 배치할 수 있다.
 여러 라우트에서 재사용되는 경우에만 공통 디렉터리로 이동한다.

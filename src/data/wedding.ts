@@ -4,9 +4,9 @@ export const VENUE_ADDRESS = '서울특별시 영등포구 은행로 30 더파�
 // 마음 전하실 곳(계좌) — 아코디언
 export const GIFTS = {
   groom: [
-    { name: '배기환', role: 'father', tag: '신랑 아버지', account: '기업은행 000-0000-0000' },
-    { name: '이병애', role: 'mother', tag: '신랑 어머니', account: '기업은행 000-0000-0000' },
-    { name: '배정근', role: 'groom',  tag: 'GROOM',      account: '우리은행 000-0000-0000' },
+    { name: '배기환', role: 'father', tag: '신랑 아버지', account: '기업은행 010-2735-9812' },
+    { name: '이병애', role: 'mother', tag: '신랑 어머니', account: '기업은행 010-3894-3232' },
+    { name: '배정근', role: 'groom',  tag: 'GROOM',      account: '우리은행 1002-162-524423' },
   ],
   bride: [
     { name: '한창희', role: 'father', tag: '신부 아버지', account: '우리은행 164-156368-02-008' },
@@ -15,32 +15,48 @@ export const GIFTS = {
   ],
 };
 
-export const GALLERY = [
-  '/images/gallery/HJ2_6880.jpg',
-  '/images/gallery/HJ2_6930.jpg',
-  '/images/gallery/HJ2_7118.jpg',
-  '/images/gallery/HJ2_7131.jpg',
-  '/images/gallery/HJ2_7279.jpg',
-  '/images/gallery/HJ2_7351.jpg',
-  '/images/gallery/HJ2_7383.jpg',
-  '/images/gallery/HJ2_7458.jpg',
-  '/images/gallery/HJ2_7606.jpg',
-  '/images/gallery/HJ2_7633.jpg',
-  '/images/gallery/HJ2_7642.jpg',
-  '/images/gallery/HJ2_7724.jpg',
-  '/images/gallery/HJ2_7797.jpg',
-  '/images/gallery/HJ2_7867.jpg',
-  '/images/gallery/HJ2_7889.jpg',
-  '/images/gallery/HJ2_7974.jpg',
-  '/images/gallery/HJ2_8247.JPG',
-  '/images/gallery/HJ2_8265.JPG',
-  '/images/gallery/HJ2_8282.JPG',
-  '/images/gallery/HJ2_8290.JPG',
-  '/images/gallery/HJ2_8355.JPG',
-  '/images/gallery/HJ2_8399.JPG',
-  '/images/gallery/HJ2_8460.jpg',
-  '/images/gallery/HJ2_8686.jpg',
+// 갤러리 사진은 scripts/optimize-images.mjs 가 생성한 WebP 변환본을 사용한다.
+// 격자는 thumb(긴 변 640px), 라이트박스는 full(긴 변 1600px)을 받아 첫 로드 전송량을 줄인다.
+// 경로를 파일명에서 생성하므로 확장자 대소문자가 어긋나 Linux 배포 환경에서 404 가 나는 일이 없다.
+const GALLERY_FILES = [
+  'hj2_6880',
+  'hj2_6930',
+  'hj2_7118',
+  'hj2_7131',
+  'hj2_7279',
+  'hj2_7351',
+  'hj2_7383',
+  'hj2_7458',
+  'hj2_7606',
+  'hj2_7633',
+  'hj2_7642',
+  'hj2_7724',
+  'hj2_7797',
+  'hj2_7867',
+  'hj2_7889',
+  'hj2_7974',
+  'hj2_8247',
+  'hj2_8265',
+  'hj2_8282',
+  'hj2_8290',
+  'hj2_8355',
+  'hj2_8399',
+  'hj2_8460',
+  'hj2_8686',
 ];
+
+export type GalleryPhoto = {
+  thumb: string;
+  full: string;
+};
+
+export const GALLERY: GalleryPhoto[] = GALLERY_FILES.map((name) => ({
+  thumb: `/images/gallery/thumb/${name}.webp`,
+  full: `/images/gallery/full/${name}.webp`,
+}));
+
+// 카카오·OG 공유 미리보기 전용 썸네일(800x800). 공유 경로에서 갤러리 원본을 노출하지 않는다.
+export const OG_SHARE_IMAGE = '/images/og-share.webp';
 
 export const WEDDING_VENUE = {
   floor : '더 파티움 여의도 B1 그랜드 컨벤션홀',
@@ -118,7 +134,7 @@ export const SECTION_TEXTS = {
 export const NOTICES = [
   {
     title: '주차안내',
-    image: '/images/notice/grand-more1-1.jpg',
+    image: '/images/notice/grand-more1-1.webp',
     items: [
       '예식장 건물 내 1주차장 90분 무료 주차 가능합니다.',
       '주차 등록은 B1층 안내데스크에 문의해 주세요.',
@@ -128,7 +144,7 @@ export const NOTICES = [
   },
   {
     title: '연회장 안내',
-    image: '/images/notice/grand-more2-1.jpg',
+    image: '/images/notice/grand-more2-1.webp',
     items: [
       '신부 대기실은 B1 웨딩홀 오른쪽에 위치에 있습니다.<br/>연회장은 웨딩홀과 같은 B1층에 있습니다.',
       '식사는 뷔페식이 아닌 한정식 한 상 차림으로 제공되고 있습니다.<br/>한상차림 외에도 세미 뷔페가 준비되어 있습니다.',
@@ -139,7 +155,7 @@ export const NOTICES = [
   },
   {
     title: '포토부스',
-    image: '/images/notice/photo-booth.jpg',
+    image: '/images/notice/photo-booth.webp',
     items: [
       '소중한 날을 기록할 수 있도록 포토부스를 준비했습니다.',
       '방문해주신 하객 분들의 사진을 찍어<br/>한 장은 방명록에, 한 장은 추억으로 간직해 주세요.',

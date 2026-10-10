@@ -28,3 +28,7 @@ db.json
 
 # work logs
 /log/
+
+# 사진 원본(카메라 원본 510MB). 배포에는 scripts/optimize-images.mjs 가 만든
+# public/images 하위 WebP 변환본만 쓴다. 원본은 로컬 보관용이라 커밋하지 않는다.
+/originals/

@@ -62,11 +62,11 @@ export const Gallery = () => {
                   <button
                     type="button"
                     className="g-slot"
-                    key={photo}
+                    key={photo.thumb}
                     onClick={() => openLightbox(index)}
                     aria-label={`사진 ${index + 1} 크게 보기`}
                   >
-                    <Image src={photo} alt="" fill sizes="(max-width: 480px) 50vw, 240px" />
+                    <Image src={photo.thumb} alt="" fill sizes="(max-width: 480px) 50vw, 240px" />
                   </button>
                 );
               })}
@@ -112,7 +112,7 @@ export const Gallery = () => {
               </button>
               {lightboxIndex !== null && (
                 <Image
-                  src={GALLERY[lightboxIndex]}
+                  src={GALLERY[lightboxIndex].full}
                   alt="사진 상세보기"
                   width={900}
                   height={1350}
