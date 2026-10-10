@@ -36,9 +36,6 @@
   --font-size-xxl: 2.4rem;
   
   --font-gowun-batang: "Gowun Batang", serif;
-  --font-nanum-gothic-coding: "Nanum Gothic Coding", monospace;
-  --font-chiron-goround-tc: "Chiron GoRound TC", sans-serif;
-  --font-orbit: "Orbit", sans-serif;
   --font-nanum-myeongju : "Nanum Myeongjo", serif;
   --font-ibm-plex-sans-kr: "IBM Plex Sans KR", sans-serif;
 }
@@ -47,6 +44,7 @@ html,
 body {
   background: var(--blush);
   color: var(--ink);
+  font-family: var(--font-ibm-plex-sans-kr);
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -85,7 +83,7 @@ section {
 
 .section-title {
   text-align: center;
-  font-family: var(--font-chiron-goround-tc);
+  font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-xl);
   color: var(--rose-deep);
   margin-bottom: 6px;
@@ -130,7 +128,7 @@ section {
   text-align: center;
 }
 .dday-num {
-  font-family: var(--font-chiron-goround-tc);
+  font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-xl);
   color: var(--rose-deep);
   font-weight: 600;
@@ -144,7 +142,7 @@ section {
 .dday-sep {
   display: flex;
   align-items: center;
-  font-family: var(--font-chiron-goround-tc);
+  font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-xl-s);
   font-weight: 700;
   color: var(--rose-deep);
@@ -264,8 +262,8 @@ section {
   flex: 0 0 100%;
   scroll-snap-align: start;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 6px;
   padding-right: 6px;
 }
@@ -339,10 +337,11 @@ section {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  touch-action: pan-y;
+  /* 좌우 스와이프는 touchstart/touchend 로 직접 처리하므로, 브라우저 기본 패닝을 막아 뒤 배경이 끌려 움직이지 않게 한다. */
+  touch-action: none;
 }
 .lightbox-stage img {
-  max-width: 88%;
+  max-width: 100%;
   max-height: 78%;
   object-fit: contain;
   border-radius: 2px;
@@ -353,19 +352,26 @@ section {
   transform: translateY(-50%);
   width: 38px;
   height: 38px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #fff;
-  font-size: var(--font-size-lg);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 2;
 }
+/* 화살표 아이콘도 .lightbox-stage 안의 img 라서 사진용 max-height/border-radius 규칙을 되돌린다. */
+.lightbox-arrow img {
+  width: 18px;
+  height: 18px;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
 .lightbox-arrow.left {
   left: 14px;
+}
+/* 아이콘 원본이 오른쪽 방향이라 이전 버튼은 좌우반전해서 재사용한다. 회전하면 상하까지 뒤집혀 모양이 달라진다. */
+.lightbox-arrow.left img {
+  transform: scaleX(-1);
 }
 .lightbox-arrow.right {
   right: 14px;
@@ -729,7 +735,7 @@ img,
   width: 100%;
   border-bottom: 1px solid var(--ink-soft);
   padding: 11px 12px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-sm);
   color: var(--ink);
   background: #fff;
@@ -799,7 +805,7 @@ img,
   font-size: var(--font-size-md);
   letter-spacing: 0.05em;
   cursor: pointer;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-ibm-plex-sans-kr);
 }
 .submit-btn:active {
   opacity: 0.85;
@@ -979,7 +985,7 @@ img,
   border-radius: 5px;
   padding: 7px 9px;
   font-size: var(--font-size-xs);
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-ibm-plex-sans-kr);
   color: var(--ink);
   background: #fff;
 }
@@ -1132,7 +1138,7 @@ img,
   letter-spacing: 0.16em;
 }
 .profile-col .name {
-  font-family: var(--font-nanum-gothic-coding);
+  font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-lg);
   color: var(--rose-deep);
   margin: 5px 0 3px;
@@ -1163,7 +1169,7 @@ img,
   color: var(--ink-medium);
   cursor: pointer;
   position: relative;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: var(--font-ibm-plex-sans-kr);
 }
 .tab-btn.active {
   color: var(--rose-deep);

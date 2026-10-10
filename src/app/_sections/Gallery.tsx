@@ -6,13 +6,15 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { GALLERY, SECTION_TEXTS } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
+import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
 import { useMounted } from "@/hooks/useMounted";
 import { useCarousel } from "@/hooks/useCarousel";
 import { SectionHeading } from "@/components/common/SectionHeading";
 
-const PER_PAGE = 4;
+const PER_PAGE = 9;
 const PAGE_COUNT = Math.ceil(GALLERY.length / PER_PAGE);
 const SWIPE_THRESHOLD_PX = 50;
+const ARROW_ICON = "/icon/anchor_icon_white.png";
 
 export const Gallery = () => {
   const sectionRef = useReveal<HTMLElement>();
@@ -21,6 +23,7 @@ export const Gallery = () => {
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const mounted = useMounted();
+  useModalBackgroundLock(lightboxIndex !== null);
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -66,7 +69,7 @@ export const Gallery = () => {
                     onClick={() => openLightbox(index)}
                     aria-label={`사진 ${index + 1} 크게 보기`}
                   >
-                    <Image src={photo.thumb} alt="" fill sizes="(max-width: 480px) 50vw, 240px" />
+                    <Image src={photo.thumb} alt="" fill sizes="(max-width: 480px) 33vw, 160px" />
                   </button>
                 );
               })}
@@ -108,7 +111,7 @@ export const Gallery = () => {
                 onClick={() => stepLightbox(-1)}
                 aria-label="이전 사진"
               >
-                ‹
+                <Image src={ARROW_ICON} alt="" width={18} height={18} />
               </button>
               {lightboxIndex !== null && (
                 <Image
@@ -125,7 +128,7 @@ export const Gallery = () => {
                 onClick={() => stepLightbox(1)}
                 aria-label="다음 사진"
               >
-                ›
+                <Image src={ARROW_ICON} alt="" width={18} height={18} />
               </button>
             </div>
             <div className="lightbox-count">

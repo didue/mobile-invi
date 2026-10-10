@@ -1,25 +1,11 @@
 export const WEDDING_DATE = new Date('2027-01-09T12:40:00+09:00');
 export const VENUE_ADDRESS = '서울특별시 영등포구 은행로 30 더파티움 여의도';
 
-// 마음 전하실 곳(계좌) — 아코디언
-export const GIFTS = {
-  groom: [
-    { name: '배기환', role: 'father', tag: '신랑 아버지', account: '기업은행 010-2735-9812' },
-    { name: '이병애', role: 'mother', tag: '신랑 어머니', account: '기업은행 010-3894-3232' },
-    { name: '배정근', role: 'groom',  tag: 'GROOM',      account: '우리은행 1002-162-524423' },
-  ],
-  bride: [
-    { name: '한창희', role: 'father', tag: '신부 아버지', account: '우리은행 164-156368-02-008' },
-    { name: '이금이', role: 'mother', tag: '신부 어머니', account: '국민은행 714002-01-458084' },
-    { name: '한지수', role: 'bride',  tag: 'BRIDE',      account: '우리은행 1002-764-181491' },
-  ],
-};
-
 // 갤러리 사진은 scripts/optimize-images.mjs 가 생성한 WebP 변환본을 사용한다.
 // 격자는 thumb(긴 변 640px), 라이트박스는 full(긴 변 1600px)을 받아 첫 로드 전송량을 줄인다.
 // 경로를 파일명에서 생성하므로 확장자 대소문자가 어긋나 Linux 배포 환경에서 404 가 나는 일이 없다.
 const GALLERY_FILES = [
-  'hj2_6880',
+  // 'hj2_6880',
   'hj2_6930',
   'hj2_7118',
   'hj2_7131',
@@ -30,9 +16,9 @@ const GALLERY_FILES = [
   'hj2_7606',
   'hj2_7633',
   'hj2_7642',
-  'hj2_7724',
+  // 'hj2_7724',
   'hj2_7797',
-  'hj2_7867',
+  // 'hj2_7867',
   'hj2_7889',
   'hj2_7974',
   'hj2_8247',
@@ -41,8 +27,8 @@ const GALLERY_FILES = [
   'hj2_8290',
   'hj2_8355',
   'hj2_8399',
-  'hj2_8460',
-  'hj2_8686',
+  // 'hj2_8460',
+  // 'hj2_8686',
 ];
 
 export type GalleryPhoto = {

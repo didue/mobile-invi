@@ -11,12 +11,10 @@
 `app/layout.tsx` `<head>`에 원본과 동일하게 Google Fonts 로드(next/font 대신 link 태그 유지가 안전):
 
 ```
-Nanum Myeongjo (400,700,800), Noto Sans KR (300,400,500,700), Dancing Script (500,700),
-Gowun Batang (400,700), Nanum Gothic Coding (400,700), Chiron GoRound TC (400,700), Orbit (400),
-IBM Plex Sans KR (400,700)
+Nanum Myeongjo (400,700,800), Gowun Batang (400,700), IBM Plex Sans KR (400,700)
 ```
 
-preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변수로 선언해 필요한 곳에서 `font-family: var(--font-*)`로 사용한다(`--font-gowun-batang`, `--font-nanum-gothic-coding`, `--font-chiron-goround-tc`, `--font-orbit`, `--font-ibm-plex-sans-kr`).
+preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변수로 선언해 필요한 곳에서 `font-family: var(--font-*)`로 사용한다(`--font-gowun-batang`, `--font-ibm-plex-sans-kr`).
 
 ## 뷰 포트
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -42,9 +40,9 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
     - `--paper`는 `.app` 카드 본문 배경(아이보리 페이퍼)이며, `--ivory`는 카드 안쪽 보조 면(`.dday-message`, `.intro-open`)에 쓴다.
   - 그림자: `--box-shadow: 1px 1px 4px 1px rgba(0,0,0,.1);`
   - 폰트 크기 스케일(10단계, 작은 순): `--font-size-xxs:.6rem; --font-size-xs:.7rem; --font-size-sm:.8rem; --font-size-md-s:.9rem; --font-size-md:.95rem; --font-size-regualr:1.05rem; --font-size-lg:1.2rem; --font-size-xl-s:1.375rem; --font-size-xl:1.6rem; --font-size-xxl:2.4rem;`(변수명 `regualr`는 오타이지만 실제 코드와 동일하게 유지). `globals.css` 전체의 하드코딩된 `font-size` px 값은 이 스케일 중 가장 가까운 변수로 전부 치환되어 있다. 매칭되는 값이 없던 22px는 `lg`(19.2px)와 `xl`(25.6px) 사이 간격이 너무 커서 `--font-size-xl-s`(22px)를 새로 추가해 대응했다.
-  - 폰트 패밀리: `--font-gowun-batang: "Gowun Batang", serif; --font-nanum-gothic-coding: "Nanum Gothic Coding", monospace; --font-chiron-goround-tc: "Chiron GoRound TC", sans-serif; --font-orbit: "Orbit", sans-serif; --font-nanum-myeongju: "Nanum Myeongjo", serif; --font-ibm-plex-sans-kr: "IBM Plex Sans KR", sans-serif;`
+  - 폰트 패밀리: `--font-gowun-batang: "Gowun Batang", serif; --font-nanum-myeongju: "Nanum Myeongjo", serif; --font-ibm-plex-sans-kr: "IBM Plex Sans KR", sans-serif;`
   - 새 텍스트에 크기를 지정할 때는 항상 위 `--font-size-*` 스케일 중 하나를 사용하고 임의의 px/rem 값을 반복해서 추가하지 않는다. 폰트도 마찬가지로 위 `--font-*` 변수를 사용한다.
-- `html,body`: 배경 `var(--blush)`, `Noto Sans KR` 300, `overflow-x:hidden`, 스크롤바 숨김(webkit/ms/firefox).
+- `html,body`: 배경 `var(--blush)`, 기본 폰트 `var(--font-ibm-plex-sans-kr)`, `overflow-x:hidden`, 스크롤바 숨김(webkit/ms/firefox).
 - `.app`: `max-width:480px; margin:0 auto; background:#fff; min-height:100vh;` / `@media(min-width:481px)` 그림자.
 - `.serif` = Nanum Myeongjo. `section{ padding:72px 16px; }`(모바일 좌우 여백 최소화를 위해 원본 32px에서 축소 — `.hero`/`.gallery-carousel`/`footer`/Intro의 좌우 패딩도 동일하게 16px로 맞춤).
 - **reveal 애니메이션**: `.reveal{opacity:0;transform:translateY(24px);transition:.9s}` → `.show` 로 노출.
@@ -57,7 +55,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - `.profile-photo`(112px, aspect 1/1). 기본 `display`가 `inline`인 태그(예: label)로 만들면 width/aspect-ratio가 무시되니 `display:block` 필수.
 - **연락처/버튼**: `.contact-btn`(라운드, pink 테두리), `.contact-btn.fill`(rose 배경), `.contact-btn.kakao`(#FEE500).
 - **아코디언**: `.acc-group`(라운드 박스, 테두리 없음, 섹션 콘텐츠 너비 안에서 표시), `.acc-body{max-height:0;transition:.35s}`, `.acc-group.open .acc-body{max-height:600px}`. 펼쳤을 때 `.contact-row` 구분선은 연한 회색(`#e5e5e5`).
-- **갤러리**: `.gallery-carousel`(flex, scroll-snap-x, `margin:0 -32px;padding:0 32px`), `.gallery-page`(2x2 grid), `.g-slot`(aspect 1/1, dashed), `.gallery-dots span.active`.
+- **갤러리**: `.gallery-carousel`(flex, scroll-snap-x, `margin:0 -32px;padding:0 32px`), `.gallery-page`(3x3 grid), `.g-slot`(aspect 1/1, dashed), `.gallery-dots span.active`.
 - **인포카드/지도**: `.info-card`, `.info-date`(Nanum 24px), `.map-btn`, `.transit`.
 - **폼/모달**: `.field input/textarea`, `.seg button.active`(rose), `.stepper`, `.submit-btn`(rose).
 - `.modal-overlay{position:fixed;inset:0;background:rgba(58,50,46,.45);display:none;align-items:center}` `.show{display:flex}`, `.modal-sheet`(화면 중앙 팝업, 전체 라운드, `@keyframes popupIn` scale 페이드인). 모든 모달(RsvpModal/GuestbookModal/ContactModal)이 동일한 중앙 팝업 스타일을 공유한다.
@@ -118,9 +116,9 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 하단에 `연락하기` 버튼 → ContactModal 오픈.
 
 ### 5.6 Gallery
-- 업로드 기능 없음(읽기 전용). 슬롯 개수 = `src/data/wedding.ts`의 `GALLERY` 배열 길이, 페이지당 4개(`PER_PAGE=4`) → 캐러셀(2x2 페이지).
+- 업로드 기능 없음(읽기 전용). 슬롯 개수 = `src/data/wedding.ts`의 `GALLERY` 배열 길이, 페이지당 9개(`PER_PAGE=9`) → 캐러셀(3x3 페이지).
 - 각 슬롯은 `GALLERY[i].thumb`(긴 변 640px)를 `next/image`로 렌더링. 클릭 시 라이트박스 오픈.
-- 격자와 라이트박스가 서로 다른 크기를 쓰는 이유: 24장이 모두 DOM에 있어 격자에 큰 파일을 쓰면 첫 로드 전송량이 급증한다. 큰 파일(`full`)은 라이트박스에서만 받는다. 격자는 `next/image` 기본 lazy loading에 의존해 1페이지 4장만 먼저 받으므로 `loading` 속성을 임의로 바꾸지 않는다.
+- 격자와 라이트박스가 서로 다른 크기를 쓰는 이유: 24장이 모두 DOM에 있어 격자에 큰 파일을 쓰면 첫 로드 전송량이 급증한다. 큰 파일(`full`)은 라이트박스에서만 받는다. 격자는 `next/image` 기본 lazy loading에 의존해 1페이지 9장만 먼저 받으므로 `loading` 속성을 임의로 바꾸지 않는다.
 - 캐러셀 스크롤 시 dots active 갱신, `‹ ›` 버튼으로 `scrollBy(±clientWidth)`.
 - 라이트박스: `GALLERY[i].full`(긴 변 1600px)을 `GALLERY` 순서 그대로, `‹ ›`/스와이프(터치 50px)/오버레이 클릭 닫기, `pos+1 / total` 카운트.
 
@@ -250,7 +248,7 @@ node scripts/optimize-images.mjs
 
 | 출력 | 사양 | 용도 |
 |---|---|---|
-| `public/images/gallery/thumb/<name>.webp` | 긴 변 640px, q75 | 갤러리 격자(2x2) |
+| `public/images/gallery/thumb/<name>.webp` | 긴 변 640px, q75 | 갤러리 격자(3x3) |
 | `public/images/gallery/full/<name>.webp` | 긴 변 1600px, q80 | 라이트박스 |
 | `public/images/notice/<name>.webp` | 긴 변 1200px, q80 | 안내사항 탭 이미지 |
 | `public/images/og-share.webp` | 800×800 중앙 크롭, q80 | 카카오·OG 공유 썸네일(§12) |
@@ -276,7 +274,7 @@ node scripts/optimize-images.mjs
 - [ ] 스크롤 시 각 섹션이 아래에서 위로 페이드인(reveal).
 - [ ] 프로필 사진이 `COUPLE.groom.profile`/`COUPLE.bride.profile` 경로로 정확히 표시된다.
 - [ ] 갤러리 캐러셀 스와이프/화살표/도트, 사진 클릭 시 라이트박스(스와이프 이동).
-- [ ] 갤러리 격자는 `thumb`, 라이트박스는 `full`을 받는다. 첫 로드에서 갤러리 이미지 요청이 1페이지 4장만 발생하고, 각 응답이 수십 KB다.
+- [ ] 갤러리 격자는 `thumb`, 라이트박스는 `full`을 받는다. 첫 로드에서 갤러리 이미지 요청이 1페이지 9장만 발생하고, 각 응답이 수십 KB다.
 - [ ] 지도앱 3버튼 링크가 주소 인코딩되어 열린다.
 - [ ] `#map`에 네이버 지도가 실제로 렌더링되고, `WEDDING_VENUE.coords` 위치에 마커가 표시된다.
 - [ ] RSVP 모달 제출 → 상태 텍스트 갱신 + 저장.

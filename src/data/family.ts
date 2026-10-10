@@ -47,7 +47,7 @@ export const CONTACTS = {
     {
       name: '배정근',
       role : 'groom',
-      rel: '차남',
+      rel: '아들',
       tag: '신랑',
       tel: '01052459812',
       bank: '우리은행',
@@ -79,7 +79,7 @@ export const CONTACTS = {
     {
       name: '한지수',
       role : 'bride',
-      rel : '차녀',
+      rel : '딸',
       tag: '신부',
       tel: '01085278040',
       bank: '우리은행',

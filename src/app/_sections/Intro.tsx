@@ -1,5 +1,5 @@
 import { COUPLE, CONTACTS } from "@/data/family";
-import { formatParentName, formatRel } from "@/lib/family";
+import { formatParentName, formatRel } from "@/lib/familyFormat";
 
 export const Intro = () => {
 
