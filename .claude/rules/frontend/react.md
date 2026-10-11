@@ -22,8 +22,8 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 ## 상수 및 데이터
 - 화면에 표시하는 정보는 `src/data/` 아래 상수를 참조하며, 역할에 따라 두 파일로 나뉜다.
-  - `src/data/family.ts`: 신랑·신부·가족 인물 정보 — `COUPLE`(이름/역할/프로필 사진/소개), `CONTACTS`(연락하기 모달용 아버지·어머니·본인 연락처), `GIFTS`(마음 전하실 곳 계좌 정보).
-  - `src/data/wedding.ts`: 그 외 화면 노출 콘텐츠 문구·설정 — `WEDDING_DATE`, `VENUE_ADDRESS`, `GALLERY`, `OG_SHARE_IMAGE`, `WEDDING_VENUE`(좌표 포함), `MAPS`, `SECTION_TEXTS`, `NOTICES`.
+  - `src/data/family.ts`: 신랑·신부·가족 인물 정보 — `COUPLE`(이름/역할/프로필 사진/소개), `CONTACTS`(아버지·어머니·본인 연락처와 계좌 정보 — 연락하기 모달과 마음 전하실 곳이 함께 사용).
+  - `src/data/wedding.ts`: 그 외 화면 노출 콘텐츠 문구·설정 — `WEDDING_DATE`, `VENUE_ADDRESS`, `GALLERY`, `OG_SHARE_IMAGE`, `WEDDING_VENUE`(좌표 포함), `MAPS`, `SECTION_TEXTS`, `INVITATION_MESSAGE`, `NOTICES`.
   - `GALLERY`는 경로 문자열을 직접 나열하지 않는다. 확장자 없는 파일명 배열 `GALLERY_FILES`에서 `GalleryPhoto`(`{ thumb, full }`)를 생성한다. 과거 `'HJ2_8247.JPG'`처럼 실제 파일(`.jpg`)과 확장자 대소문자가 어긋나 대소문자를 구분하는 Linux 배포 환경에서만 404 가 났던 사고가 있었으므로, 경로는 반드시 파일명에서 생성하고 변환 산출물 파일명은 소문자로 통일한다.
   - 인물 정보가 필요 없는 컴포넌트가 `family.ts`를 불필요하게 import하지 않도록, 두 파일의 상수는 각자 필요한 곳에서 개별 import한다(하나로 합쳐서 재수출하지 않는다).
 - 각 섹션의 `.section-title`/`.section-sub` 문구는 컴포넌트에 하드코딩하지 않고 `wedding.ts`의 `SECTION_TEXTS`(섹션 키별 `{ title, sub: string[] }`)에 모아서 관리한다. `sub`는 줄 단위 배열이며 빈 배열이면 `.section-sub` 자체를 렌더링하지 않는다. 렌더링은 공용 컴포넌트 `components/common/SectionHeading.tsx`(`<SectionHeading {...SECTION_TEXTS.xxx} />`)를 통해 통일한다.
@@ -44,7 +44,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
   - 새 텍스트에 크기를 지정할 때는 항상 위 `--font-size-*` 스케일 중 하나를 사용하고 임의의 px/rem 값을 반복해서 추가하지 않는다. 폰트도 마찬가지로 위 `--font-*` 변수를 사용한다.
 - `html,body`: 배경 `var(--blush)`, 기본 폰트 `var(--font-ibm-plex-sans-kr)`, `overflow-x:hidden`, 스크롤바 숨김(webkit/ms/firefox).
 - `.app`: `max-width:480px; margin:0 auto; background:#fff; min-height:100vh;` / `@media(min-width:481px)` 그림자.
-- `.serif` = Nanum Myeongjo. `section{ padding:72px 16px; }`(모바일 좌우 여백 최소화를 위해 원본 32px에서 축소 — `.hero`/`.gallery-carousel`/`footer`/Intro의 좌우 패딩도 동일하게 16px로 맞춤).
+- `.serif` = Nanum Myeongjo. `section{ padding:72px 16px; }`(모바일 좌우 여백 최소화를 위해 원본 32px에서 축소 — `.hero`/`footer`/Intro의 좌우 패딩도 동일하게 16px로 맞춤).
 - **reveal 애니메이션**: `.reveal{opacity:0;transform:translateY(24px);transition:.9s}` → `.show` 로 노출.
 - `.hero` `min-height:100svh`,`.eyebrow`(letter-spacing 0.35em).
 - **대문 커버**: `.hero-arch{ width:80%; aspect-ratio:3/4.3; border-radius:0; box-shadow:0 18px 40px -20px rgba(107,79,52,.38);}` — 초기에는 아치(반원) 프레임이었으나 사각 프레임으로 변경했다. 클래스명 `.hero-arch`는 참조처(globals.css 캡처 방지 규칙, Header.tsx)가 있어 그대로 둔다.
@@ -54,8 +54,8 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - `.msg-body`(line-height 2.05), `.signature`(Nanum).
 - `.profile-photo`(112px, aspect 1/1). 기본 `display`가 `inline`인 태그(예: label)로 만들면 width/aspect-ratio가 무시되니 `display:block` 필수.
 - **연락처/버튼**: `.contact-btn`(라운드, pink 테두리), `.contact-btn.fill`(rose 배경), `.contact-btn.kakao`(#FEE500).
-- **아코디언**: `.acc-group`(라운드 박스, 테두리 없음, 섹션 콘텐츠 너비 안에서 표시), `.acc-body{max-height:0;transition:.35s}`, `.acc-group.open .acc-body{max-height:600px}`. 펼쳤을 때 `.contact-row` 구분선은 연한 회색(`#e5e5e5`).
-- **갤러리**: `.gallery-carousel`(flex, scroll-snap-x, `margin:0 -32px;padding:0 32px`), `.gallery-page`(3x3 grid), `.g-slot`(aspect 1/1, dashed), `.gallery-dots span.active`.
+- **아코디언**: `.acc-group`(라운드 박스, 테두리 없음, 섹션 콘텐츠 너비 안에서 표시), `.acc-body{max-height:0;transition:.35s}`, `.acc-group.open .acc-body{max-height:600px}`. 펼쳤을 때 `.contact-row` 구분선은 연한 회색(`#e5e5e5`). 헤더 화살표(`.chev img`)는 닫힘 시 아래(⌄), `.open` 시 위(⌃)로 0.35s 회전하며 상하반전된다.
+- **갤러리**: `.gallery-grid`(3열 grid, gap 6px), `.g-slot`(aspect 1/1), `.gallery-more`(밑줄 텍스트 `더보기` 버튼).
 - **인포카드/지도**: `.info-card`, `.info-date`(Nanum 24px), `.map-btn`, `.transit`.
 - **폼/모달**: `.field input/textarea`, `.seg button.active`(rose), `.stepper`, `.submit-btn`(rose).
 - `.modal-overlay{position:fixed;inset:0;background:rgba(58,50,46,.45);display:none;align-items:center}` `.show{display:flex}`, `.modal-sheet`(화면 중앙 팝업, 전체 라운드, `@keyframes popupIn` scale 페이드인). 모든 모달(RsvpModal/GuestbookModal/ContactModal)이 동일한 중앙 팝업 스타일을 공유한다.
@@ -90,6 +90,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 시퀀스: `currentTime >= 5.3초`(봉투가 다 열리는 시점)에 `.hide` 추가 → `+900ms` 뒤 DOM에서 제거. `requestAnimationFrame` 루프로 시점을 감지하고, `onEnded`/`onError`도 같은 닫기 동작에 연결한다.
 - 영상 영역 전체가 `청첩장 열기` 버튼이고 우측 상단에 `건너뛰기` 버튼을 둔다. 둘 다 즉시 `.hide`로 진입한다.
 - 오버레이가 떠 있는 동안에는 `useModalBackgroundLock`으로 배경 스크롤을 잠근다.
+- 새로고침·첫 접속 시 항상 최상단에서 시작한다: 마운트 시 `history.scrollRestoration = 'manual'` + `window.scrollTo(0, 0)`. 배경 잠금이 잠글 때의 `scrollY`를 저장했다가 인트로 종료 시 복원하므로, 이 effect는 `useModalBackgroundLock` 호출보다 앞에 둔다.
 
 ### 5.2 Hero
 - `.hero-arch` 안에 `<img src={HERO_IMAGE}>` + `.snow-layer`.
@@ -113,14 +114,15 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 ### 5.5 Profiles
 - 업로드 기능 없음(읽기 전용). 2열. 각 열: 프로필 사진 / role / name(Nanum) / rel(줄바꿈).
 - 프로필 이미지는 `src/data/family.ts`의 `COUPLE.groom.profile` / `COUPLE.bride.profile` 경로를 `next/image`로 렌더링.
-- 하단에 `연락하기` 버튼 → ContactModal 오픈.
+- Intro 섹션은 위에서부터 `SECTION_TEXTS.intro`(`INVITATION`) 제목 → 초대 문구(`.invitation-msg`, `wedding.ts`의 `INVITATION_MESSAGE`) → 부모님 성함·이름 박스(`.intro-box`) 순서다. 초대 문구 첫 문단(`acrostic`)은 각 줄 첫 글자를 `<b>`로 굵게 강조하고(정·근·지·수), 둘째 문단(`closing`)은 강조 없이 렌더링한다.
+- 연락하기 버튼은 Profiles가 아니라 Intro(부모님 성함·이름 박스 바로 아래)에 둔다. `혼주에게 연락하기` 버튼 → ContactModal 오픈(`_sections/ContactButton.tsx`, Intro를 서버 컴포넌트로 유지하기 위해 버튼만 클라이언트 컴포넌트로 분리).
 
 ### 5.6 Gallery
-- 업로드 기능 없음(읽기 전용). 슬롯 개수 = `src/data/wedding.ts`의 `GALLERY` 배열 길이, 페이지당 9개(`PER_PAGE=9`) → 캐러셀(3x3 페이지).
+- 업로드 기능 없음(읽기 전용). 가로 캐러셀 없이 세로로 늘어나는 3열 격자(`.gallery-grid`). 처음에는 `INITIAL_COUNT=9`장만 렌더링하고, 남은 사진이 있으면 격자 아래 `더보기` 버튼(`.gallery-more`)을 표시한다. 클릭 시 `visibleCount`를 `LOAD_MORE_COUNT=6`씩 늘려 기존 격자 아래에 append하며, `GALLERY`를 모두 보이면 버튼을 숨긴다.
 - 각 슬롯은 `GALLERY[i].thumb`(긴 변 640px)를 `next/image`로 렌더링. 클릭 시 라이트박스 오픈.
-- 격자와 라이트박스가 서로 다른 크기를 쓰는 이유: 24장이 모두 DOM에 있어 격자에 큰 파일을 쓰면 첫 로드 전송량이 급증한다. 큰 파일(`full`)은 라이트박스에서만 받는다. 격자는 `next/image` 기본 lazy loading에 의존해 1페이지 9장만 먼저 받으므로 `loading` 속성을 임의로 바꾸지 않는다.
-- 캐러셀 스크롤 시 dots active 갱신, `‹ ›` 버튼으로 `scrollBy(±clientWidth)`.
+- 격자와 라이트박스가 서로 다른 크기를 쓰는 이유: 격자에 큰 파일을 쓰면 전송량이 급증하므로 큰 파일(`full`)은 라이트박스에서만 받는다. 격자는 노출된 슬롯만 렌더링해 첫 로드에 9장만 받고, `next/image` 기본 lazy loading도 유지하므로 `loading` 속성을 임의로 바꾸지 않는다.
 - 라이트박스: `GALLERY[i].full`(긴 변 1600px)을 `GALLERY` 순서 그대로, `‹ ›`/스와이프(터치 50px)/오버레이 클릭 닫기, `pos+1 / total` 카운트.
+  - 확대 임시 허용: `Gallery.tsx`의 `LIGHTBOX_ZOOM_ENABLED`가 `true`인 동안 라이트박스가 열려 있으면 viewport 확대 제한을 풀고 `.lightbox-stage.zoomable`(`touch-action:manipulation`)로 핀치 확대를 허용한다. 핀치 중이거나 확대된 상태에서는 스와이프로 사진을 넘기지 않는다. `false`로 바꾸면 기존 확대 방지로 돌아간다.
 
 ### 5.7 MapSection
 - 인포카드 텍스트(§3) + 네이버 지도(§13) + 3개 지도앱 링크(a target=_blank) + 교통 3줄.
@@ -138,10 +140,8 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 ### 5.10 Gift
 - 섹션 타이틀(`.section-title`): `마음 전하실 곳`. 부제(`.section-sub`, 2줄): `멀리서도 소중한 축하의 마음을 보내주셔서 감사드리며` / `따뜻한 마음에 깊이 감사드립니다.`(`<br/>`로 줄바꿈).
 - 아코디언 2개(`신랑측 계좌번호`/`신부측 계좌번호`). 헤더 클릭 시 `.open` 토글.
-- 각 행: 이름 + 계좌번호(`.tag`에 `entry.account`를 표시해 아이콘 버튼만으로는 안 보이는 계좌번호를 행에서 바로 확인 가능) / 아이콘 전용 원형 버튼 2개 — `계좌 복사`(`.icon-btn.copy`, 투명 배경+pink 테두리, 클립보드 아이콘) / `카카오로 보내기`(`.icon-btn.kakao`, `#FEE500` 배경, 말풍선 아이콘). 둘 다 `aria-label`로 접근 가능한 이름 제공.
-- 계좌 복사: `navigator.clipboard.writeText(`${account} (${name})`)` → 토스트 `${name}님의 계좌번호가 복사되었어요` / 실패 `복사에 실패했어요`.
-- 카카오로 보내기: 텍스트 `[배정근 ♥ 한지수 결혼합니다]\n마음 전하실 곳 - ${name}\n${account}`.
-  `navigator.share` 있으면 공유시트(취소 시 무동작), 없으면 클립보드 복사 + 토스트 `카카오톡에 붙여넣을 내용이 복사됐어요`.
+- 각 행: 이름 + 계좌번호(`.tag`에 `entry.account`를 표시) / `[ (클립보드 아이콘) 복사하기 ]` 형태의 아이콘+텍스트 버튼 1개(`.contact-btn.copy-btn`, pink 테두리 라운드 버튼). 카카오로 보내기 버튼은 두지 않는다.
+- 복사하기: 계좌번호에서 하이픈(`-`)을 제거한 숫자만 `navigator.clipboard.writeText(account.replace(/-/g, ''))`로 복사(은행 앱 입력란에 바로 붙여넣기 위함) → 토스트 `${name}님의 계좌번호가 복사되었어요` / 실패 `복사에 실패했어요`.
 
 ### 5.11 ContactModal
 - 탭(신랑측/신부측). 각 행: `전화하기`(tel:) / `문자하기`(fill, sms:).
@@ -274,12 +274,12 @@ node scripts/optimize-images.mjs
 - [ ] D-day 문구의 남은 일수가 포인트 컬러로 강조되고, 캘린더에 추가하기로 .ics 파일이 정상 다운로드된다.
 - [ ] 스크롤 시 각 섹션이 아래에서 위로 페이드인(reveal).
 - [ ] 프로필 사진이 `COUPLE.groom.profile`/`COUPLE.bride.profile` 경로로 정확히 표시된다.
-- [ ] 갤러리 캐러셀 스와이프/화살표/도트, 사진 클릭 시 라이트박스(스와이프 이동).
-- [ ] 갤러리 격자는 `thumb`, 라이트박스는 `full`을 받는다. 첫 로드에서 갤러리 이미지 요청이 1페이지 9장만 발생하고, 각 응답이 수십 KB다.
+- [ ] 갤러리 격자는 처음 9장만 보이고 `더보기` 클릭 시 6장씩 아래로 추가되며, 전부 보이면 버튼이 사라진다. 사진 클릭 시 라이트박스(스와이프 이동).
+- [ ] 갤러리 격자는 `thumb`, 라이트박스는 `full`을 받는다. 첫 로드에서 갤러리 이미지 요청이 9장만 발생하고, 각 응답이 수십 KB다.
 - [ ] 지도앱 3버튼 링크가 주소 인코딩되어 열린다.
 - [ ] `#map`에 네이버 지도가 실제로 렌더링되고, `WEDDING_VENUE.coords` 위치에 마커가 표시된다.
 - [ ] RSVP 모달 제출 → 상태 텍스트 갱신 + 저장.
-- [ ] 마음 전하실 곳 아코디언 토글, 계좌 복사/카카오 공유 동작.
+- [ ] 마음 전하실 곳 아코디언 토글, 계좌 복사(하이픈 제외 숫자만) 동작.
 - [ ] 방명록 등록/목록/최신순 정렬/빈 상태 문구.
 - [ ] 연락하기 모달 탭 전환, tel/sms 링크.
 - [ ] 안내사항이 `NOTICES` 3개 항목의 제목으로 탭이 만들어지고, 탭 전환 시 각 패널의 이미지와 번호 리스트가 함께 바뀐다.
@@ -322,6 +322,7 @@ node scripts/optimize-images.mjs
 
 - 네이버 지도(Maps JavaScript API v3)를 `next/script`(`strategy="afterInteractive"`)로 로드한다. 스크립트 URL은 `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${naverMapClientId}`. 네이버 클라우드 플랫폼 신규 Maps 애플리케이션은 `ncpKeyId` 파라미터로 인증한다(구 `ncpClientId`로 요청하면 `200 / Authentication Failed`).
 - Client ID는 `.env.local`(배포 시 Vercel 환경변수)의 `NEXT_NAVER_MAP_CLIENT_ID`로 관리한다. `NEXT_PUBLIC_` 접두사가 없어 클라이언트 번들에 들어가지 않으므로, 서버 컴포넌트인 `src/app/page.tsx`에서 `process.env.NEXT_NAVER_MAP_CLIENT_ID`를 읽어 `<MapSection naverMapClientId={...} />` prop으로 전달한다. 페이지가 정적 프리렌더링되므로 값은 빌드 시점에 결정된다(값을 바꾸면 재빌드/재배포 필요). Client ID는 스크립트 URL에 포함되어 어차피 브라우저에 노출되므로, 실제 사용 제한은 네이버 클라우드 콘솔의 Web 서비스 URL(도메인) 등록으로 한다. 키가 없으면 `<Script>` 자체를 렌더링하지 않는다.
+- 티맵 버튼은 SK open API(`apis.openapi.sk.com/tmap/app/routes`, appKey 필요) 대신 키가 필요 없는 앱 스킴 `tmap://route?goalname=…&goalx={lng}&goaly={lat}`로 길찾기를 연다. 커스텀 스킴이라 새 탭에 빈 페이지가 남지 않도록 `target="_blank"`를 주지 않는다. 티맵 앱이 없는 기기에서는 열리지 않으며, 모바일이 아닌 기기(User-Agent 기준, iPadOS는 터치 지원으로 판별)에서는 클릭 시 이동을 막고 토스트 `티맵 길찾기는 모바일에서 이용할 수 있어요`를 띄운다.
 - **Client Secret은 사용하지 않는다.** Maps JavaScript API(브라우저 지도 렌더링)는 Client ID만으로 동작하며, Secret은 서버 사이드 REST API(Geocoding 등) 전용이다. 이 프로젝트의 `.env`는 git에 커밋되는 파일(`.env.local`만 gitignore 대상)이므로 Secret처럼 노출되면 안 되는 값은 `.env`에 저장하지 않는다. 추후 서버 사이드 연동이 필요해지면 `.env.local`에 `NEXT_PUBLIC_` 접두사 없이 저장한다.
 - `Script`의 `onReady` 콜백에서 지도를 초기화한다: `new naver.maps.Map(el, { center: new naver.maps.LatLng(lat, lng), zoom: 16 })` 생성 후 동일 좌표로 `new naver.maps.Marker({ position: center, map })`를 생성해 중심에 마커를 표시한다.
 - 중심 좌표/마커 위치는 `src/data/wedding.ts`의 `WEDDING_VENUE.coords`(`{ lat, lng }`)를 참조한다(§5.7).

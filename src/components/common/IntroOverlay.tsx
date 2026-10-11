@@ -17,6 +17,13 @@ export const IntroOverlay = () => {
   const [hide, setHide] = useState(false);
   const [removed, setRemoved] = useState(false);
 
+  // 새로고침해도 이전 스크롤 위치로 복원하지 않고 항상 최상단에서 시작한다.
+  // 배경 잠금이 현재 scrollY를 저장했다가 인트로가 끝날 때 되돌리므로, 반드시 잠금 effect보다 먼저 실행되어야 한다.
+  useEffect(() => {
+    history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+  }, []);
+
   useModalBackgroundLock(!removed);
 
   const close = useCallback(() => setHide(true), []);

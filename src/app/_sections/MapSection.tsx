@@ -2,15 +2,28 @@
 
 import Script from "next/script";
 import { useRef } from "react";
+import type { MouseEvent } from "react";
 import { MAPS, SECTION_TEXTS, VENUE_ADDRESS, WEDDING_VENUE } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
+import { toast } from "@/lib/toast";
 import { SectionHeading } from "@/components/common/SectionHeading";
+
+// iPadOS 13+는 데스크톱 Safari UA를 쓰므로 터치 지원 여부로 함께 판별한다.
+function isMobileDevice(): boolean {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+}
+
+// tmap:// 스킴은 PC 브라우저에 처리기가 없어 열리지 않으므로 이동을 막고 안내한다.
+const handleTmapClick = (e: MouseEvent<HTMLAnchorElement>) => {
+  if (isMobileDevice()) return;
+  e.preventDefault();
+  toast("티맵 길찾기는 모바일에서 이용할 수 있어요");
+};
 
 const TRANSIT_GROUPS: { label: string; items: string[] }[] = [
   { label: "🚆 지하철", items: WEDDING_VENUE.station.metro },
   { label: "🚌 버스", items: WEDDING_VENUE.station.bus },
-  { label: "🚗 자가용", items: WEDDING_VENUE.station.car },
-  { label: "🅿️ 주차", items: WEDDING_VENUE.station.parking },
+  { label: "🚗 자가용 및 주차안내", items: WEDDING_VENUE.station.car },
 ];
 
 interface MapSectionProps {
@@ -107,8 +120,7 @@ export const MapSection = ({ naverMapClientId }: MapSectionProps) => {
           <a
             className="map-btn shadow-btn"
             href={MAPS.tmap.link()}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={handleTmapClick}
             aria-label={`티맵에서 ${VENUE_ADDRESS} 보기`}
           >
             <TmapIcon />

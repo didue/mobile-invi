@@ -88,17 +88,3 @@ export const CONTACTS = {
     },
   ],
 };
-
-// 마음 전하실 곳(계좌) — 아코디언
-export const GIFTS = {
-  groom: [
-    { name: '배기환', role: 'father', tag: '신랑 아버지', account: '기업은행 010-2735-9812' },
-    { name: '이병애', role: 'mother', tag: '신랑 어머니', account: '기업은행 010-3894-3232' },
-    { name: '배정근', role: 'groom',  tag: 'GROOM',      account: '우리은행 1002-162-524423' },
-  ],
-  bride: [
-    { name: '한창희', role: 'father', tag: '신부 아버지', account: '우리은행 164-156368-02-008' },
-    { name: '이금이', role: 'mother', tag: '신부 어머니', account: '국민은행 714002-01-458084' },
-    { name: '한지수', role: 'bride',  tag: 'BRIDE',      account: '우리은행 1002-764-181491' },
-  ],
-};

@@ -16,11 +16,11 @@ export default function Home() {
   return (
     <main>
       <Header />
-      <WeddingDay />
       <Intro />
+      <WeddingDay />
       <Profiles />
-      <MapSection naverMapClientId={process.env.NEXT_NAVER_MAP_CLIENT_ID} />
       <Gallery />
+      <MapSection naverMapClientId={process.env.NEXT_NAVER_MAP_CLIENT_ID} />
       <Rsvp />
       <Gift />
       <Notice />

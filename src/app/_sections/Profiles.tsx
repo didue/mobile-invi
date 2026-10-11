@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { COUPLE } from "@/data/family";
 import { SECTION_TEXTS } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
-import { ContactModal } from "@/app/_sections/ContactModal";
 import { SectionHeading } from "@/components/common/SectionHeading";
 
 function ProfileColumn({
@@ -37,7 +35,6 @@ function ProfileColumn({
 
 export const Profiles = () => {
   const sectionRef = useReveal<HTMLElement>();
-  const [contactOpen, setContactOpen] = useState(false);
 
   return (
     <section ref={sectionRef} className="reveal">
@@ -56,13 +53,6 @@ export const Profiles = () => {
           rel={COUPLE.bride.description}
         />
       </div>
-      <div className="rsvp-trigger-wrap" style={{ marginTop: 25 }}>
-        <button type="button" className="rsvp-open-btn shadow-btn" onClick={() => setContactOpen(true)}>
-          혼주에게 연락하기
-        </button>
-      </div>
-
-      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </section>
   );
 };

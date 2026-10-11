@@ -1,34 +1,37 @@
 export const WEDDING_DATE = new Date('2027-01-09T12:40:00+09:00');
-export const VENUE_ADDRESS = '서울특별시 영등포구 은행로 30 더파티움 여의도';
+export const VENUE_ADDRESS = '서울특별시 영등포구 은행로 30';
 
 // 갤러리 사진은 scripts/optimize-images.mjs 가 생성한 WebP 변환본을 사용한다.
 // 격자는 thumb(긴 변 640px), 라이트박스는 full(긴 변 1600px)을 받아 첫 로드 전송량을 줄인다.
 // 경로를 파일명에서 생성하므로 확장자 대소문자가 어긋나 Linux 배포 환경에서 404 가 나는 일이 없다.
 const GALLERY_FILES = [
   // 'hj2_6880',
-  'hj2_6930',
   'hj2_7118',
   'hj2_7131',
-  'hj2_7279',
-  'hj2_7351',
-  'hj2_7383',
-  'hj2_7458',
+  'hj2_6930',
+  'hj2_7642',
   'hj2_7606',
   'hj2_7633',
-  'hj2_7642',
-  // 'hj2_7724',
-  'hj2_7797',
-  // 'hj2_7867',
+  'hj2_7906',
+  'hj2_7724',
   'hj2_7889',
-  'hj2_7974',
-  'hj2_8247',
-  'hj2_8265',
-  'hj2_8282',
+  'hj2_7383',
+  'hj2_7351',
+  'hj2_7458',
   'hj2_8290',
+  'hj2_8265',
   'hj2_8355',
   'hj2_8399',
-  // 'hj2_8460',
-  // 'hj2_8686',
+  'hj2_8282',
+  'hj2_9514',
+  'hj2_9879',
+  'hj2_8460',
+  'hj2_8686',
+  // 'hj2_7797',
+  // 'hj2_7974',
+  // 'hj2_7279',
+  // 'hj2_7867',
+  // 'hj2_8247',
 ];
 
 export type GalleryPhoto = {
@@ -50,15 +53,20 @@ export const WEDDING_VENUE = {
   coords : { lat: 37.52810299154129, lng: 126.92278739271629 },
   station : {
     metro : [
-      '지하철 9호선 국회의사당역 3번 출구 (도보 5분)',
-      '지하철 5호선 여의나루역 1번 출구'
+      '<span class="line-nine">지하철 9호선</span> 국회의사당역 3번 출구(도보 5분)',
+      '<span class="line-five">지하철 5호선</span> 여의나루역 1번 출구(도보 15분)'
     ],
     bus : [
-      '[셔틀] 여의나루역 1번 출구 (수시 운행)', 
-      '[버스] 여의나루역 2번 출구 마을버스 10번, "기계회관" 정류장 하차'
+      '5호선 여의나루역 1번출구 <span class="primary">무료 셔틀버스</span> 운영(5분간격 운행)', 
+      '산업은행본점 하차 : [일반] 10, [간선] 463',
+      '여의도순복음교회 비전센터 하차 : [지선] 5534, 5563',
+      '<span class="primary">천안 대절버스</span> : 천안시청 봉서홀 앞 주차장 <br/><span>(산들여행사 / 출발시간 : 오전 10시30분)</span>'
     ],
-    car : ['"더파티움 여의도" 또는 "중소기업중앙회" 네비게이션 검색'],
-    parking: ['예식장 건물 내 1주차장·2주차장 무료 주차'],
+    car : [
+      '"더파티움 여의도" 또는 "중소기업중앙회" 네비게이션 검색', 
+      '예식장 건물 내 지하 주차장 무료 이용 가능 (90분)',
+      '만차 시 건너편 2주차장(기계산업진흥회 주차장)을 이용해 주세요.'
+    ],
   }
 };
 
@@ -70,11 +78,28 @@ export const MAPS = {
     link: () => `https://map.naver.com/v5/search/${encodeURIComponent(VENUE_ADDRESS)}`,
   },
   tmap: {
-    link: () => `https://apis.openapi.sk.com/tmap/app/routes?appKey=${process.env.NEXT_PUBLIC_TMAP_APP_KEY}&goalname=더파티움여의도&goalx=${WEDDING_VENUE.coords.lng}&goaly=${WEDDING_VENUE.coords.lat}`},
+    // API 키가 필요 없는 티맵 앱 스킴으로 목적지 좌표를 넘겨 길찾기 화면을 바로 연다(티맵 앱이 설치된 기기에서만 동작).
+    link: () => `tmap://route?goalname=${encodeURIComponent('더파티움 여의도')}&goalx=${WEDDING_VENUE.coords.lng}&goaly=${WEDDING_VENUE.coords.lat}`,
+  },
+};
+
+// Intro 섹션 초대 문구. acrostic은 각 줄 첫 글자(정·근·지·수)를 굵게 강조하는 세로 머리글 문단이다.
+export const INVITATION_MESSAGE = {
+  acrostic: [
+    '정성스레 쌓아온 우리의 시간 속에서',
+    '근사함보다 다정함이 오래 남는다는 것을 배웠습니다.',
+    '지금처럼 서로의 하루를 따뜻하게 바라보며',
+    '수많은 날을 천천히 함께 걸어가겠습니다.',
+  ],
+  closing: ['소중한 분들을 초대하오니', '따뜻한 마음으로 축복해 주시면 감사하겠습니다.'],
 };
 
 // 각 섹션의 section-title / section-sub 문구. sub은 줄 단위 배열(빈 배열이면 렌더링하지 않음).
 export const SECTION_TEXTS = {
+  intro: {
+    title: 'INVITATION',
+    sub: [],
+  },
   weddingDay: {
     title: 'WEDDING DAY',
     sub: ['함께해 주실 그 날'],
