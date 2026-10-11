@@ -13,10 +13,10 @@ const TRANSIT_GROUPS: { label: string; items: string[] }[] = [
   { label: "🅿️ 주차", items: WEDDING_VENUE.station.parking },
 ];
 
-const NAVER_MAP_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID;
-const NAVER_MAP_SDK_SRC = NAVER_MAP_CLIENT_ID
-  ? `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_CLIENT_ID}`
-  : "";
+interface MapSectionProps {
+  // NEXT_PUBLIC_ 접두사가 없는 환경변수는 클라이언트 번들에 들어가지 않으므로 서버 컴포넌트(page.tsx)에서 읽어 전달받는다.
+  naverMapClientId?: string;
+}
 
 function NaverMapIcon() {
   return (
@@ -54,7 +54,7 @@ function formatWeddingTime(date: Date): string {
   return `낮 ${hour}시 ${minute}분 (하객 입장 ${hour}시부터)`;
 }
 
-export const MapSection = () => {
+export const MapSection = ({ naverMapClientId }: MapSectionProps) => {
   const sectionRef = useReveal<HTMLElement>();
   const mapElRef = useRef<HTMLDivElement>(null);
 
@@ -63,7 +63,7 @@ export const MapSection = () => {
     if (!el || !window.naver) return;
 
     const center = new window.naver.maps.LatLng(WEDDING_VENUE.coords.lat, WEDDING_VENUE.coords.lng);
-    const map = new window.naver.maps.Map(el, { center, zoom: 16 });
+    const map = new window.naver.maps.Map(el, { center, zoom: 16, draggable: false });
     new window.naver.maps.Marker({ position: center, map });
   };
 
@@ -75,8 +75,12 @@ export const MapSection = () => {
         <div className="info-addr">{WEDDING_VENUE.address}</div>
 
         <div className="map-illust" id="map" ref={mapElRef} />
-        {NAVER_MAP_SDK_SRC && (
-          <Script src={NAVER_MAP_SDK_SRC} strategy="afterInteractive" onReady={initNaverMap} />
+        {naverMapClientId && (
+          <Script
+            src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${naverMapClientId}`}
+            strategy="afterInteractive"
+            onReady={initNaverMap}
+          />
         )}
 
         <div className="map-btns">

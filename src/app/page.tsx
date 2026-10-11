@@ -19,7 +19,7 @@ export default function Home() {
       <WeddingDay />
       <Intro />
       <Profiles />
-      <MapSection />
+      <MapSection naverMapClientId={process.env.NEXT_NAVER_MAP_CLIENT_ID} />
       <Gallery />
       <Rsvp />
       <Gift />

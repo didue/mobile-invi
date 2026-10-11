@@ -11,6 +11,7 @@ declare global {
     interface MapOptions {
       center: LatLng;
       zoom?: number;
+      draggable?: boolean;
     }
 
     class Map {

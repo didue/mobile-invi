@@ -319,8 +319,8 @@ node scripts/optimize-images.mjs
 
 ## 13. 네이버 지도 SDK (MapSection.tsx)
 
-- 네이버 지도(Maps JavaScript API v3)를 `next/script`(`strategy="afterInteractive"`)로 로드한다. 스크립트 URL은 `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`. 네이버 클라우드 플랫폼 신규 Maps 애플리케이션은 `ncpKeyId` 파라미터로 인증한다(구 `ncpClientId`로 요청하면 `200 / Authentication Failed`).
-- Client ID는 `.env`의 `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID`로 관리한다(브라우저에서 SDK 로드에 써야 하므로 `NEXT_PUBLIC_` 접두사 필수). 키가 없으면 `<Script>` 자체를 렌더링하지 않는다.
+- 네이버 지도(Maps JavaScript API v3)를 `next/script`(`strategy="afterInteractive"`)로 로드한다. 스크립트 URL은 `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${naverMapClientId}`. 네이버 클라우드 플랫폼 신규 Maps 애플리케이션은 `ncpKeyId` 파라미터로 인증한다(구 `ncpClientId`로 요청하면 `200 / Authentication Failed`).
+- Client ID는 `.env.local`(배포 시 Vercel 환경변수)의 `NEXT_NAVER_MAP_CLIENT_ID`로 관리한다. `NEXT_PUBLIC_` 접두사가 없어 클라이언트 번들에 들어가지 않으므로, 서버 컴포넌트인 `src/app/page.tsx`에서 `process.env.NEXT_NAVER_MAP_CLIENT_ID`를 읽어 `<MapSection naverMapClientId={...} />` prop으로 전달한다. 페이지가 정적 프리렌더링되므로 값은 빌드 시점에 결정된다(값을 바꾸면 재빌드/재배포 필요). Client ID는 스크립트 URL에 포함되어 어차피 브라우저에 노출되므로, 실제 사용 제한은 네이버 클라우드 콘솔의 Web 서비스 URL(도메인) 등록으로 한다. 키가 없으면 `<Script>` 자체를 렌더링하지 않는다.
 - **Client Secret은 사용하지 않는다.** Maps JavaScript API(브라우저 지도 렌더링)는 Client ID만으로 동작하며, Secret은 서버 사이드 REST API(Geocoding 등) 전용이다. 이 프로젝트의 `.env`는 git에 커밋되는 파일(`.env.local`만 gitignore 대상)이므로 Secret처럼 노출되면 안 되는 값은 `.env`에 저장하지 않는다. 추후 서버 사이드 연동이 필요해지면 `.env.local`에 `NEXT_PUBLIC_` 접두사 없이 저장한다.
 - `Script`의 `onReady` 콜백에서 지도를 초기화한다: `new naver.maps.Map(el, { center: new naver.maps.LatLng(lat, lng), zoom: 16 })` 생성 후 동일 좌표로 `new naver.maps.Marker({ position: center, map })`를 생성해 중심에 마커를 표시한다.
 - 중심 좌표/마커 위치는 `src/data/wedding.ts`의 `WEDDING_VENUE.coords`(`{ lat, lng }`)를 참조한다(§5.7).
