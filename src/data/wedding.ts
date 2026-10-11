@@ -37,12 +37,12 @@ export type GalleryPhoto = {
 };
 
 export const GALLERY: GalleryPhoto[] = GALLERY_FILES.map((name) => ({
-  thumb: `/images/gallery/thumb/${name}.webp`,
-  full: `/images/gallery/full/${name}.webp`,
+  thumb: `/assets/images/gallery/thumb/${name}.webp`,
+  full: `/assets/images/gallery/full/${name}.webp`,
 }));
 
 // 카카오·OG 공유 미리보기 전용 썸네일(800x800). 공유 경로에서 갤러리 원본을 노출하지 않는다.
-export const OG_SHARE_IMAGE = '/images/og-share.webp';
+export const OG_SHARE_IMAGE = '/assets/images/og-share.webp';
 
 export const WEDDING_VENUE = {
   floor : '더 파티움 여의도 B1 그랜드 컨벤션홀',
@@ -120,7 +120,7 @@ export const SECTION_TEXTS = {
 export const NOTICES = [
   {
     title: '주차안내',
-    image: '/images/notice/grand-more1-1.webp',
+    image: '/assets/images/notice/grand-more1-1.webp',
     items: [
       '예식장 건물 내 1주차장 90분 무료 주차 가능합니다.',
       '주차 등록은 B1층 안내데스크에 문의해 주세요.',
@@ -130,7 +130,7 @@ export const NOTICES = [
   },
   {
     title: '연회장 안내',
-    image: '/images/notice/grand-more2-1.webp',
+    image: '/assets/images/notice/grand-more2-1.webp',
     items: [
       '신부 대기실은 B1 웨딩홀 오른쪽에 위치에 있습니다.<br/>연회장은 웨딩홀과 같은 B1층에 있습니다.',
       '식사는 뷔페식이 아닌 한정식 한 상 차림으로 제공되고 있습니다.<br/>한상차림 외에도 세미 뷔페가 준비되어 있습니다.',
@@ -141,7 +141,7 @@ export const NOTICES = [
   },
   {
     title: '포토부스',
-    image: '/images/notice/photo-booth.webp',
+    image: '/assets/images/notice/photo-booth.webp',
     items: [
       '소중한 날을 기록할 수 있도록 포토부스를 준비했습니다.',
       '방문해주신 하객 분들의 사진을 찍어<br/>한 장은 방명록에, 한 장은 추억으로 간직해 주세요.',

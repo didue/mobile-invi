@@ -66,7 +66,7 @@ const VARIANTS = [
 ];
 
 async function convertGallery() {
-  const sourceDir = resolveSourceDir(["originals/gallery", "public/images/gallery"]);
+  const sourceDir = resolveSourceDir(["originals/gallery", "public/assets/images/gallery"]);
   if (!sourceDir) {
     console.log("· 갤러리: 원본을 찾을 수 없어 건너뜁니다.");
     return null;
@@ -79,7 +79,7 @@ async function convertGallery() {
   const outputBytes = {};
 
   for (const variant of VARIANTS) {
-    ensureDir(join("public/images/gallery", variant.dir));
+    ensureDir(join("public/assets/images/gallery", variant.dir));
     outputBytes[variant.dir] = 0;
   }
 
@@ -91,7 +91,7 @@ async function convertGallery() {
     sourceBytes += statSync(inputPath).size;
 
     for (const variant of VARIANTS) {
-      const outputPath = join("public/images/gallery", variant.dir, `${stem}.webp`);
+      const outputPath = join("public/assets/images/gallery", variant.dir, `${stem}.webp`);
       await toWebp(inputPath, outputPath, variant);
       outputBytes[variant.dir] += statSync(outputPath).size;
     }
@@ -114,7 +114,7 @@ async function convertGallery() {
 }
 
 async function convertNotice() {
-  const sourceDir = resolveSourceDir(["originals/notice", "public/images/notice"]);
+  const sourceDir = resolveSourceDir(["originals/notice", "public/assets/images/notice"]);
   if (!sourceDir) {
     console.log("\n· 안내사항 이미지: 원본을 찾을 수 없어 건너뜁니다.");
     return;
@@ -123,14 +123,14 @@ async function convertNotice() {
   const files = listSourceFiles(sourceDir);
   console.log(`\n■ 안내사항 (${sourceDir}, ${files.length}장)`);
 
-  ensureDir("public/images/notice");
+  ensureDir("public/assets/images/notice");
   let sourceBytes = 0;
   let outputBytes = 0;
 
   for (const file of files) {
     const inputPath = join(sourceDir, file);
     const stem = basename(file, extname(file)).toLowerCase();
-    const outputPath = join("public/images/notice", `${stem}.webp`);
+    const outputPath = join("public/assets/images/notice", `${stem}.webp`);
     sourceBytes += statSync(inputPath).size;
     await toWebp(inputPath, outputPath, { maxEdge: 1200, quality: 80 });
     outputBytes += statSync(outputPath).size;
@@ -155,7 +155,7 @@ async function convertShareThumbnail(gallery) {
       (file) => file.toLowerCase() === SHARE_THUMBNAIL_SOURCE.toLowerCase()
     ) ?? gallery.files[0];
   const inputPath = join(gallery.sourceDir, source);
-  const outputPath = "public/images/og-share.webp";
+  const outputPath = "public/assets/images/og-share.webp";
 
   await toSquareWebp(inputPath, outputPath, { size: 800, quality: 80 });
   console.log(
@@ -165,10 +165,28 @@ async function convertShareThumbnail(gallery) {
   );
 }
 
+/** 종이 질감 배경 — 480px 카드의 고DPR(2x) 화면에 맞춰 960px로 줄인다. */
+async function convertPaperBackground() {
+  const inputPath = ["originals/paper_white.jpg", "public/assets/paper_white.jpg"].find(existsSync);
+  if (!inputPath) {
+    console.log("\n· 종이 배경: 원본을 찾을 수 없어 건너뜁니다.");
+    return;
+  }
+
+  const outputPath = "public/assets/paper_white.webp";
+  await toWebp(inputPath, outputPath, { maxEdge: 960, quality: 80 });
+  console.log(
+    `\n■ 종이 배경\n  ${inputPath} ${formatBytes(statSync(inputPath).size)} → paper_white.webp  960px  ${formatBytes(
+      statSync(outputPath).size
+    )}`
+  );
+}
+
 async function main() {
   const gallery = await convertGallery();
   await convertNotice();
   await convertShareThumbnail(gallery);
+  await convertPaperBackground();
   console.log("\n완료.");
 }
 

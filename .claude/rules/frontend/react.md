@@ -46,7 +46,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - `.app`: `max-width:480px; margin:0 auto; background:#fff; min-height:100vh;` / `@media(min-width:481px)` 그림자.
 - `.serif` = Nanum Myeongjo. `section{ padding:72px 16px; }`(모바일 좌우 여백 최소화를 위해 원본 32px에서 축소 — `.hero`/`.gallery-carousel`/`footer`/Intro의 좌우 패딩도 동일하게 16px로 맞춤).
 - **reveal 애니메이션**: `.reveal{opacity:0;transform:translateY(24px);transition:.9s}` → `.show` 로 노출.
-- `.hero` `min-height:100svh`, 방사형 그라디언트 배경(`.hero-bg`), `.eyebrow`(letter-spacing 0.35em).
+- `.hero` `min-height:100svh`,`.eyebrow`(letter-spacing 0.35em).
 - **대문 커버**: `.hero-arch{ width:80%; aspect-ratio:3/4.3; border-radius:0; box-shadow:0 18px 40px -20px rgba(107,79,52,.38);}` — 초기에는 아치(반원) 프레임이었으나 사각 프레임으로 변경했다. 클래스명 `.hero-arch`는 참조처(globals.css 캡처 방지 규칙, Header.tsx)가 있어 그대로 둔다.
 - **눈꽃**: `.snowflake` + `@keyframes snowfall{0%{translateY(-10%)...opacity:0}12%{opacity:.9}100%{translateY(560%) translateX(var(--drift));opacity:.3}}`
 - `.dday-cell`, `.dday-num`(Nanum, 22px, rose-deep).
@@ -248,14 +248,15 @@ node scripts/optimize-images.mjs
 
 | 출력 | 사양 | 용도 |
 |---|---|---|
-| `public/images/gallery/thumb/<name>.webp` | 긴 변 640px, q75 | 갤러리 격자(3x3) |
-| `public/images/gallery/full/<name>.webp` | 긴 변 1600px, q80 | 라이트박스 |
-| `public/images/notice/<name>.webp` | 긴 변 1200px, q80 | 안내사항 탭 이미지 |
-| `public/images/og-share.webp` | 800×800 중앙 크롭, q80 | 카카오·OG 공유 썸네일(§12) |
+| `public/assets/images/gallery/thumb/<name>.webp` | 긴 변 640px, q75 | 갤러리 격자(3x3) |
+| `public/assets/images/gallery/full/<name>.webp` | 긴 변 1600px, q80 | 라이트박스 |
+| `public/assets/images/notice/<name>.webp` | 긴 변 1200px, q80 | 안내사항 탭 이미지 |
+| `public/assets/images/og-share.webp` | 800×800 중앙 크롭, q80 | 카카오·OG 공유 썸네일(§12) |
+| `public/assets/paper_white.webp` | 긴 변 960px, q80 | `main` 종이 질감 배경(원본 `originals/paper_white.jpg`) |
 
 규칙:
 
-- **원본은 커밋하지 않는다.** `originals/`(gitignore 대상)에 보관하고 배포에는 변환본만 쓴다. 스크립트는 `originals/<종류>` → `public/images/<종류>` 순으로 입력 경로를 탐색하므로 원본을 옮긴 뒤에도 그대로 재실행된다.
+- **원본은 커밋하지 않는다.** `originals/`(gitignore 대상)에 보관하고 배포에는 변환본만 쓴다. 스크립트는 `originals/<종류>` → `public/assets/images/<종류>` 순으로 입력 경로를 탐색하므로 원본을 옮긴 뒤에도 그대로 재실행된다.
 - 출력 파일명은 **소문자 `.webp`로 통일**한다(대소문자 404 사고 방지, §상수 및 데이터 참고).
 - `.rotate()`를 먼저 적용해 EXIF 회전값을 픽셀에 반영하고, `withMetadata()`를 쓰지 않아 EXIF(촬영 장비·GPS 등)가 함께 제거된다.
 - 사진을 추가·교체할 때는 원본을 `originals/gallery/`에 넣고 스크립트를 다시 돌린 뒤 `wedding.ts`의 `GALLERY_FILES`에 파일명(확장자 없이, 소문자)을 추가한다.
@@ -309,7 +310,7 @@ node scripts/optimize-images.mjs
 
 - Kakao JS SDK를 `next/script`(`strategy="afterInteractive"`)로 로드하고, 로드 완료 시 `Kakao.init(NEXT_PUBLIC_KAKAO_JS_KEY)`를 1회만 호출한다(`isInitialized()`로 중복 초기화 방지).
 - JS 키는 `.env`의 `NEXT_PUBLIC_KAKAO_JS_KEY`로 관리한다(브라우저에서 SDK 초기화에 써야 하므로 `NEXT_PUBLIC_` 접두사 필수). 키가 없으면 SDK 스크립트를 아예 로드하지 않는다.
-- `shareToKakao()`: `Kakao.Share.sendDefault({ objectType:'feed', content:{ title, description, imageUrl, link }, buttons })`로 현재 페이지 URL을 공유한다. 제목은 `${신랑} ♥ ${신부} 결혼합니다`, 설명은 예식 일시, 대표 이미지는 **`OG_SHARE_IMAGE`(= `/images/og-share.webp`, 800×800 · 약 48KB)의 절대 URL**. SDK가 초기화되지 않았으면 토스트로 안내하고 종료한다.
+- `shareToKakao()`: `Kakao.Share.sendDefault({ objectType:'feed', content:{ title, description, imageUrl, link }, buttons })`로 현재 페이지 URL을 공유한다. 제목은 `${신랑} ♥ ${신부} 결혼합니다`, 설명은 예식 일시, 대표 이미지는 **`OG_SHARE_IMAGE`(= `/assets/images/og-share.webp`, 800×800 · 약 48KB)의 절대 URL**. SDK가 초기화되지 않았으면 토스트로 안내하고 종료한다.
   - 공유 썸네일로 `GALLERY` 원본을 쓰지 않는다. 과거 `GALLERY[0]`(8.4MB 원본)을 지정해 공유 미리보기마다 수MB가 전송됐고, 카카오 썸네일 한도를 넘겨 미리보기 자체가 안 뜰 위험도 있었다. 전용 썸네일은 §9 스크립트가 생성한다.
 - `src/app/layout.tsx`의 `metadata.openGraph`에도 같은 `OG_SHARE_IMAGE`를 지정해 카카오 외 플랫폼의 미리보기도 원본을 긁지 않게 한다. `og:image`를 절대 URL로 만들기 위한 `metadataBase`는 Vercel이 빌드 시 자동 주입하는 `VERCEL_PROJECT_PRODUCTION_URL`에서 만들고, 없으면 `http://localhost:3000`으로 떨어진다(`.env` 수정 금지 규칙을 지키기 위한 선택).
 - `copyShareLink()`: `navigator.clipboard.writeText(location.href)` → 성공 시 토스트 `링크가 복사되었어요😉`, 실패 시 `복사에 실패했어요😣`.

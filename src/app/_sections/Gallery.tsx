@@ -14,7 +14,7 @@ import { SectionHeading } from "@/components/common/SectionHeading";
 const PER_PAGE = 9;
 const PAGE_COUNT = Math.ceil(GALLERY.length / PER_PAGE);
 const SWIPE_THRESHOLD_PX = 50;
-const ARROW_ICON = "/icon/anchor_icon_white.png";
+const ARROW_ICON = "/assets/icon/anchor_icon_white.png";
 
 export const Gallery = () => {
   const sectionRef = useReveal<HTMLElement>();

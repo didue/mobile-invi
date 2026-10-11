@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { COUPLE, GIFTS } from "@/data/family";
 import { SECTION_TEXTS } from "@/data/wedding";
@@ -7,6 +8,8 @@ import { toast } from "@/lib/toast";
 import { ROLE_LABEL } from "@/lib/roleLabel";
 import { useReveal } from "@/hooks/useReveal";
 import { SectionHeading } from "@/components/common/SectionHeading";
+
+const CHEVRON_ICON = "/assets/icon/anchor_icon_gray.png";
 
 type GiftEntry = { name: string; role: string; tag: string; account: string };
 
@@ -73,7 +76,9 @@ function GiftGroup({
     <div className={`acc-group${open ? " open" : ""}`} id={id}>
       <button type="button" className="acc-head" onClick={onToggle} aria-expanded={open}>
         <span>{title}</span>
-        <span className="chev">⌄</span>
+        <span className="chev">
+          <Image src={CHEVRON_ICON} alt="" width={12} height={12} />
+        </span>
       </button>
       <div className="acc-body">
         <div className="contact-group">

@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: SHARE_TITLE,
   description: SHARE_DESCRIPTION,
+  icons: {
+    icon: { url: "/assets/icon/favicon.webp", type: "image/webp" },
+  },
   // 공유 미리보기가 갤러리 원본(수MB)을 긁어가지 않도록 전용 썸네일을 지정한다.
   openGraph: {
     title: SHARE_TITLE,

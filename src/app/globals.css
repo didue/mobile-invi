@@ -66,6 +66,13 @@ body::-webkit-scrollbar {
   }
 }
 
+/* 종이 질감 이미지가 로드되기 전에는 .app 의 --paper 색이 비치도록 배경색은 지정하지 않는다. */
+main {
+  background-image: url("/assets/paper_white.webp");
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+}
+
 section {
   position: relative;
   padding: 72px 16px;
@@ -634,8 +641,13 @@ img,
   color: var(--rose-deep);
 }
 .acc-head .chev {
-  color: var(--ink-medium);
-  font-size: var(--font-size-sm);
+  display: flex;
+}
+/* 원본 아이콘은 오른쪽(›)을 향하므로 시계방향 90도 회전해 아래(⌄)를 향하게 한다. */
+.acc-head .chev img {
+  width: 12px;
+  height: 12px;
+  transform: rotate(90deg);
 }
 .acc-body {
   max-height: 0;
@@ -1021,8 +1033,6 @@ img,
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 18% 12%, rgba(197, 171, 134, 0.42), transparent 45%),
-    radial-gradient(circle at 85% 88%, rgba(141, 111, 76, 0.2), transparent 45%);
   z-index: 0;
 }
 .eyebrow {

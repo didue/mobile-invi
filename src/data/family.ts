@@ -2,7 +2,7 @@ export const COUPLE = {
   groom: {
     name: '배정근',
     role: 'groom',
-    profile: '/images/profile/IMG_0036.jpg',
+    profile: '/assets/images/profile/IMG_0036.jpg',
     description : [
       '90년 4월 28일',
       '다정다감 섬세한 ISFJ',
@@ -12,7 +12,7 @@ export const COUPLE = {
   bride: {
     name: '한지수',
     role: 'bride',
-    profile: '/images/profile/IMG_0040.jpg',
+    profile: '/assets/images/profile/IMG_0040.jpg',
     description : [
       '93년 5월 26일',
       '명랑발랄 꼼꼼한 ENTJ',
