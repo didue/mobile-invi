@@ -456,15 +456,27 @@ img,
   color: var(--ink-medium);
 }
 .info-place {
-  font-size: var(--font-size-lg);
-  font-weight: 500;
-  font-family: var(--font-gowun-batang);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-reg-s);
 }
-.info-addr {
+.info-tel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--ink-hard);
+}
+.info-floor, .info-addr {
   margin-top: 8px;
   font-size:  var(--font-size-md-s);
   color: var(--ink-medium);
   line-height: 1.6;
+}
+.info-floor {
+  color: var(--ink-hard);
 }
 .map-illust {
   margin: 22px 0 6px;
@@ -1016,7 +1028,7 @@ img,
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px 16px;
+  padding: 30px 16px;
   position: relative;
 }
 .hero-bg {
@@ -1072,11 +1084,18 @@ img,
   transform: rotate(180deg);
   white-space: nowrap;
 }
-.hero-side {
+/* 사진 상단 문구는 좌우 세로 문구와 글꼴만 공유하고 회전 없이 가로로 둔다. */
+.hero-side,
+.hero-top {
   font-family: var(--font-cormorant-garamond);
   font-size: var(--font-size-regualr);
   letter-spacing: 0.2em;
   color: var(--ink-medium);
+}
+.hero-top {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 20px;
 }
 .names {
   position: relative;
@@ -1268,7 +1287,6 @@ img,
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   row-gap: 14px;
-  color: var(--ink-dark);
 }
 .intro-parents {
   font-size: var(--font-size-md);
@@ -1286,8 +1304,8 @@ img,
   font-family: var(--font-nanum-myeongju);
   font-size: var(--font-size-lg);
   letter-spacing: 0.3em;
-  /* letter-spacing이 마지막 글자 뒤에도 붙어 중앙에서 밀리는 것을 상쇄한다. */
   margin-right: -0.3em;
+  color: var(--ink-dark);
 }
 .intro-name.groom { grid-column: 1; grid-row: 2; }
 .intro-name.bride { grid-column: 3; grid-row: 2; }
@@ -1300,9 +1318,28 @@ img,
 }
 
 /* Footer */
+/* 감사 문구 위 장식: 양옆 가는 선 사이에 영문 세리프 인사 */
+.footer-ornament {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-cormorant-garamond);
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--rose);
+}
+.footer-ornament::before,
+.footer-ornament::after {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: var(--pink);
+}
 .footer-msg {
   font-family: var(--font-gowun-batang);
   font-size: var(--font-size-md);
+  line-height: 1.5em;
 }
 
 .share-btn-wrap {

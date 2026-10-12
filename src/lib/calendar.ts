@@ -27,7 +27,7 @@ export function downloadWeddingCalendarEvent() {
     `DTSTART:${formatIcsDate(start)}`,
     `DTEND:${formatIcsDate(end)}`,
     `SUMMARY:${escapeIcsText(title)}`,
-    `LOCATION:${escapeIcsText(WEDDING_VENUE.floor)}`,
+    `LOCATION:${escapeIcsText(`${WEDDING_VENUE.name} ${WEDDING_VENUE.floor}`)}`,
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");

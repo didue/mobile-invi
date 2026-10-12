@@ -48,8 +48,10 @@ export const GALLERY: GalleryPhoto[] = GALLERY_FILES.map((name) => ({
 export const OG_SHARE_IMAGE = '/assets/images/og-share.webp';
 
 export const WEDDING_VENUE = {
-  floor : '더 파티움 여의도 B1 그랜드 컨벤션홀',
+  name: '더 파티움 여의도',
+  floor : '그랜드 컨벤션홀(B1)',
   address : '서울특별시 영등포구 은행로 30(중소기업중앙회)',
+  tel : '050-71346-0181',
   coords : { lat: 37.52810299154129, lng: 126.92278739271629 },
   station : {
     metro : [
@@ -79,7 +81,7 @@ export const MAPS = {
   },
   tmap: {
     // API 키가 필요 없는 티맵 앱 스킴으로 목적지 좌표를 넘겨 길찾기 화면을 바로 연다(티맵 앱이 설치된 기기에서만 동작).
-    link: () => `tmap://route?goalname=${encodeURIComponent('더파티움 여의도')}&goalx=${WEDDING_VENUE.coords.lng}&goaly=${WEDDING_VENUE.coords.lat}`,
+    link: () => `tmap://route?goalname=${encodeURIComponent(WEDDING_VENUE.name)}&goalx=${WEDDING_VENUE.coords.lng}&goaly=${WEDDING_VENUE.coords.lat}`,
   },
 };
 
@@ -133,7 +135,6 @@ export const SECTION_TEXTS = {
   gift: {
     title: '마음 전하실 곳',
     sub: [
-      '멀리서도 소중한 마음을 보내주셔서 감사합니다',
       '참석이 어려우신 분들을 위해 기재했습니다',
       '너그러운 마음으로 양해 부탁드립니다',
     ],

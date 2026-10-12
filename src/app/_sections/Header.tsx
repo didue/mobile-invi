@@ -28,8 +28,9 @@ export const Header = () => {
     <section className="hero">
       <div className="hero-bg" />
 
+      <div className="hero-top">WE&apos;RE GETTING MARRIED</div>
       <div className="hero-frame">
-        <div className="hero-side">WE&apos;RE GETTING MARRIED</div>
+        <div className="hero-side">SAVE THE DATE</div>
         <div className="hero-arch">
           <Image
             src={heroPhoto}
@@ -48,7 +49,9 @@ export const Header = () => {
       <div className="hero-date">
         <b>{heroDate.datePart}</b> {heroDate.restPart}
       </div>
-      <div className="hero-venue">{WEDDING_VENUE.floor}</div>
+      <div className="hero-venue">
+        {WEDDING_VENUE.name} {WEDDING_VENUE.floor}
+      </div>
     </section>
   );
 };

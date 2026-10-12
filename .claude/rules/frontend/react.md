@@ -55,7 +55,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - **연락처/버튼**: `.contact-btn`(라운드, pink 테두리), `.contact-btn.fill`(rose 배경), `.contact-btn.kakao`(#FEE500).
 - **아코디언**: `.acc-group`(라운드 박스, 테두리 없음, 섹션 콘텐츠 너비 안에서 표시), `.acc-body{max-height:0;transition:.35s}`, `.acc-group.open .acc-body{max-height:600px}`. 펼쳤을 때 `.contact-row` 구분선은 연한 회색(`#e5e5e5`). 헤더 화살표(`.chev img`)는 닫힘 시 아래(⌄), `.open` 시 위(⌃)로 0.35s 회전하며 상하반전된다.
 - **갤러리**: `.gallery-grid`(3열 grid, gap 6px), `.g-slot`(aspect 1/1), `.gallery-more`(밑줄 텍스트 `더보기` 버튼).
-- **인포카드/지도**: `.info-card`, `.info-date`(Nanum 24px), `.map-btn`, `.transit`.
+- **인포카드/지도**: `.info-card`, `.info-date`(Nanum 24px), `.info-place`(flex 가로 중앙 정렬, 장소명 + 전화 버튼), `.info-tel`(28px 정사각 inline-flex 영역, 테두리·배경 없이 아이콘만 `var(--ink-hard)` 색), `.info-floor`/`.info-addr`, `.map-btn`, `.transit`.
 - **폼/모달**: `.field input/textarea`, `.seg button.active`(rose), `.stepper`, `.submit-btn`(rose).
 - `.modal-overlay{position:fixed;inset:0;background:rgba(58,50,46,.45);display:none;align-items:center}` `.show{display:flex}`, `.modal-sheet`(화면 중앙 팝업, 전체 라운드, `@keyframes popupIn` scale 페이드인). 모든 모달(RsvpModal/GuestbookModal/ContactModal)이 동일한 중앙 팝업 스타일을 공유한다.
 - **줌 방지 blur**: `body.zoom-blur{filter:blur(14px)!important}`.
@@ -93,8 +93,9 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 ### 5.2 Hero
 - `.hero-arch` 안에 `<img src={HERO_IMAGE}>`만 둔다(초기의 눈꽃 효과는 제거했다).
+- `.hero-frame` 위에 `.hero-top`(`SAVE THE DATE`)을 둔다. 글꼴·크기·자간·색은 `.hero-side`와 같은 규칙을 공유하고, 회전 없이 가로로 표시한다.
 - `.hero-frame`(가로 flex) 안에 왼쪽 `.hero-side`(`We're getting married`) / `.hero-arch` / 오른쪽 `.names`(`{groom.firstName} & {bride.firstName}` 대문자) 순서로 배치한다. 좌우 문구는 한 줄로, `writing-mode:vertical-rl` + `rotate(180deg)`로 반시계 방향 90도 회전해 아래에서 위로 읽힌다.
-- 날짜: `2027. 01. 09. SAT · 오후 12시 40분`, 그 아래 `.hero-venue`에 `WEDDING_VENUE.floor`(예식장 위치)
+- 날짜: `2027. 01. 09. SAT · 오후 12시 40분`, 그 아래 `.hero-venue`에 `{WEDDING_VENUE.name} {WEDDING_VENUE.floor}`(예식장 이름·홀)
 
 ### 5.3 WeddingDay
 - **D-day**: `renderDday()`를 `setInterval(...,1000)`로. `diff = WEDDING_DATE - now`.
@@ -104,7 +105,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
   - `.dday-box` 안에서 각 `.dday-cell` 사이에 `.dday-sep`(`:`) 구분자를 렌더링한다(마지막 셀 뒤에는 넣지 않음). 셀이 1개(💐 상태)면 구분자 없음.
 - **달력**: 2027년 1월(제목 `2027 · JANUARY`). 그리드 셀은 원본 그대로 하드코딩(전월 27~31 muted, 1~31, 익월 1~6 muted). 9일 = `.highlight`. 일요일 위치 = `.sun`.
 - **D-day 문구**: 달력 아래에 남은 일수 문구를 표시한다. 일수>0이면 `{신랑}&{신부}의 결혼식이 {n}일 남았습니다`(`{n}일`은 `.dday-highlight`로 포인트 컬러 강조), 일수===0이면 `결혼식 날입니다`. 예식이 이미 지났으면(💐 상태) 문구 자체를 숨긴다.
-- **캘린더에 추가하기 버튼**: D-day 문구 아래 버튼. 클릭 시 `lib/calendar.ts`의 `downloadWeddingCalendarEvent()`로 iCalendar(.ics) 파일을 생성해 다운로드한다(모바일에서는 기본 캘린더 앱으로 열림). 이벤트 제목은 `{신랑}·{신부} 결혼식`, 시작 시각은 `WEDDING_DATE`, 종료는 시작 2시간 후, 장소는 `WEDDING_VENUE.floor`.
+- **캘린더에 추가하기 버튼**: D-day 문구 아래 버튼. 클릭 시 `lib/calendar.ts`의 `downloadWeddingCalendarEvent()`로 iCalendar(.ics) 파일을 생성해 다운로드한다(모바일에서는 기본 캘린더 앱으로 열림). 이벤트 제목은 `{신랑}·{신부} 결혼식`, 시작 시각은 `WEDDING_DATE`, 종료는 시작 2시간 후, 장소는 `{WEDDING_VENUE.name} {WEDDING_VENUE.floor}`.
 
 ### 5.4 Invitation
 - 초대 문구(`.msg-body`, `<b>새로운 하루</b>` 볼드), 서명 2줄, divider SVG(원본 path 그대로).
@@ -124,6 +125,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 ### 5.7 MapSection
 - 인포카드 텍스트(§3) + 네이버 지도(§13) + 3개 지도앱 링크(a target=_blank) + 교통 3줄.
+- 장소명(`.info-place`, `WEDDING_VENUE.name`) 바로 오른쪽에 테두리 없는 전화기 아이콘 버튼(`a.info-tel`)을 두고, 클릭 시 `tel:{WEDDING_VENUE.tel 하이픈 제거}`로 전화 앱을 연다. 아이콘만 있으므로 `aria-label`(`{name} 전화하기`)을 준다.
 - `div#map.map-illust`에 네이버 지도(Maps JavaScript API v3)를 렌더링한다. 중심 좌표와 마커 위치는 `src/data/wedding.ts`의 `WEDDING_VENUE.coords`(위도 37.52810299154129, 경도 126.92278739271629), 줌 레벨은 16으로 고정한다.
 
 ### 5.8 Rsvp
@@ -166,6 +168,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 각 `.tab-panel` 상단에 `.notice-image` 이미지 영역(`NOTICES[i].image` 경로를 `next/image`로 표시, 비어있으면 점선 테두리 placeholder `이미지 준비 중`), 그 아래 기존 `.notice-list`(번호 리스트) 또는 `.tab-empty`(`추후 업데이트될 예정입니다.`).
 
 ### 5.15 Footer
+- 감사 문구(`.footer-msg`) 위에 장식 문구 `.footer-ornament`(`Thank you`, Cormorant Garamond · `--font-size-xl` · rose, 양옆 40px 가는 선 `::before/::after`)를 둔다.
 - 감사 인사 문구 + `축하해주세요` 버튼(`js-confetti`로 이모지 컨페티, `lib/confetti.ts` 공용 유틸 사용).
 - `카카오톡 공유하기` 버튼: 카카오 공유 SDK로 현재 페이지 링크를 피드 템플릿(제목/설명/대표 이미지/링크)으로 공유(§12).
 - `링크 복사하기` 버튼: `navigator.clipboard.writeText(location.href)` → 토스트 `링크가 복사되었어요` / 실패 시 `복사에 실패했어요`.
