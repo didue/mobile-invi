@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ContactButton } from "@/app/_sections/ContactButton";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import { COUPLE, CONTACTS } from "@/data/family";
@@ -7,6 +8,7 @@ import { formatGivenName, formatParentName, formatRel } from "@/lib/familyFormat
 export const Intro = () => {
   return (
     <section className="px-4 py-16 text-center leading-relaxed text-[var(--ink-hard)]">
+      <Image className="intro-ribbon" src="/assets/icon/icon_ribbon_256.png" alt="" width={256} height={41} />
       <SectionHeading {...SECTION_TEXTS.intro} />
       <div className="invitation-msg">
         <p>

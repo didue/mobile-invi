@@ -84,7 +84,7 @@ export const Gift = () => {
   const [openGroups, setOpenGroups] = useState({ groom: false, bride: false });
 
   return (
-    <section ref={sectionRef} className="reveal">
+    <section ref={sectionRef} className="reveal gift-section">
       <SectionHeading {...SECTION_TEXTS.gift} />
 
       <GiftGroup

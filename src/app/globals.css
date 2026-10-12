@@ -112,6 +112,9 @@ section {
   color: var(--rose-deep);
   margin-bottom: 6px;
 }
+.gift-section .section-title {
+  font-size: var(--font-size-regualr);
+}
 .section-sub {
   text-align: center;
   font-size: var(--font-size-md-s);
@@ -1281,6 +1284,12 @@ img,
 }
 .invitation-msg b {
   font-weight: 700;
+}
+.intro-ribbon {
+  display: block;
+  width: 128px;
+  height: auto;
+  margin: 0 auto 65px;
 }
 /* 위 줄: 신랑측·신부측 부모님 성함, 아래 줄: 이름 & 이름. 3열 그리드로 & 를 두 이름 사이 가운데에 고정한다. */
 .intro-box {

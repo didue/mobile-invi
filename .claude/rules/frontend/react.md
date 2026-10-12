@@ -113,7 +113,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 ### 5.5 Profiles
 - 업로드 기능 없음(읽기 전용). 2열. 각 열: 프로필 사진 / role / name(Nanum) / rel(줄바꿈).
 - 프로필 이미지는 `src/data/family.ts`의 `COUPLE.groom.profile` / `COUPLE.bride.profile` 경로를 `next/image`로 렌더링.
-- Intro 섹션은 위에서부터 `SECTION_TEXTS.intro`(`INVITATION`) 제목 → 초대 문구(`.invitation-msg`, `wedding.ts`의 `INVITATION_MESSAGE`) → 부모님 성함·이름 박스(`.intro-box`) 순서다. 초대 문구 첫 문단(`acrostic`)은 각 줄 첫 글자를 `<b>`로 굵게 강조하고(정·근·지·수), 둘째 문단(`closing`)은 강조 없이 렌더링한다.
+- Intro 섹션은 위에서부터 `SECTION_TEXTS.intro`(`INVITATION`) 제목 → 초대 문구(`.invitation-msg`, `wedding.ts`의 `INVITATION_MESSAGE`) → 리본 장식(`.intro-ribbon`, `public/assets/icon/icon_ribbon_256.png`을 `next/image`로 128px 폭 표시, 장식이므로 `alt=""`) → 부모님 성함·이름 박스(`.intro-box`) 순서다. 초대 문구 첫 문단(`acrostic`)은 각 줄 첫 글자를 `<b>`로 굵게 강조하고(정·근·지·수), 둘째 문단(`closing`)은 강조 없이 렌더링한다.
 - 연락하기 버튼은 Profiles가 아니라 Intro(부모님 성함·이름 박스 바로 아래)에 둔다. `혼주에게 연락하기` 버튼 → ContactModal 오픈(`_sections/ContactButton.tsx`, Intro를 서버 컴포넌트로 유지하기 위해 버튼만 클라이언트 컴포넌트로 분리).
 
 ### 5.6 Gallery
@@ -138,6 +138,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 닫기: ✕ 버튼 / 오버레이 클릭.
 
 ### 5.10 Gift
+- 섹션 루트는 `section.gift-section`이며, 이 섹션의 `.section-title`만 `--font-size-md-s`로 작게 표시한다(`.gift-section .section-title`).
 - 섹션 타이틀(`.section-title`): `마음 전하실 곳`. 부제(`.section-sub`, 2줄): `멀리서도 소중한 축하의 마음을 보내주셔서 감사드리며` / `따뜻한 마음에 깊이 감사드립니다.`(`<br/>`로 줄바꿈).
 - 아코디언 2개(`신랑측 계좌번호`/`신부측 계좌번호`). 헤더 클릭 시 `.open` 토글.
 - 각 행: 이름 + 계좌번호(`.tag`에 `entry.account`를 표시) / `[ (클립보드 아이콘) 복사하기 ]` 형태의 아이콘+텍스트 버튼 1개(`.contact-btn.copy-btn`, pink 테두리 라운드 버튼). 카카오로 보내기 버튼은 두지 않는다.

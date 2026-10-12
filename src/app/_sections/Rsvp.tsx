@@ -18,11 +18,11 @@ export const Rsvp = () => {
         <button type="button" className="rsvp-open-btn" onClick={() => setOpen(true)}>
           참석여부 알리기
         </button>
-        {status && (
+        {/* {status && (
           <div className="rsvp-status">
             <b>{status.name}</b>님, 회답이 전달되었어요 ({status.attend} · {status.count}명)
           </div>
-        )}
+        )} */}
       </div>
 
       <RsvpModal open={open} onClose={() => setOpen(false)} onSubmitted={setStatus} />

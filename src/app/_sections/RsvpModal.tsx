@@ -49,7 +49,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
     if (!res) return;
 
     setShowThanks(true);
-    toast("회답이 전달되었어요");
+    toast("정상적으로 전달되었어요💗");
     onSubmitted(result);
 
     setTimeout(() => {
