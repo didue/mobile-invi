@@ -47,8 +47,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - `.serif` = Nanum Myeongjo. `section{ padding:72px 16px; }`(모바일 좌우 여백 최소화를 위해 원본 32px에서 축소 — `.hero`/`footer`/Intro의 좌우 패딩도 동일하게 16px로 맞춤).
 - **reveal 애니메이션**: `.reveal{opacity:0;transform:translateY(24px);transition:.9s}` → `.show` 로 노출.
 - `.hero` `min-height:100svh`,`.eyebrow`(letter-spacing 0.35em).
-- **대문 커버**: `.hero-arch{ width:80%; aspect-ratio:3/4.3; border-radius:0; box-shadow:0 18px 40px -20px rgba(107,79,52,.38);}` — 초기에는 아치(반원) 프레임이었으나 사각 프레임으로 변경했다. 클래스명 `.hero-arch`는 참조처(globals.css 캡처 방지 규칙, Header.tsx)가 있어 그대로 둔다.
-- **눈꽃**: `.snowflake` + `@keyframes snowfall{0%{translateY(-10%)...opacity:0}12%{opacity:.9}100%{translateY(560%) translateX(var(--drift));opacity:.3}}`
+- **대문 커버**: `.hero-arch{ width:85%; aspect-ratio:3/4.3; border-radius:0; box-shadow:0 18px 40px -20px rgba(107,79,52,.38);}` — 초기에는 아치(반원) 프레임이었으나 사각 프레임으로 변경했다. 클래스명 `.hero-arch`는 참조처(globals.css 캡처 방지 규칙, Header.tsx)가 있어 그대로 둔다.
 - `.dday-cell`, `.dday-num`(Nanum, 22px, rose-deep).
 - 달력 `.cal-grid`(7열 grid), `.cal-dow.sun`/`.cal-day.sun` 붉은색, `.cal-day.muted`(회색 #DCD5CE), `.cal-day.highlight`(rose 배경 흰글씨).
 - `.msg-body`(line-height 2.05), `.signature`(Nanum).
@@ -93,10 +92,9 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 새로고침·첫 접속 시 항상 최상단에서 시작한다: 마운트 시 `history.scrollRestoration = 'manual'` + `window.scrollTo(0, 0)`. 배경 잠금이 잠글 때의 `scrollY`를 저장했다가 인트로 종료 시 복원하므로, 이 effect는 `useModalBackgroundLock` 호출보다 앞에 둔다.
 
 ### 5.2 Hero
-- `.hero-arch` 안에 `<img src={HERO_IMAGE}>` + `.snow-layer`.
-- 눈꽃 24개 동적 생성: 각 flake `left`=rand 0~100%, `fontSize`=9~18px, `animationDuration`=7~14s, `animationDelay`=`-`(0~10)s, `--drift`=(-25~25)px. 텍스트 `❄`.
-  - React: `useEffect`에서 24개 배열 만들어 렌더하거나 DOM append. **랜덤값은 마운트 시 1회 고정**(SSR 불일치 방지 위해 `useEffect` 내부에서만 생성).
-- 이름: `.names`(배정근 & 한지수), 날짜: `2027. 01. 09. SAT · 오후 12시 40분`
+- `.hero-arch` 안에 `<img src={HERO_IMAGE}>`만 둔다(초기의 눈꽃 효과는 제거했다).
+- `.hero-frame`(가로 flex) 안에 왼쪽 `.hero-side`(`We're getting married`) / `.hero-arch` / 오른쪽 `.names`(`{groom.firstName} & {bride.firstName}` 대문자) 순서로 배치한다. 좌우 문구는 한 줄로, `writing-mode:vertical-rl` + `rotate(180deg)`로 반시계 방향 90도 회전해 아래에서 위로 읽힌다.
+- 날짜: `2027. 01. 09. SAT · 오후 12시 40분`, 그 아래 `.hero-venue`에 `WEDDING_VENUE.floor`(예식장 위치)
 
 ### 5.3 WeddingDay
 - **D-day**: `renderDday()`를 `setInterval(...,1000)`로. `diff = WEDDING_DATE - now`.
@@ -268,7 +266,7 @@ node scripts/optimize-images.mjs
 ## 10. 검증 체크리스트 (완료 기준)
 
 - [ ] 인트로 오버레이에서 봉투 영상이 자동 재생되고 약 5.3초(봉투가 열리는 시점)에 페이드아웃된다. 화면 탭 또는 `건너뛰기`로 즉시 넘어간다.
-- [ ] 히어로 사각 프레임에 대문 사진(`src/assets/images/hero.jpg`)이 `next/image`로 표시되고 눈꽃 24개가 떨어진다.
+- [ ] 히어로 사각 프레임에 대문 사진(`src/assets/images/hero.jpg`)이 `next/image`로 표시된다.
 - [ ] D-day가 1초마다 갱신되고, 예식일 이후엔 💐 WEDDING DAY 표시.
 - [ ] 2027년 1월 달력에서 9일이 rose로 강조.
 - [ ] D-day 문구의 남은 일수가 포인트 컬러로 강조되고, 캘린더에 추가하기로 .ics 파일이 정상 다운로드된다.
@@ -299,7 +297,7 @@ node scripts/optimize-images.mjs
 
 ## 11. 이식 시 주의점 (Hydration / SSR)
 
-- 랜덤(눈꽃) · `Date.now()` · `window/document` 접근은 전부 `useEffect` 내부에서만.
+- 랜덤 · `Date.now()` · `window/document` 접근은 전부 `useEffect` 내부에서만.
 - 최상위 페이지에 `'use client'`. 스토리지·업로드·모달 전부 클라이언트 상태.
 - `dangerouslySetInnerHTML` 사용 금지(방명록은 React 기본 이스케이프로 충분).
 - 클래스명은 원본과 1:1로 유지(globals.css 재사용 위해). 구조를 바꾸지 말 것.

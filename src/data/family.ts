@@ -1,6 +1,8 @@
 export const COUPLE = {
   groom: {
     name: '배정근',
+    lastName : 'bae',
+    firstName : 'jeonggeun',
     role: 'groom',
     profile: '/assets/images/profile/IMG_0036.jpg',
     description : [
@@ -11,6 +13,8 @@ export const COUPLE = {
   },
   bride: {
     name: '한지수',
+    lastName : 'han',
+    firstName : 'jisoo',
     role: 'bride',
     profile: '/assets/images/profile/IMG_0040.jpg',
     description : [

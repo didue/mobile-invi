@@ -1,31 +1,10 @@
 "use client";
 
-import { useMemo, type CSSProperties } from "react";
+// 예식 시각을 getHours() 로 포맷하므로 빌드 서버(UTC) 시간대가 아닌 방문자 브라우저 시간대로 렌더링되도록 클라이언트 컴포넌트로 둔다.
 import Image from "next/image";
 import { COUPLE } from "@/data/family";
-import { WEDDING_DATE } from "@/data/wedding";
+import { WEDDING_DATE, WEDDING_VENUE } from "@/data/wedding";
 import heroPhoto from "@/assets/images/hero.jpg";
-import { useMounted } from "@/hooks/useMounted";
-
-const SNOWFLAKE_COUNT = 24;
-
-type Snowflake = {
-  left: number;
-  size: number;
-  duration: number;
-  delay: number;
-  drift: number;
-};
-
-function createSnowflakes(count: number): Snowflake[] {
-  return Array.from({ length: count }, () => ({
-    left: Math.random() * 100,
-    size: 9 + Math.random() * 9,
-    duration: 7 + Math.random() * 7,
-    delay: Math.random() * 10,
-    drift: Math.round(Math.random() * 50 - 25),
-  }));
-}
 
 function formatHeroDate(date: Date): { datePart: string; restPart: string } {
   const year = date.getFullYear();
@@ -45,51 +24,31 @@ function formatHeroDate(date: Date): { datePart: string; restPart: string } {
 const heroDate = formatHeroDate(WEDDING_DATE);
 
 export const Header = () => {
-  const mounted = useMounted();
-  const snowflakes = useMemo(() => (mounted ? createSnowflakes(SNOWFLAKE_COUNT) : []), [mounted]);
-
   return (
     <section className="hero">
       <div className="hero-bg" />
-      <div className="eyebrow">Wedding Invitation</div>
 
-      <div className="hero-arch">
-        <Image
-          src={heroPhoto}
-          alt={`${COUPLE.groom.name} · ${COUPLE.bride.name}`}
-          fill
-          sizes="(max-width: 480px) 80vw, 384px"
-          priority
-        />
-        <div className="snow-layer">
-          {snowflakes.map((flake, index) => (
-            <div
-              key={index}
-              className="snowflake"
-              style={
-                {
-                  left: `${flake.left}%`,
-                  fontSize: `${flake.size}px`,
-                  animationDuration: `${flake.duration}s`,
-                  animationDelay: `-${flake.delay}s`,
-                  "--drift": `${flake.drift}px`,
-                } as CSSProperties
-              }
-            >
-              ❄
-            </div>
-          ))}
+      <div className="hero-frame">
+        <div className="hero-side">WE&apos;RE GETTING MARRIED</div>
+        <div className="hero-arch">
+          <Image
+            src={heroPhoto}
+            alt={`${COUPLE.groom.firstName} · ${COUPLE.bride.firstName}`}
+            fill
+            sizes="(max-width: 480px) 85vw, 408px"
+            priority
+          />
         </div>
-      </div>
-
-      <div className="names" style={{ marginTop: 26 }}>
-        <div className="kr">{COUPLE.groom.name}</div>
-        <div className="amp">&amp;</div>
-        <div className="kr">{COUPLE.bride.name}</div>
+        <div className="names hero-side">
+          <div className="kr">{COUPLE.groom.firstName.toUpperCase()}</div>
+          <div className="amp">&amp;</div>
+          <div className="kr">{COUPLE.bride.firstName.toUpperCase()}</div>
+        </div>
       </div>
       <div className="hero-date">
         <b>{heroDate.datePart}</b> {heroDate.restPart}
       </div>
+      <div className="hero-venue">{WEDDING_VENUE.floor}</div>
     </section>
   );
 };
