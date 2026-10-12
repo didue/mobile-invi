@@ -93,8 +93,8 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 ### 5.2 Hero
 - `.hero-arch` 안에 `<img src={HERO_IMAGE}>`만 둔다(초기의 눈꽃 효과는 제거했다).
-- `.hero-frame` 위에 `.hero-top`(`SAVE THE DATE`)을 둔다. 글꼴·크기·자간·색은 `.hero-side`와 같은 규칙을 공유하고, 회전 없이 가로로 표시한다.
-- `.hero-frame`(가로 flex) 안에 왼쪽 `.hero-side`(`We're getting married`) / `.hero-arch` / 오른쪽 `.names`(`{groom.firstName} & {bride.firstName}` 대문자) 순서로 배치한다. 좌우 문구는 한 줄로, `writing-mode:vertical-rl` + `rotate(180deg)`로 반시계 방향 90도 회전해 아래에서 위로 읽힌다.
+- `.hero-frame` 위에 `.hero-top`(`WE'RE GETTING MARRIED`)을 둔다. 글꼴·크기·자간·색은 `.hero-side`와 같은 규칙을 공유하고, 회전 없이 가로로 표시한다.
+- `.hero-frame`(가로 flex) 안에 왼쪽 `.hero-side`(`SAVE THE DATE`) / `.hero-arch` / 오른쪽 `.names.hero-side`(`{groom.firstName} & {bride.firstName}` 대문자, `.hero-side` 글꼴 공유) 순서로 배치한다. 좌우 문구는 한 줄로, `writing-mode:vertical-rl` + `rotate(180deg)`로 반시계 방향 90도 회전해 아래에서 위로 읽힌다.
 - 날짜: `2027. 01. 09. SAT · 오후 12시 40분`, 그 아래 `.hero-venue`에 `{WEDDING_VENUE.name} {WEDDING_VENUE.floor}`(예식장 이름·홀)
 
 ### 5.3 WeddingDay

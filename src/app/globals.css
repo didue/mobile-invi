@@ -116,7 +116,7 @@ section {
   text-align: center;
   font-size: var(--font-size-md-s);
   font-family: var(--font-gowun-batang);
-  color: var(--ink-medium);
+  color: var(--ink-hard);
   margin-bottom: 32px;
 }
 
@@ -177,7 +177,7 @@ section {
 .calendar {
   margin: 34px auto 0;
   width: 100%;
-  max-width: 280px;
+  max-width: 330px;
 }
 .cal-title {
   text-align: center;
@@ -193,7 +193,7 @@ section {
   row-gap: 6px;
 }
 .cal-dow {
-  font-size: var(--font-size-xxs);
+  font-size: var(--font-size-xs);
   color: var(--ink-medium);
   text-align: center;
   padding-bottom: 8px;
@@ -213,7 +213,7 @@ section {
   justify-content: center;
   width: 24px;
   height: 24px;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md-s);
   color: var(--ink);
   border-radius: 50%;
 }
@@ -521,10 +521,12 @@ img,
   color: var(--ink);
   font-size: var(--font-size-md);
   font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
 }
 .transit-item {
   font-size: var(--font-size-md-s);
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 .transit-way {
   display: grid;
@@ -1103,7 +1105,6 @@ img,
 }
 .names .kr {
   line-height: 1.4;
-  font-weight: 700;
 }
 .amp {
   font-size: var(--font-size-regualr);
@@ -1111,7 +1112,7 @@ img,
   letter-spacing: 0.2em;
 }
 .hero-date {
-  margin-top: 30px;
+  margin-top: 40px;
   font-size: var(--font-size-reg-s);
   letter-spacing: 0.12em;
   color: var(--ink-hard);

@@ -23,7 +23,7 @@ const handleTmapClick = (e: MouseEvent<HTMLAnchorElement>) => {
 const TRANSIT_GROUPS: { label: string; items: string[] }[] = [
   { label: "🚆 지하철", items: WEDDING_VENUE.station.metro },
   { label: "🚌 버스", items: WEDDING_VENUE.station.bus },
-  { label: "🚗 자가용 및 주차안내", items: WEDDING_VENUE.station.car },
+  { label: "🚗 자가용 및 주차 안내", items: WEDDING_VENUE.station.car },
 ];
 
 interface MapSectionProps {
