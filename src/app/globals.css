@@ -39,8 +39,9 @@
   --font-gowun-batang: "Gowun Batang", serif;
   --font-nanum-myeongju : "Nanum Myeongjo", serif;
   --font-ibm-plex-sans-kr: "IBM Plex Sans KR", sans-serif;
-  /* 한글 글리프가 없어 한글은 같은 세리프 계열인 Nanum Myeongjo로 대체한다. */
   --font-cormorant-garamond: "Cormorant Garamond", var(--font-nanum-myeongju);
+  --font-playfair-display: "Playfair Display", var(--font-nanum-myeongju);
+  --font-bodoni-moda: "Bodoni Moda", var(--font-nanum-myeongju);
 }
 
 html,
@@ -1092,7 +1093,7 @@ img,
 /* 사진 상단 문구는 좌우 세로 문구와 글꼴만 공유하고 회전 없이 가로로 둔다. */
 .hero-side,
 .hero-top {
-  font-family: var(--font-cormorant-garamond);
+  font-family: var(--font-playfair-display);
   font-size: var(--font-size-regualr);
   letter-spacing: 0.2em;
   color: var(--ink-medium);
@@ -1110,15 +1111,17 @@ img,
   line-height: 1.4;
 }
 .amp {
+  font-family: var(--font-gowun-batang);
   font-size: var(--font-size-regualr);
   margin: 0.6em 0;
   letter-spacing: 0.2em;
 }
 .hero-date {
   margin-top: 40px;
+  font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-reg-s);
   letter-spacing: 0.12em;
-  color: var(--ink-hard);
+  color: var(--ink);
   z-index: 1;
 }
 .hero-date b {
@@ -1127,9 +1130,10 @@ img,
 }
 .hero-venue {
   margin-top: 8px;
+  font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-reg-s);
   letter-spacing: 0.06em;
-  color: var(--ink-hard);
+  color: var(--ink);
   z-index: 1;
 }
 /* Profiles */
@@ -1302,6 +1306,7 @@ img,
   font-size: var(--font-size-md);
   font-weight: 500;
   word-break: keep-all;
+  color: var(--ink);
 }
 .intro-parents span {
   font-size: var(--font-size-xs);

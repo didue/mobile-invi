@@ -11,10 +11,10 @@
 `app/layout.tsx` `<head>`에 원본과 동일하게 Google Fonts 로드(next/font 대신 link 태그 유지가 안전):
 
 ```
-Nanum Myeongjo (400,700,800), Gowun Batang (400,700), IBM Plex Sans KR (400,700)
+Nanum Myeongjo (400,700,800), Gowun Batang (400,700), IBM Plex Sans KR (400,700), Cormorant Garamond (500), Playfair Display (400~700, italic 포함), Bodoni Moda (400~700, italic 포함)
 ```
 
-preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변수로 선언해 필요한 곳에서 `font-family: var(--font-*)`로 사용한다(`--font-gowun-batang`, `--font-ibm-plex-sans-kr`).
+preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변수로 선언해 필요한 곳에서 `font-family: var(--font-*)`로 사용한다(`--font-gowun-batang`, `--font-ibm-plex-sans-kr`, `--font-cormorant-garamond`, `--font-playfair-display`, `--font-bodoni-moda`).
 
 ## 뷰 포트
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">

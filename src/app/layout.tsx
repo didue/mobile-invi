@@ -49,7 +49,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router 루트 레이아웃이라 pages/_document 규칙이 적용되지 않는다. react.md 스펙상 next/font 대신 link 태그로 로드한다. */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;700&family=Cormorant+Garamond:wght@500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;700&family=Cormorant+Garamond:wght@500&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Bodoni+Moda:ital,wght@0,400..700;1,400..700&display=swap"
           rel="stylesheet"
         />
       </head>
