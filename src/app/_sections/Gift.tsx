@@ -11,7 +11,7 @@ import { SectionHeading } from "@/components/common/SectionHeading";
 
 const CHEVRON_ICON = "/assets/icon/anchor_icon_gray.png";
 
-type GiftEntry = { name: string; role: string; tag: string; account: string };
+type GiftEntry = { name: string; role: string; tag: string; account: string; bank: string; };
 
 function CopyIcon() {
   return (
@@ -59,7 +59,7 @@ function GiftGroup({
             <div className="contact-row" key={entry.name}>
               <div className="who">
                 {ROLE_LABEL[entry.role] ?? entry.role} {entry.name}
-                <span className="tag">{entry.account}</span>
+                <span className="tag">{entry.bank}  {entry.account}</span>
               </div>
               <div className="contact-btns">
                 <button

@@ -76,8 +76,8 @@ export const CONTACTS = {
       rel : '어머니',
       tag: '신부 어머니',
       tel: '01063217952',
-      bank: '국민은행',
-      account : '714002-01-458084',
+      bank: '우리은행',
+      account : '1002-358-163550',
       kakaoId: ''
     },
     {
