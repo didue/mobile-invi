@@ -135,18 +135,6 @@ section {
   box-shadow: var(--box-shadow);
 }
 
-.color-pink {color: var(--pink);}
-.color-rose {color: var(--rose);}
-.color-rose-deep {color: var(--rose-deep);}
-.color-red {color: var(--red);}
-.color-ink {color: var(--ink);}
-.color-ink-soft {color: var(--ink-soft);}
-.color-ink-medium {color: var(--ink-medium);}
-
-.primary {
-  margin-left: 0px !important;
-}
-
 /* Wedding Day: D-day + 달력 */
 .dday-box {
   display: flex;
@@ -450,16 +438,6 @@ img,
   border-bottom: 1px solid var(--pink-soft);
   text-align: center;
 }
-.info-date {
-  font-family: "Nanum Myeongjo", serif;
-  font-size: var(--font-size-xl);
-  color: var(--rose-deep);
-}
-.info-time {
-  margin-top: 6px;
-  font-size: var(--font-size-sm);
-  color: var(--ink-medium);
-}
 .info-place {
   display: flex;
   align-items: center;
@@ -732,13 +710,6 @@ img,
   padding: 50px 0;
 }
 
-.form-card {
-  background: #fff;
-  border-radius: 2px;
-  padding: 30px 18px;
-  border-top: 1px solid var(--pink-soft);
-  border-bottom: 1px solid var(--pink-soft);
-}
 .field {
   margin-bottom: 20px;
 }
@@ -859,15 +830,6 @@ img,
 }
 .rsvp-open-btn:active {
   opacity: 0.85;
-}
-.rsvp-status {
-  margin-top: 14px;
-  font-size: var(--font-size-sm);
-  color: var(--ink-medium);
-}
-.rsvp-status b {
-  color: var(--rose-deep);
-  font-weight: 500;
 }
 
 .modal-overlay {
@@ -1081,14 +1043,6 @@ img,
   inset: 0;
   z-index: 0;
 }
-.eyebrow {
-  letter-spacing: 0.35em;
-  font-size: var(--font-size-xs);
-  color: var(--rose);
-  text-transform: uppercase;
-  z-index: 1;
-  margin-bottom: 28px;
-}
 /* 대문 사진 좌우에 세로 문구를 두기 위한 가로 배치 컨테이너 */
 .hero-frame {
   position: relative;
@@ -1216,11 +1170,6 @@ img,
   color: var(--ink-medium);
   line-height: 1.5;
   margin-top: 10px;
-}
-.profile-contact-btn {
-  letter-spacing: 0.08em;
-  min-width: 150px;
-  display: inline-block;
 }
 
 /* Contact modal tabs */

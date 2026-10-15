@@ -46,7 +46,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - `.app`: `max-width:480px; margin:0 auto; background:#fff; min-height:100vh;` / `@media(min-width:481px)` 그림자.
 - `.serif` = Nanum Myeongjo. `section{ padding:72px 16px; }`(모바일 좌우 여백 최소화를 위해 원본 32px에서 축소 — `.hero`/`footer`/Intro의 좌우 패딩도 동일하게 16px로 맞춤).
 - **reveal 애니메이션**: `.reveal{opacity:0;transform:translateY(24px);transition:.9s}` → `.show` 로 노출.
-- `.hero` `min-height:100svh`,`.eyebrow`(letter-spacing 0.35em).
+- `.hero` `min-height:100svh`.
 - **대문 커버**: `.hero-arch{ width:85%; aspect-ratio:3/4.3; border-radius:0; box-shadow:0 18px 40px -20px rgba(107,79,52,.38);}` — 초기에는 아치(반원) 프레임이었으나 사각 프레임으로 변경했다. 클래스명 `.hero-arch`는 참조처(globals.css 캡처 방지 규칙, Header.tsx)가 있어 그대로 둔다.
 - `.dday-cell`, `.dday-num`(Nanum, 22px, rose-deep).
 - 달력 `.cal-grid`(7열 grid), `.cal-dow.sun`/`.cal-day.sun` 붉은색, `.cal-day.muted`(회색 #DCD5CE), `.cal-day.highlight`(rose 배경 흰글씨).
@@ -55,7 +55,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - **연락처/버튼**: `.contact-btn`(라운드, pink 테두리), `.contact-btn.fill`(rose 배경), `.contact-btn.kakao`(#FEE500).
 - **아코디언**: `.acc-group`(라운드 박스, 테두리 없음, 섹션 콘텐츠 너비 안에서 표시), `.acc-body{max-height:0;transition:.35s}`, `.acc-group.open .acc-body{max-height:600px}`. 펼쳤을 때 `.contact-row` 구분선은 연한 회색(`#e5e5e5`). 헤더 화살표(`.chev img`)는 닫힘 시 아래(⌄), `.open` 시 위(⌃)로 0.35s 회전하며 상하반전된다.
 - **갤러리**: `.gallery-grid`(3열 grid, gap 6px), `.g-slot`(aspect 1/1), `.gallery-more`(밑줄 텍스트 `더보기` 버튼).
-- **인포카드/지도**: `.info-card`, `.info-date`(Nanum 24px), `.info-place`(flex 가로 중앙 정렬, 장소명 + 전화 버튼), `.info-tel`(28px 정사각 inline-flex 영역, 테두리·배경 없이 아이콘만 `var(--ink-hard)` 색), `.info-floor`/`.info-addr`, `.map-btn`, `.transit`.
+- **인포카드/지도**: `.info-card`, `.info-place`(flex 가로 중앙 정렬, 장소명 + 전화 버튼), `.info-tel`(28px 정사각 inline-flex 영역, 테두리·배경 없이 아이콘만 `var(--ink-hard)` 색), `.info-floor`/`.info-addr`, `.map-btn`, `.transit`.
 - **폼/모달**: `.field input/textarea`, `.seg button.active`(rose), `.stepper`, `.submit-btn`(rose).
 - `.modal-overlay{position:fixed;inset:0;background:rgba(58,50,46,.45);display:none;align-items:center}` `.show{display:flex}`, `.modal-sheet`(화면 중앙 팝업, 전체 라운드, `@keyframes popupIn` scale 페이드인). 모든 모달(RsvpModal/GuestbookModal/ContactModal)이 동일한 중앙 팝업 스타일을 공유한다.
 - **줌 방지 blur**: `body.zoom-blur{filter:blur(14px)!important}`.

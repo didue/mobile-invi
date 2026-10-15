@@ -69,12 +69,6 @@ function TmapIcon() {
   );
 }
 
-function formatWeddingTime(date: Date): string {
-  const hour = date.getHours();
-  const minute = date.getMinutes();
-  return `낮 ${hour}시 ${minute}분 (하객 입장 ${hour}시부터)`;
-}
-
 export const MapSection = ({ naverMapClientId }: MapSectionProps) => {
   const sectionRef = useReveal<HTMLElement>();
   const mapElRef = useRef<HTMLDivElement>(null);
