@@ -18,7 +18,7 @@ export const LoadingOverlay = ({ show, message }: LoadingOverlayProps) => {
     <div className="loading-overlay" role="status" aria-live="polite">
       <div className="loading-card">
         <div className="loading-spinner" aria-hidden="true" />
-        <p className="loading-text">{message}</p>
+        <p className="loading-text" dangerouslySetInnerHTML={{ __html : message}}/>
       </div>
     </div>,
     document.body
