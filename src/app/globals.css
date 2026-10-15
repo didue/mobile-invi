@@ -906,6 +906,55 @@ img,
     opacity: 1;
   }
 }
+/* 저장 중 로딩: 모달(z 70) 위, 라이트박스(z 80) 아래 */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 50, 46, 0.2);
+  cursor: progress;
+}
+.loading-card {
+  width: 200px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: var(--box-shadow);
+  text-align: center;
+}
+.loading-text {
+  margin: 0 0 14px;
+  font-size: var(--font-size-sm);
+  color: var(--ink-hard);
+}
+.loading-bar {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--pink-soft);
+  overflow: hidden;
+}
+.loading-bar span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--rose);
+  animation: loadingSlide 1.1s ease-in-out infinite;
+}
+@keyframes loadingSlide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
 .modal-head {
   display: flex;
   justify-content: space-between;

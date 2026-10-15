@@ -6,6 +6,7 @@ import { apiPost } from "@/lib/api";
 import { toast } from "@/lib/toast";
 import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
 import { useMounted } from "@/hooks/useMounted";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import {
   RSVP_MAX_COUNT,
   RSVP_MESSAGE_MAX_LENGTH,
@@ -42,6 +43,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
   const [message, setMessage] = useState("");
   const [showThanks, setShowThanks] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const handleSubmit = async () => {
     if (submitting) return;
@@ -55,7 +57,9 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
     const payload: RsvpPayload = { ...result, meal, message: message.trim() };
     // GAS 가 시트에 쓰는 데 1~2초 걸려 그 사이 중복 탭으로 같은 회답이 여러 줄 쌓이지 않도록 막는다.
     setSubmitting(true);
+    setSaving(true);
     const res = await apiPost("/rsvp", payload);
+    setSaving(false);
     if (!res) {
       setSubmitting(false);
       return;
@@ -83,7 +87,8 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="modal-sheet">
+      {/* 로딩 dimm 은 클릭만 막으므로 키보드(Tab/Enter)로 시트를 조작하지 못하게 inert 로 함께 잠근다. */}
+      <div className="modal-sheet" inert={saving}>
         <div className="modal-head">
           <div className="modal-title">참석여부 알리기</div>
           <button type="button" className="modal-close" onClick={onClose} aria-label="닫기">
@@ -190,6 +195,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
         </button>
         <div className={`thanks-msg${showThanks ? " show" : ""}`}>소중한 회답 감사합니다 💗</div>
       </div>
+      <LoadingOverlay show={saving} message="참석 의사를 전달하고 있어요" />
     </div>,
     document.body
   );
