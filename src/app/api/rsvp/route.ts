@@ -4,7 +4,6 @@ import {
   RSVP_ATTENDS,
   RSVP_MAX_COUNT,
   RSVP_MEALS,
-  RSVP_MESSAGE_MAX_LENGTH,
   RSVP_MIN_COUNT,
   RSVP_SIDES,
   type RsvpPayload,
@@ -18,13 +17,11 @@ function isOneOf<T extends string>(options: readonly T[], value: unknown): value
 
 function parseRsvpPayload(body: unknown): RsvpPayload | null {
   if (typeof body !== "object" || body === null || Array.isArray(body)) return null;
-  const { side, name, attend, count, meal, message } = body as Record<string, unknown>;
+  const { side, name, attend, count, meal } = body as Record<string, unknown>;
 
-  if (typeof name !== "string" || typeof message !== "string") return null;
+  if (typeof name !== "string") return null;
   const trimmedName = name.trim();
-  const trimmedMessage = message.trim();
   if (!trimmedName || trimmedName.length > NAME_MAX_LENGTH) return null;
-  if (trimmedMessage.length > RSVP_MESSAGE_MAX_LENGTH) return null;
 
   if (!isOneOf(RSVP_SIDES, side) || !isOneOf(RSVP_ATTENDS, attend) || !isOneOf(RSVP_MEALS, meal)) {
     return null;
@@ -38,7 +35,7 @@ function parseRsvpPayload(body: unknown): RsvpPayload | null {
     return null;
   }
 
-  return { side, name: trimmedName, attend, count, meal, message: trimmedMessage };
+  return { side, name: trimmedName, attend, count, meal };
 }
 
 export async function POST(request: NextRequest) {

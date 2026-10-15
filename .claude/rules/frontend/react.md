@@ -63,7 +63,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - **라이트박스**: `.lightbox-overlay`(z-index 80, 어두운 배경), `.lightbox-stage img{max-width:88%;max-height:78%}`, `.lightbox-arrow`, `.lightbox-count`.
 - **방명록**: `.gb-list`(max-height 320 스크롤), `.gb-item`, `.gb-empty`.
 - **탭바**: `.tab-btn.active::after`(밑줄), `.tab-panel.active{display:block}`.
-- `footer`, `.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%)...}` `.show{opacity:.94}` (z-index 60).
+- `footer`, `.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%)...}` `.show{opacity:.94}` (z-index 90 — 모달 70·로딩 dimm 75·라이트박스 80 위, 인트로 100 아래. 모달이 열린 채 띄우는 토스트가 dimm 뒤에 가려지지 않도록).
 - **인트로**: `.intro-overlay{position:fixed;z-index:100;transition:opacity .9s}` `.hide{opacity:0}`, `.intro-open`(영상 전체를 덮는 버튼, 배경 `var(--ivory)` — 영상 로드 전/레터박스 영역이 봉투 종이색과 이어지도록), `.intro-video{object-fit:cover}`, `.intro-skip`(우측 상단 반투명 라운드 버튼).
 - **플로팅 버튼**: `.floating-btns{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);width:100%;max-width:480px;display:flex;flex-direction:column;align-items:flex-end;gap:10px;padding:0 16px;z-index:50}`(모달/토스트와 겹치지 않도록 `.app`과 동일한 480px 중앙 정렬 컨테이너를 재사용). `.fab-btn`(44px 원형, 반투명 어두운 배경 `rgba(58,50,46,.55)`, 흰색 아이콘, `opacity:0`→`.show{opacity:1}`으로 페이드).
 
@@ -132,8 +132,8 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - `참석여부 알리기` 버튼 → RsvpModal. 제출 후 `.rsvp-status`에 `${name}님, 회답이 전달되었어요 (${attend} · ${count}명)`.
 
 ### 5.9 RsvpModal
-- 필드: 성함(text), 참석여부 seg(참석/불참, 기본 참석), 인원 stepper(1~10, 기본 1), 신랑측/신부측 seg(기본 신랑측), 식사여부 seg(식사 예정/식사 안 함, 기본 식사 예정), 전하실 말씀 textarea(선택, 최대 500자). 선택지·한도는 `src/types/rsvp.ts`에서 클라이언트와 서버가 공유한다.
-- 제출: 성함 없으면 토스트 `성함을 입력해주세요`. 있으면 `POST /api/rsvp`(`src/app/api/rsvp/route.ts`)로 `{side,name,attend,count,meal,message}`를 보내고, 서버가 입력을 검증한 뒤 `src/lib/gas.ts`가 Google Apps Script 웹앱(`src/lib/Code.gs`)에 `timestamp`(한국 시각 문자열)를 붙여 전달해 스프레드시트 `참석의사` 시트에 `제출시각·구분·성함·참석여부·인원·식사여부·메시지` 순으로 한 줄 추가한다. GAS URL은 서버 전용 환경변수 `GAS_ENDPOINT_URL`(`.env.local`/Vercel)로 관리한다. 전송 중에는 저장 버튼을 비활성화해 중복 제출을 막는다. GAS 응답을 기다리는 동안 공용 `components/common/LoadingOverlay.tsx`(`.loading-overlay` 반투명 dimm z-index 75 + `.loading-card` 안 `참석 의사를 전달하고 있어요` 문구와 좌→우로 흐르는 `.loading-bar`)를 띄워 클릭을 막고, 모달 시트는 `inert`로 잠가 키보드 조작도 막는다. 응답이 오면(성공·실패 모두) 로딩과 dimm을 즉시 해제한다.
+- 필드: 성함(text), 참석여부 seg(참석/불참, 기본 참석), 인원 stepper(1~10, 기본 1), 신랑측/신부측 seg(기본 신랑측), 식사여부 seg(식사 예정/식사 안 함, 기본 식사 예정). 메시지 입력란은 두지 않는다(축하 메시지는 방명록으로 받는다). 선택지·한도는 `src/types/rsvp.ts`에서 클라이언트와 서버가 공유한다.
+- 제출: 성함 없으면 토스트 `성함을 입력해주세요`. 있으면 `POST /api/rsvp`(`src/app/api/rsvp/route.ts`)로 `{side,name,attend,count,meal}`를 보내고, 서버가 입력을 검증한 뒤 `src/lib/gas.ts`가 Google Apps Script 웹앱(`src/lib/Code.gs`)에 `timestamp`(한국 시각 문자열)를 붙여 전달해 스프레드시트 `참석의사` 시트에 `구분·성함·참석여부·인원·식사여부·등록일시` 순으로 한 줄 추가한다. GAS URL은 서버 전용 환경변수 `GAS_ENDPOINT_URL`(`.env.local`/Vercel)로 관리한다. 전송 중에는 저장 버튼을 비활성화해 중복 제출을 막는다. GAS 응답을 기다리는 동안 공용 `components/common/LoadingOverlay.tsx`(`.loading-overlay` 반투명 dimm z-index 75 + `.loading-card` 안 `참석 의사를 전달하고 있어요` 문구, 그 위에 회전하는 원형 스피너 `.loading-spinner`)를 띄워 클릭을 막고, 모달 시트는 `inert`로 잠가 키보드 조작도 막는다. 응답이 오면(성공·실패 모두) 로딩과 dimm을 즉시 해제한다.
 - 성공 시 `.thanks-msg` 표시, 상태 텍스트 갱신, 토스트 `참석 의사가 전달되었어요💌`, 900ms 뒤 모달 닫고 초기화.
 - 닫기: ✕ 버튼 / 오버레이 클릭.
 
@@ -151,17 +151,17 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 ### 5.12 Guestbook
 - `축하 메시지 남기기` 버튼 → GuestbookModal 오픈.
-- 목록: `storage.list('guestbook:', true)` → 각 get → `time` 최신순 정렬 → 연한 회색 배경 카드(`.gb-item`, `background:#f5f5f5`, `border-radius:14px`)로 표시(이름 / 날짜시각 / 메시지). 비면 `첫 번째 축하 메시지를 남겨주세요 🤍`.
+- 목록: `GET /api/guestbook`(`src/app/api/guestbook/route.ts`) → `src/lib/gas.ts`가 GAS 웹앱(`src/lib/Code.gs`)에 `?action=guestbook_list`로 요청해 스프레드시트 `방명록` 시트를 등록시각 최신순으로 받아온다(정렬은 GAS에서 수행, 응답에 연락처는 포함하지 않음). 불러오는 동안 `.gb-empty`에 `축하 메시지를 불러오고 있어요`를 표시한다. 연한 회색 배경 카드(`.gb-item`, `background:#f5f5f5`, `border-radius:14px`)로 표시(이름 / 날짜시각 / 메시지). 비면 `첫 번째 축하 메시지를 남겨주세요 🤍`.
 - **페이징**: 한 번에 `PAGE_SIZE=5`개만 노출(`visibleCount` state). 더 있으면 하단에 `더보기` 버튼(`.gb-load-more`) 표시 → 클릭 시 `visibleCount`를 5씩 늘려 다음 페이지를 기존 목록 아래에 append. 전부 보이면 버튼 숨김.
 - **XSS 방지**: 원본은 `escapeHtml` 사용. React는 기본 이스케이프되므로 `{it.name}`, `{it.msg}` 그대로 렌더하면 됨(dangerouslySetInnerHTML 금지).
 - `formatTime(iso)` = `yyyy.mm.dd hh:mi`(예: `2027.01.09 12:40`).
-- 목록 우측 상단에 `삭제` 버튼 → 버튼 클릭시 `성함 + 연락처 뒷자리` 입력 검증 확인 후 삭제하는 로직 추가
+- 목록 우측 상단에 `삭제` 버튼 → `성함 + 연락처 뒷자리` 입력 후 `DELETE /api/guestbook/{id}`(body `{name, contact}`). 본인 확인은 GAS(`guestbook_delete`)가 시트 값과 비교해 수행하고 일치하면 해당 행을 삭제한다. 불일치(403) 토스트 `이름과 연락처가 일치하지 않아요`, 이미 없음(404) `이미 삭제된 메시지예요`.
 
 ### 5.13 GuestbookModal
 - 폼: 성함(text) + 연락처 뒷자리(text) + 축하 메시지(textarea)
 - 연락처 뒷자리의 `placeholder`로 `동명이인 확인을 위해 연락처 뒷자리를 입력해주세요` 표기
 - 제출: 셋 중 하나라도 비면 토스트 `이름과 연락처, 메시지를 모두 입력해주세요`.
-  `storage.set('guestbook:'+Date.now(), JSON.stringify({name,msg,time:ISO}), true)` → 입력 초기화, 토스트 `메시지가 등록되었어요`, GuestbookModal 닫힘.
+  `POST /api/guestbook`로 `{name,contact,message}`(한도는 `src/types/guestbook.ts`: 성함 50·연락처 20·메시지 500자)를 보내면 서버가 검증 후 `id`(UUID)와 `timestamp`(서버 시각 ISO)를 붙여 GAS(`guestbook_add`)로 전달하고, GAS가 `방명록` 시트에 `ID·성함·연락처 뒷자리·메시지·등록시각` 순으로 한 줄 추가한다(등록시각은 Date, 나머지는 텍스트 서식). 전송 중에는 저장 버튼 비활성화 + `LoadingOverlay`(`축하 메시지를 등록하고 있어요`) + 시트 `inert`. 성공 시 입력 초기화, 토스트 `메시지가 등록되었어요`, GuestbookModal 닫힘.
 - 제출 후 GuestbookModald이 닫히면서 이모지 컨페티 애니메이션 효과 실행. 이모지 리스트(`["🎉", "👰🏻‍♀️", "🤵🏻‍♂️", "✨", "💛", "💜", "💞", "🌸"]`)를 `js-confetti` 라이브러리를 활용하여 `emojiSize : 50`, `confettiNumber : 50`으로 이벤트 핸들러 설정. 
 
 ### 5.14 Notice

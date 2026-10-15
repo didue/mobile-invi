@@ -5,7 +5,6 @@ export const RSVP_MEALS = ["식사 예정", "식사 안 함"] as const;
 
 export const RSVP_MIN_COUNT = 1;
 export const RSVP_MAX_COUNT = 10;
-export const RSVP_MESSAGE_MAX_LENGTH = 500;
 
 export type RsvpAttend = (typeof RSVP_ATTENDS)[number];
 export type RsvpSide = (typeof RSVP_SIDES)[number];
@@ -17,5 +16,4 @@ export interface RsvpPayload {
   attend: RsvpAttend;
   count: number;
   meal: RsvpMeal;
-  message: string;
 }

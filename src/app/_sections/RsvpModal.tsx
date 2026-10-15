@@ -9,7 +9,6 @@ import { useMounted } from "@/hooks/useMounted";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import {
   RSVP_MAX_COUNT,
-  RSVP_MESSAGE_MAX_LENGTH,
   RSVP_MIN_COUNT,
   type RsvpAttend,
   type RsvpMeal,
@@ -40,7 +39,6 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
   const [side, setSide] = useState<RsvpSide>("신랑측");
   const [count, setCount] = useState(RSVP_MIN_COUNT);
   const [meal, setMeal] = useState<RsvpMeal>("식사 예정");
-  const [message, setMessage] = useState("");
   const [showThanks, setShowThanks] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -54,7 +52,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
     }
 
     const result: RsvpResult = { name: trimmedName, attend, count, side };
-    const payload: RsvpPayload = { ...result, meal, message: message.trim() };
+    const payload: RsvpPayload = { ...result, meal };
     // GAS 가 시트에 쓰는 데 1~2초 걸려 그 사이 중복 탭으로 같은 회답이 여러 줄 쌓이지 않도록 막는다.
     setSubmitting(true);
     setSaving(true);
@@ -73,7 +71,6 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
       onClose();
       setShowThanks(false);
       setName("");
-      setMessage("");
       setSubmitting(false);
     }, CLOSE_DELAY_MS);
   };
@@ -179,23 +176,12 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
           </div>
         </div>
 
-        <div className="field">
-          <label htmlFor="rsvpMessage">전하실 말씀 (선택)</label>
-          <textarea
-            id="rsvpMessage"
-            placeholder="두 사람에게 전하고 싶은 말이 있다면 남겨주세요"
-            maxLength={RSVP_MESSAGE_MAX_LENGTH}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </div>
-
         <button type="button" className="submit-btn" onClick={handleSubmit} disabled={submitting}>
           {submitting ? "전송 중..." : "저장"}
         </button>
         <div className={`thanks-msg${showThanks ? " show" : ""}`}>소중한 회답 감사합니다 💗</div>
       </div>
-      <LoadingOverlay show={saving} message="참석 의사를 전달하고 있어요" />
+      <LoadingOverlay show={saving} message="참석 의사를<br/> 전달하고 있어요🕊️" />
     </div>,
     document.body
   );

@@ -17,10 +17,8 @@ export const LoadingOverlay = ({ show, message }: LoadingOverlayProps) => {
   return createPortal(
     <div className="loading-overlay" role="status" aria-live="polite">
       <div className="loading-card">
+        <div className="loading-spinner" aria-hidden="true" />
         <p className="loading-text">{message}</p>
-        <div className="loading-bar" aria-hidden="true">
-          <span />
-        </div>
       </div>
     </div>,
     document.body

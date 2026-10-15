@@ -395,7 +395,8 @@ img,
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s;
-  z-index: 60;
+  /* 모달(70)·로딩 dimm(75)·라이트박스(80)가 열린 상태에서 띄우는 토스트도 보이도록 그 위, 인트로(100) 아래에 둔다. */
+  z-index: 90;
 }
 .toast.show {
   opacity: 0.94;
@@ -925,35 +926,24 @@ img,
   box-shadow: var(--box-shadow);
   text-align: center;
 }
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 14px;
+  border: 3px solid var(--pink-soft);
+  border-top-color: var(--rose);
+  border-radius: 50%;
+  animation: loadingSpin 0.9s linear infinite;
+}
+@keyframes loadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .loading-text {
-  margin: 0 0 14px;
+  margin: 0;
   font-size: var(--font-size-sm);
   color: var(--ink-hard);
-}
-.loading-bar {
-  position: relative;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--pink-soft);
-  overflow: hidden;
-}
-.loading-bar span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 40%;
-  height: 100%;
-  border-radius: 2px;
-  background: var(--rose);
-  animation: loadingSlide 1.1s ease-in-out infinite;
-}
-@keyframes loadingSlide {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(250%);
-  }
 }
 .modal-head {
   display: flex;
