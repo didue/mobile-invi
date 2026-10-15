@@ -132,9 +132,9 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - `참석여부 알리기` 버튼 → RsvpModal. 제출 후 `.rsvp-status`에 `${name}님, 회답이 전달되었어요 (${attend} · ${count}명)`.
 
 ### 5.9 RsvpModal
-- 필드: 성함(text), 참석여부 seg(참석/불참, 기본 참석), 인원 stepper(1~10, 기본 1), 신랑측/신부측 seg(기본 신랑측).
-- 제출: 성함 없으면 토스트 `성함을 입력해주세요`. 있으면 `storage.set('rsvp:'+Date.now(), JSON.stringify({name,attend,count,side,time:ISO}), true)`.
-- 성공 시 `.thanks-msg` 표시, 상태 텍스트 갱신, 토스트 `회답이 전달되었어요`, 900ms 뒤 모달 닫고 초기화.
+- 필드: 성함(text), 참석여부 seg(참석/불참, 기본 참석), 인원 stepper(1~10, 기본 1), 신랑측/신부측 seg(기본 신랑측), 식사여부 seg(식사 예정/식사 안 함, 기본 식사 예정), 전하실 말씀 textarea(선택, 최대 500자). 선택지·한도는 `src/types/rsvp.ts`에서 클라이언트와 서버가 공유한다.
+- 제출: 성함 없으면 토스트 `성함을 입력해주세요`. 있으면 `POST /api/rsvp`(`src/app/api/rsvp/route.ts`)로 `{side,name,attend,count,meal,message}`를 보내고, 서버가 입력을 검증한 뒤 `src/lib/gas.ts`가 Google Apps Script 웹앱(`src/lib/Code.gs`)에 `timestamp`(한국 시각 문자열)를 붙여 전달해 스프레드시트 `참석의사` 시트에 `제출시각·구분·성함·참석여부·인원·식사여부·메시지` 순으로 한 줄 추가한다. GAS URL은 서버 전용 환경변수 `GAS_ENDPOINT_URL`(`.env.local`/Vercel)로 관리한다. 전송 중에는 저장 버튼을 비활성화해 중복 제출을 막는다.
+- 성공 시 `.thanks-msg` 표시, 상태 텍스트 갱신, 토스트 `참석 의사가 전달되었어요💌`, 900ms 뒤 모달 닫고 초기화.
 - 닫기: ✕ 버튼 / 오버레이 클릭.
 
 ### 5.10 Gift

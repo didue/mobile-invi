@@ -6,13 +6,17 @@ import { apiPost } from "@/lib/api";
 import { toast } from "@/lib/toast";
 import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
 import { useMounted } from "@/hooks/useMounted";
+import {
+  RSVP_MAX_COUNT,
+  RSVP_MESSAGE_MAX_LENGTH,
+  RSVP_MIN_COUNT,
+  type RsvpAttend,
+  type RsvpMeal,
+  type RsvpPayload,
+  type RsvpSide,
+} from "@/types/rsvp";
 
-const MIN_COUNT = 1;
-const MAX_COUNT = 10;
 const CLOSE_DELAY_MS = 900;
-
-export type RsvpAttend = "참석" | "불참";
-export type RsvpSide = "신랑측" | "신부측";
 
 export type RsvpResult = {
   name: string;
@@ -33,10 +37,14 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
   const [name, setName] = useState("");
   const [attend, setAttend] = useState<RsvpAttend>("참석");
   const [side, setSide] = useState<RsvpSide>("신랑측");
-  const [count, setCount] = useState(MIN_COUNT);
+  const [count, setCount] = useState(RSVP_MIN_COUNT);
+  const [meal, setMeal] = useState<RsvpMeal>("식사 예정");
+  const [message, setMessage] = useState("");
   const [showThanks, setShowThanks] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
+    if (submitting) return;
     const trimmedName = name.trim();
     if (!trimmedName) {
       toast("성함을 입력해주세요");
@@ -44,18 +52,25 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
     }
 
     const result: RsvpResult = { name: trimmedName, attend, count, side };
-    const payload = { ...result, time: new Date().toISOString() };
+    const payload: RsvpPayload = { ...result, meal, message: message.trim() };
+    // GAS 가 시트에 쓰는 데 1~2초 걸려 그 사이 중복 탭으로 같은 회답이 여러 줄 쌓이지 않도록 막는다.
+    setSubmitting(true);
     const res = await apiPost("/rsvp", payload);
-    if (!res) return;
+    if (!res) {
+      setSubmitting(false);
+      return;
+    }
 
     setShowThanks(true);
-    toast("정상적으로 전달되었어요💗");
+    toast("참석 의사가 전달되었어요💌");
     onSubmitted(result);
 
     setTimeout(() => {
       onClose();
       setShowThanks(false);
       setName("");
+      setMessage("");
+      setSubmitting(false);
     }, CLOSE_DELAY_MS);
   };
 
@@ -111,7 +126,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
           <div className="stepper">
             <button
               type="button"
-              onClick={() => setCount((prev) => Math.max(MIN_COUNT, prev - 1))}
+              onClick={() => setCount((prev) => Math.max(RSVP_MIN_COUNT, prev - 1))}
               aria-label="인원 줄이기"
             >
               −
@@ -119,7 +134,7 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
             <span>{count}</span>
             <button
               type="button"
-              onClick={() => setCount((prev) => Math.min(MAX_COUNT, prev + 1))}
+              onClick={() => setCount((prev) => Math.min(RSVP_MAX_COUNT, prev + 1))}
               aria-label="인원 늘리기"
             >
               +
@@ -143,8 +158,35 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
           </div>
         </div>
 
-        <button type="button" className="submit-btn" onClick={handleSubmit}>
-          저장
+        <div className="field">
+            <label>식사 여부</label>
+          <div className="seg">
+            {(["식사 예정", "식사 안 함"] as const).map((value) => (
+              <button
+                type="button"
+                key={value}
+                className={meal === value ? "active" : undefined}
+                onClick={() => setMeal(value)}
+              >
+                {value === "식사 예정" ? "식사합니다" : "식사하지 않아요"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="field">
+          <label htmlFor="rsvpMessage">전하실 말씀 (선택)</label>
+          <textarea
+            id="rsvpMessage"
+            placeholder="두 사람에게 전하고 싶은 말이 있다면 남겨주세요"
+            maxLength={RSVP_MESSAGE_MAX_LENGTH}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </div>
+
+        <button type="button" className="submit-btn" onClick={handleSubmit} disabled={submitting}>
+          {submitting ? "전송 중..." : "저장"}
         </button>
         <div className={`thanks-msg${showThanks ? " show" : ""}`}>소중한 회답 감사합니다 💗</div>
       </div>
