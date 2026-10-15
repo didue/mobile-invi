@@ -136,6 +136,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 제출: 성함 없으면 토스트 `성함을 입력해주세요`. 있으면 `POST /api/rsvp`(`src/app/api/rsvp/route.ts`)로 `{side,name,attend,count,meal}`를 보내고, 서버가 입력을 검증한 뒤 `src/lib/gas.ts`가 Google Apps Script 웹앱(`src/lib/Code.gs`)에 `timestamp`(한국 시각 문자열)를 붙여 전달해 스프레드시트 `참석의사` 시트에 `구분·성함·참석여부·인원·식사여부·등록일시` 순으로 한 줄 추가한다. GAS URL은 서버 전용 환경변수 `GAS_ENDPOINT_URL`(`.env.local`/Vercel)로 관리한다. 전송 중에는 저장 버튼을 비활성화해 중복 제출을 막는다. GAS 응답을 기다리는 동안 공용 `components/common/LoadingOverlay.tsx`(`.loading-overlay` 반투명 dimm z-index 75 + `.loading-card` 안 `참석 의사를 전달하고 있어요` 문구, 그 위에 회전하는 원형 스피너 `.loading-spinner`)를 띄워 클릭을 막고, 모달 시트는 `inert`로 잠가 키보드 조작도 막는다. 응답이 오면(성공·실패 모두) 로딩과 dimm을 즉시 해제한다.
 - 성공 시 `.thanks-msg` 표시, 상태 텍스트 갱신, 토스트 `참석 의사가 전달되었어요💌`, 900ms 뒤 모달 닫고 초기화.
 - 닫기: ✕ 버튼 / 오버레이 클릭.
+- 모달을 열 때마다 `hooks/useResetOnOpen.ts`로 입력값(성함·참석여부·인원·구분·식사여부)과 감사 문구를 기본값으로 초기화한다(지난 입력값이 남아 보이지 않도록).
 
 ### 5.10 Gift
 - 섹션 루트는 `section.gift-section`이며, 이 섹션의 `.section-title`만 `--font-size-md-s`로 작게 표시한다(`.gift-section .section-title`).
@@ -159,6 +160,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 
 ### 5.13 GuestbookModal
 - 폼: 성함(text) + 연락처 뒷자리(text) + 축하 메시지(textarea)
+- 모달을 열 때마다 `useResetOnOpen`으로 성함·연락처 뒷자리·축하 메시지를 비운다.
 - 연락처 뒷자리의 `placeholder`로 `동명이인 확인을 위해 연락처 뒷자리를 입력해주세요` 표기
 - 제출: 셋 중 하나라도 비면 토스트 `이름과 연락처, 메시지를 모두 입력해주세요`.
   `POST /api/guestbook`로 `{name,contact,message}`(한도는 `src/types/guestbook.ts`: 성함 50·연락처 20·메시지 500자)를 보내면 서버가 검증 후 `id`(UUID)와 `timestamp`(서버 시각 ISO)를 붙여 GAS(`guestbook_add`)로 전달하고, GAS가 `방명록` 시트에 `ID·성함·연락처 뒷자리·메시지·등록시각` 순으로 한 줄 추가한다(등록시각은 Date, 나머지는 텍스트 서식). 전송 중에는 저장 버튼 비활성화 + `LoadingOverlay`(`축하 메시지를 등록하고 있어요`) + 시트 `inert`. 성공 시 입력 초기화, 토스트 `메시지가 등록되었어요`, GuestbookModal 닫힘.

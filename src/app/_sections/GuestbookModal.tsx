@@ -7,6 +7,7 @@ import { toast } from "@/lib/toast";
 import { fireConfetti } from "@/lib/confetti";
 import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
 import { useMounted } from "@/hooks/useMounted";
+import { useResetOnOpen } from "@/hooks/useResetOnOpen";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import {
   GUESTBOOK_CONTACT_MAX_LENGTH,
@@ -32,6 +33,12 @@ export const GuestbookModal = ({ open, onClose, onSubmitted }: GuestbookModalPro
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  useResetOnOpen(open, () => {
+    setName("");
+    setContact("");
+    setMessage("");
+  });
+
   const handleSubmit = async () => {
     if (submitting) return;
     const payload: GuestbookPayload = {
@@ -50,9 +57,6 @@ export const GuestbookModal = ({ open, onClose, onSubmitted }: GuestbookModalPro
     setSubmitting(false);
     if (!res) return;
 
-    setName("");
-    setContact("");
-    setMessage("");
     toast("메시지가 등록되었어요💌");
     onSubmitted();
     onClose();

@@ -6,6 +6,7 @@ import { apiPost } from "@/lib/api";
 import { toast } from "@/lib/toast";
 import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
 import { useMounted } from "@/hooks/useMounted";
+import { useResetOnOpen } from "@/hooks/useResetOnOpen";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 import {
   RSVP_MAX_COUNT,
@@ -43,6 +44,15 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
   const [submitting, setSubmitting] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  useResetOnOpen(open, () => {
+    setName("");
+    setAttend("참석");
+    setSide("신랑측");
+    setCount(RSVP_MIN_COUNT);
+    setMeal("식사 예정");
+    setShowThanks(false);
+  });
+
   const handleSubmit = async () => {
     if (submitting) return;
     const trimmedName = name.trim();
@@ -69,8 +79,6 @@ export const RsvpModal = ({ open, onClose, onSubmitted }: RsvpModalProps) => {
 
     setTimeout(() => {
       onClose();
-      setShowThanks(false);
-      setName("");
       setSubmitting(false);
     }, CLOSE_DELAY_MS);
   };
