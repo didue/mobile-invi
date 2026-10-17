@@ -124,7 +124,7 @@ export const Guestbook = () => {
         {loading ? (
           <div className="gb-empty">축하 메시지를 불러오고 있어요</div>
         ) : entries.length === 0 ? (
-          <div className="gb-empty">첫 번째 축하 메시지를 남겨주세요 🤍</div>
+          <div className="gb-empty">첫 번째 축하 메시지를 남겨주세요💛</div>
         ) : (
           visibleEntries.map((entry) => (
             <div className="gb-item" key={entry.id}>
@@ -132,13 +132,13 @@ export const Guestbook = () => {
                 <span className="gb-name">{entry.name}</span>
                 <span className="gb-meta">
                   <span className="gb-time">{formatTime(entry.timestamp)}</span>
-                  <button
+                  {/* <button
                     type="button"
                     className="gb-delete"
                     onClick={() => setDeletingId(entry.id === deletingId ? null : entry.id)}
                   >
                     삭제
-                  </button>
+                  </button> */}
                 </span>
               </div>
               <div className="gb-msg">{entry.message}</div>

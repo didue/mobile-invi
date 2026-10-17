@@ -43,8 +43,8 @@
  *   --blush            : 페이지 배경 · 이미지 placeholder · 버튼 active
  *   --light-green-soft : 구분선 · 점선 테두리
  *   --light-green      : 보조 테두리 · 장식 텍스트
- *   --seige-green      : 메인 키 컬러(채움 버튼 · 활성 상태)
- *   --seige-green-deep : 섹션 제목 · 강조 텍스트
+ *   --sage-green      : 메인 키 컬러(채움 버튼 · 활성 상태)
+ *   --sage-green-deep : 섹션 제목 · 강조 텍스트
  *   --ivory            : 카드 안쪽 보조 면(dday-message · intro 봉투)
  *   --paper            : .app 카드 본문 배경
  */
@@ -54,8 +54,8 @@
   --blush: #eef2e8;
   --light-green-soft: #d7decb;
   --light-green: #a3b592;
-  --seige-green: #54704a;
-  --seige-green-deep: #35492c;
+  --sage-green: #54704a;
+  --sage-green-deep: #35492c;
   --ivory: #ebf0e2;
   --paper: #fafbf5;
 }
@@ -65,8 +65,8 @@
   --blush: #f4ebdd;
   --light-green-soft: #e4d8c3;
   --light-green: #c5ab86;
-  --seige-green: #8d6f4c;
-  --seige-green-deep: #6b4f34;
+  --sage-green: #8d6f4c;
+  --sage-green-deep: #6b4f34;
   --ivory: #f3ece0;
   --paper: #fdfaf5;
 }
@@ -137,7 +137,7 @@ section {
   font-family: var(--font-cormorant-garamond);
   font-weight: 500;
   font-size: var(--font-size-xxl);
-  color: var(--seige-green-deep);
+  color: var(--sage-green-deep);
   margin-bottom: 6px;
 }
 .gift-section .section-title {
@@ -176,7 +176,7 @@ section {
 .dday-num {
   font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-xl);
-  color: var(--seige-green-deep);
+  color: var(--sage-green);
   font-weight: 600;
 }
 .dday-label {
@@ -191,7 +191,7 @@ section {
   font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-xl-s);
   font-weight: 700;
-  color: var(--seige-green-deep);
+  color: var(--sage-green);
 }
 .calendar {
   margin: 34px auto 0;
@@ -219,7 +219,7 @@ section {
   letter-spacing: 0.02em;
 }
 .cal-dow.sun {
-  color: var(--seige-green);
+  color: var(--sage-green);
 }
 .cal-day {
   display: flex;
@@ -230,8 +230,8 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 25px;
+  height: 25px;
   font-size: var(--font-size-md-s);
   color: var(--ink);
   border-radius: 50%;
@@ -240,10 +240,10 @@ section {
   color: #dcd5ce;
 }
 .cal-day.sun span {
-  color: var(--seige-green);
+  color: var(--ink);
 }
 .cal-day.highlight span {
-  background: var(--seige-green);
+  background: var(--sage-green);
   color: #fff;
   font-weight: 500;
 }
@@ -255,7 +255,7 @@ section {
   color: var(--ink-medium);
 }
 .dday-highlight {
-  color: var(--seige-green-deep);
+  color: var(--sage-green);
   font-weight: 700;
 }
 .dday-calendar-btn {
@@ -561,7 +561,7 @@ img,
 }
 .transit-way span.primary{ 
   margin-left: 5px;
-  color: var(--seige-green);
+  color: var(--sage-green);
 }
 .transit-item .line-five {
   margin-left: 0px;
@@ -589,7 +589,7 @@ img,
 }
 .contact-row .who {
   font-size: var(--font-size-md-s);
-  color: var(--ink);
+  color: var(--sage-green-deep);
 }
 .contact-row .who .tag {
   font-size: var(--font-size-md-s);
@@ -606,16 +606,16 @@ img,
   padding: 7px 11px;
   border-radius: 16px;
   border: 1px solid var(--light-green);
-  color: var(--seige-green);
+  color: var(--sage-green);
   background: #fff;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
 }
 .contact-btn.fill {
-  background: var(--seige-green);
+  background: var(--sage-green);
   color: #fff;
-  border-color: var(--seige-green);
+  border-color: var(--sage-green);
 }
 .contact-btn.kakao {
   background: #fee500;
@@ -651,7 +651,7 @@ img,
 .acc-head span {
   font-size: var(--font-size-md);
   font-weight: 500;
-  color: var(--seige-green-deep);
+  color: var(--sage-green-deep);
 }
 .acc-head .chev {
   display: flex;
@@ -724,7 +724,7 @@ img,
 .notice-list .num {
   font-family: var(--font-gowun-batang);
   font-size: var(--font-size-md);
-  color: var(--seige-green);
+  color: var(--sage-green);
   flex-shrink: 0;
   padding-top: 1px;
   font-weight: 600;
@@ -792,8 +792,8 @@ img,
   cursor: pointer;
 }
 .seg button.active {
-  background: var(--seige-green);
-  border-color: var(--seige-green);
+  background: var(--sage-green);
+  border-color: var(--sage-green);
   color: #fff;
 }
 .stepper {
@@ -808,7 +808,7 @@ img,
   border-radius: 50%;
   border: 1px solid var(--light-green);
   background: #fff;
-  color: var(--seige-green);
+  color: var(--sage-green);
   font-size: var(--font-size-regualr);
   cursor: pointer;
 }
@@ -820,7 +820,7 @@ img,
 .submit-btn {
   width: 100%;
   margin-top: 10px;
-  background: var(--seige-green);
+  background: var(--sage-green);
   color: #fff;
   border: none;
   padding: 13px;
@@ -836,7 +836,7 @@ img,
 .thanks-msg {
   text-align: center;
   font-size: var(--font-size-sm);
-  color: var(--seige-green-deep);
+  color: var(--sage-green-deep);
   margin-top: 10px;
   display: none;
 }
@@ -850,7 +850,7 @@ img,
 .rsvp-open-btn {
   min-width: 200px;
   display: inline-block;
-  background: var(--seige-green);
+  background: var(--sage-green);
   color: #fff;
   border: none;
   padding: 11px 30px;
@@ -925,7 +925,7 @@ img,
   height: 36px;
   margin: 0 auto 14px;
   border: 3px solid var(--light-green-soft);
-  border-top-color: var(--seige-green);
+  border-top-color: var(--sage-green);
   border-radius: 50%;
   animation: loadingSpin 0.9s linear infinite;
 }
@@ -948,7 +948,7 @@ img,
 .modal-title {
   font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-lg);
-  color: var(--seige-green-deep);
+  color: var(--sage-green-deep);
 }
 .modal-close {
   background: none;
@@ -1017,7 +1017,7 @@ img,
 }
 .gb-delete {
   font-size: var(--font-size-xs);
-  color: var(--seige-green-deep);
+  color: var(--sage-green-deep);
   background: none;
   border: none;
   cursor: pointer;
@@ -1056,7 +1056,7 @@ img,
 }
 .gb-delete-form button.cancle {
   border: 1px solid var(--light-green);
-  color: var(--seige-green);
+  color: var(--sage-green);
 }
 
 /* Hero */
@@ -1194,7 +1194,7 @@ img,
 .profile-col .name {
   font-family: var(--font-ibm-plex-sans-kr);
   font-size: var(--font-size-regualr);
-  color: var(--seige-green-deep);
+  color: var(--sage-green-deep);
   margin: 5px 0 3px;
 }
 .profile-col .rel {
@@ -1222,7 +1222,7 @@ img,
   font-family: var(--font-ibm-plex-sans-kr);
 }
 .tab-btn.active {
-  color: var(--seige-green-deep);
+  color: var(--sage-green-deep);
   font-weight: 500;
 }
 .tab-btn.active::after {
@@ -1232,7 +1232,7 @@ img,
   right: 10%;
   bottom: -1px;
   height: 2px;
-  background: var(--seige-green);
+  background: var(--sage-green);
 }
 .tab-panel {
   display: none;
@@ -1362,7 +1362,7 @@ img,
   font-size: var(--font-size-xl);
   font-weight: 500;
   letter-spacing: 0.08em;
-  color: var(--seige-green);
+  color: var(--sage-green);
 }
 .footer-ornament::before,
 .footer-ornament::after {
