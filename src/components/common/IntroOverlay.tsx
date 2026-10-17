@@ -2,11 +2,17 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useModalBackgroundLock } from "@/hooks/useModalBackgroundLock";
+import { ACTIVE_THEME, type Theme } from "@/data/theme";
 
-const INTRO_VIDEO = "/intro/envelope.mp4";
-const INTRO_POSTER = "/intro/envelope.webp";
+// 인트로 영상은 테마별로 다른 클립을 쓴다(각 클립은 해당 테마 색에 맞춰 보정돼 있다).
+// classic=envelope(웜 봉투), sage=organza_ribbon_white(세이지 리본).
+const INTRO_ASSETS: Record<Theme, { video: string; poster: string }> = {
+  classic: { video: "/intro/envelope.mp4", poster: "/intro/envelope.webp" },
+  sage: { video: "/intro/organza_ribbon_white.mp4", poster: "/intro/organza_ribbon_white.webp" },
+};
+const { video: INTRO_VIDEO, poster: INTRO_POSTER } = INTRO_ASSETS[ACTIVE_THEME];
 
-// 봉투가 완전히 열리는 시점(초). 영상 길이는 9.33초지만 뒷부분은 정지 화면이라
+// 봉투/리본이 완전히 열리는 시점(초). 영상 뒷부분은 정지 화면이라
 // 리본이 풀리고 봉투가 열린 직후에 페이드아웃해서 대기 시간을 줄인다.
 const FADE_AT_SEC = 5.3;
 // .intro-overlay 의 opacity transition(0.9s)이 끝난 뒤 DOM 에서 제거한다.

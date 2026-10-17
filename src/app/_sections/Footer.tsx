@@ -11,7 +11,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="flex flex-col items-center gap-4 bg-[var(--blush)] px-4 py-16 text-center text-[var(--ink-hard)]">
+    <footer className="flex flex-col items-center gap-4 bg-[var(--pink-soft)] px-4 py-16 text-center text-[var(--ink-hard)]">
       <p className="footer-ornament">Thank you</p>
       <p className="footer-msg">
         저희를 가까이서 지켜봐주시고
@@ -28,7 +28,7 @@ export const Footer = () => {
         <button
           type="button"
           onClick={copyShareLink}
-          className="rounded-full border border-[var(--pink)] px-6 py-2 text-sm text-[var(--ink-hard)]"
+          className="rounded-full border border-[var(--light-green)] px-6 py-2 text-sm text-[var(--ink-hard)]"
         >
           모바일 청첩장 공유하기
         </button>

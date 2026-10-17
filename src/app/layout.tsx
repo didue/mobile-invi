@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { COUPLE } from "@/data/family";
+import { ACTIVE_THEME } from "@/data/theme";
 import { OG_SHARE_IMAGE } from "@/data/wedding";
 import { IntroOverlay } from "@/components/common/IntroOverlay";
 import { KakaoSdk } from "@/components/common/KakaoSdk";
@@ -43,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" data-theme={ACTIVE_THEME}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

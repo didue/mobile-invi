@@ -35,7 +35,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 **원본 `<style>` 블록 전체를 그대로 이식한다.** 아래는 반드시 유지할 핵심 규칙 요약(누락 방지용 체크리스트):
 
 - CSS 변수(:root):
-  - 색상(아이보리·크림·브라운 팔레트): `--white:#ffffff; --blush:#F4EBDD; --pink-soft:#E4D8C3; --pink:#C5AB86; --rose:#8D6F4C; --rose-deep:#6B4F34; --red:#C0553F; --ivory:#F3ECE0; --paper:#FDFAF5; --ink:#3A322E; --ink-soft:#D2D2D2; --ink-medium:#6F6F6F; --ink-hard:#595555; --ink-dark:#111111; --light-blue:#497BF8; --dark-blue:#5F8B9B;`
+  - 색상(아이보리·크림·브라운 팔레트): `--white:#ffffff; --blush:#F4EBDD; --light-green-soft:#E4D8C3; --light-green:#C5AB86; --seige-green:#8D6F4C; --seige-green-deep:#6B4F34; --red:#C0553F; --ivory:#F3ECE0; --paper:#FDFAF5; --ink:#3A322E; --ink-soft:#D2D2D2; --ink-medium:#6F6F6F; --ink-hard:#595555; --ink-dark:#111111; --light-blue:#497BF8; --dark-blue:#5F8B9B;`
     - 토큰명 `blush`/`pink`/`pink-soft`/`rose`/`rose-deep`는 초기 핑크 팔레트에서 유래했으나 참조가 많아 이름은 유지하고 값만 브라운 계열로 교체했다. 실제 역할은 각각 `페이지 배경`/`보조 테두리·장식`/`구분선`/`메인 키 컬러`/`제목·강조 텍스트`다.
     - `--paper`는 `.app` 카드 본문 배경(아이보리 페이퍼)이며, `--ivory`는 카드 안쪽 보조 면(`.dday-message`, `.intro-open`)에 쓴다.
   - 그림자: `--box-shadow: 1px 1px 4px 1px rgba(0,0,0,.1);`
