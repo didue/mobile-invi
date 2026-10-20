@@ -142,7 +142,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 섹션 루트는 `section.gift-section`이며, 이 섹션의 `.section-title`만 `--font-size-md-s`로 작게 표시한다(`.gift-section .section-title`).
 - 섹션 타이틀(`.section-title`): `마음 전하실 곳`. 부제(`.section-sub`, 2줄): `멀리서도 소중한 축하의 마음을 보내주셔서 감사드리며` / `따뜻한 마음에 깊이 감사드립니다.`(`<br/>`로 줄바꿈).
 - 아코디언 2개(`신랑측 계좌번호`/`신부측 계좌번호`). 헤더 클릭 시 `.open` 토글.
-- 각 행: 이름 + 계좌번호(`.tag`에 `entry.account`를 표시) / `[ (클립보드 아이콘) 복사하기 ]` 형태의 아이콘+텍스트 버튼 1개(`.contact-btn.copy-btn`, pink 테두리 라운드 버튼). 카카오로 보내기 버튼은 두지 않는다.
+- 각 행: 이름 + 계좌번호(`.tag`에 `entry.account`를 표시) / `[ (클립보드 아이콘) 복사하기 ]` 형태의 아이콘+텍스트 버튼(`.contact-btn.copy-btn`, pink 테두리 라운드 버튼). 행 데이터(`CONTACTS`)에 `kakaoId`가 있을 때만 그 옆에 `[ (카카오 말풍선 아이콘) 카카오페이 송금 ]` 버튼(`a.contact-btn.copy-btn.kakao`, 카카오 노란색 `#FEE500` 배경)을 노출하고, 클릭 시 `https://qr.kakaopay.com/${kakaoId}`를 새 탭으로 연다.
 - 복사하기: 계좌번호에서 하이픈(`-`)을 제거한 숫자만 `navigator.clipboard.writeText(account.replace(/-/g, ''))`로 복사(은행 앱 입력란에 바로 붙여넣기 위함) → 토스트 `${name}님의 계좌번호가 복사되었어요` / 실패 `복사에 실패했어요`.
 
 ### 5.11 ContactModal
@@ -174,7 +174,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 감사 문구(`.footer-msg`) 위에 장식 문구 `.footer-ornament`(`Thank you`, Cormorant Garamond · `--font-size-xl` · rose, 양옆 40px 가는 선 `::before/::after`)를 둔다.
 - 감사 인사 문구 + `축하해주세요` 버튼(`js-confetti`로 이모지 컨페티, `lib/confetti.ts` 공용 유틸 사용).
 - `카카오톡 공유하기` 버튼: 카카오 공유 SDK로 현재 페이지 링크를 피드 템플릿(제목/설명/대표 이미지/링크)으로 공유(§12).
-- `링크 복사하기` 버튼: `navigator.clipboard.writeText(location.href)` → 토스트 `링크가 복사되었어요` / 실패 시 `복사에 실패했어요`.
+- `모바일 청첩장 공유하기` 버튼: `lib/kakao.ts`의 `shareInvitationLink()`. 모바일 기기(`lib/device.ts`의 `isMobileDevice()`)이고 `navigator.share`가 있으면 OS 공유 시트로 `{ title: '${신랑} ♥ ${신부} 결혼합니다', url: location.href }`를 공유한다. PC이거나 Web Share API가 없는 브라우저(일부 인앱 브라우저 등)는 `copyShareLink()`로 `navigator.clipboard.writeText(location.href)` → 토스트 `링크가 복사되었어요` / 실패 시 `복사에 실패했어요`. 사용자가 공유 시트를 닫으면(`AbortError`) 아무것도 하지 않고, 그 외 공유 실패는 링크 복사로 대체한다.
 
 ### 5.16 FloatingButton
 - 화면 우측 하단에 고정으로 떠있는 버튼 → `top` 버튼 + `공유하기` 버튼

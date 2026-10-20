@@ -11,13 +11,21 @@ import { SectionHeading } from "@/components/common/SectionHeading";
 
 const CHEVRON_ICON = "/assets/icon/anchor_icon_gray.png";
 
-type GiftEntry = { name: string; role: string; tag: string; account: string; bank: string; };
+type GiftEntry = { name: string; role: string; tag: string; account: string; bank: string; kakaoId?: string; };
 
 function CopyIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="9" y="9" width="11" height="11" rx="2" />
       <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </svg>
+  );
+}
+
+function KakaoIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 3C6.48 3 2 6.54 2 10.9c0 2.82 1.87 5.29 4.69 6.69l-.96 3.52c-.08.31.27.56.54.38l4.2-2.78c.5.06 1 .09 1.53.09 5.52 0 10-3.54 10-7.9S17.52 3 12 3z" />
     </svg>
   );
 }
@@ -70,6 +78,17 @@ function GiftGroup({
                   <CopyIcon />
                   복사하기
                 </button>
+                {entry.kakaoId && (
+                  <a
+                    className="contact-btn copy-btn kakao"
+                    href={`https://qr.kakaopay.com/${entry.kakaoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <KakaoIcon />
+                    카카오 송금
+                  </a>
+                )}
               </div>
             </div>
           ))}

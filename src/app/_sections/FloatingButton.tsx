@@ -1,6 +1,6 @@
 "use client";
 
-import { copyShareLink } from "@/lib/kakao";
+import { shareInvitationLink } from "@/lib/kakao";
 import { useScrollPastHeader } from "@/hooks/useScrollPastHeader";
 
 function TopIcon() {
@@ -44,7 +44,7 @@ export const FloatingButton = () => {
       <button
         type="button"
         className={`fab-btn${visible ? " show" : ""}`}
-        onClick={copyShareLink}
+        onClick={shareInvitationLink}
         aria-label="링크 공유하기"
       >
         <ShareIcon />

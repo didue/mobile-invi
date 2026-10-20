@@ -1,17 +1,11 @@
 "use client";
 
-import { fireConfetti } from "@/lib/confetti";
-import { copyShareLink, shareToKakao } from "@/lib/kakao";
-
-const FOOTER_CONFETTI_EMOJI_SIZE = 60;
+import { shareInvitationLink } from "@/lib/kakao";
 
 export const Footer = () => {
-  const handleConfetti = () => {
-    fireConfetti(FOOTER_CONFETTI_EMOJI_SIZE);
-  };
 
   return (
-    <footer className="flex flex-col items-center gap-4 bg-[var(--pink-soft)] px-4 py-16 text-center text-[var(--ink-hard)]">
+    <footer className="flex flex-col items-center gap-4 bg-[var(--light-green-soft)] px-4 py-16 text-center text-[var(--ink-hard)]">
       <p className="footer-ornament">Thank you</p>
       <p className="footer-msg">
         저희를 가까이서 지켜봐주시고
@@ -27,18 +21,10 @@ export const Footer = () => {
       <div className="share-btn-wrap flex gap-2">
         <button
           type="button"
-          onClick={copyShareLink}
-          className="rounded-full border border-[var(--light-green)] px-6 py-2 text-sm text-[var(--ink-hard)]"
-        >
+          onClick={shareInvitationLink}
+          className="rounded-full border border-[var(--light-green)] bg-[var(--paper)] px-6 py-2 text-sm text-[var(--sage-green)]"        >
           모바일 청첩장 공유하기
         </button>
-        {/* <button
-          type="button"
-          onClick={shareToKakao}
-          className="rounded-full bg-[#FEE500] px-6 py-2 text-sm font-medium text-[#3A1D1D]"
-        >
-          카카오톡 공유하기
-        </button> */}
       </div>
     </footer>
   );

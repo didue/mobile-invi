@@ -5,13 +5,9 @@ import { useRef } from "react";
 import type { MouseEvent } from "react";
 import { MAPS, SECTION_TEXTS, VENUE_ADDRESS, WEDDING_VENUE } from "@/data/wedding";
 import { useReveal } from "@/hooks/useReveal";
+import { isMobileDevice } from "@/lib/device";
 import { toast } from "@/lib/toast";
 import { SectionHeading } from "@/components/common/SectionHeading";
-
-// iPadOS 13+는 데스크톱 Safari UA를 쓰므로 터치 지원 여부로 함께 판별한다.
-function isMobileDevice(): boolean {
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
-}
 
 // tmap:// 스킴은 PC 브라우저에 처리기가 없어 열리지 않으므로 이동을 막고 안내한다.
 const handleTmapClick = (e: MouseEvent<HTMLAnchorElement>) => {

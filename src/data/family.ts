@@ -4,11 +4,11 @@ export const COUPLE = {
     lastName : 'bae',
     firstName : 'jeonggeun',
     role: 'groom',
-    profile: '/assets/images/profile/IMG_0036.jpg',
+    profile: '/assets/images/profile/img_0038.webp',
     description : [
-      '90년 4월 28일',
+      '90년 4월 28일생',
       '다정다감 섬세한 ISFJ',
-      '',
+      '지수 한정 개그맨🌿',
     ],
   },
   bride: {
@@ -16,11 +16,11 @@ export const COUPLE = {
     lastName : 'han',
     firstName : 'jisoo',
     role: 'bride',
-    profile: '/assets/images/profile/IMG_0040.jpg',
+    profile: '/assets/images/profile/img_0040.webp',
     description : [
-      '93년 5월 26일',
-      '명랑발랄 꼼꼼한 ENTJ',
-      '',
+      '93년 5월 26일생',
+      '꼼꼼한 ENTJ',
+      '명랑발랄 귀염둥이🍊',
     ],
   },
 };
@@ -56,7 +56,7 @@ export const CONTACTS = {
       tel: '01052459812',
       bank: '우리은행',
       account : '1002-162-524423',
-      kakaoId: ''
+      kakaoId: 'FE3WIj5Sk'
     },
   ],
   bride: [
@@ -88,7 +88,7 @@ export const CONTACTS = {
       tel: '01085278040',
       bank: '우리은행',
       account : '1002-764-181491',
-      kakaoId: 'lotus526'
+      kakaoId: 'FSfwOClps'
     },
   ],
 };
