@@ -142,7 +142,7 @@ preconnect 2줄 포함. 각 폰트는 `globals.css`의 `:root`에 `--font-*` 변
 - 섹션 루트는 `section.gift-section`이며, 이 섹션의 `.section-title`만 `--font-size-md-s`로 작게 표시한다(`.gift-section .section-title`).
 - 섹션 타이틀(`.section-title`): `마음 전하실 곳`. 부제(`.section-sub`, 2줄): `멀리서도 소중한 축하의 마음을 보내주셔서 감사드리며` / `따뜻한 마음에 깊이 감사드립니다.`(`<br/>`로 줄바꿈).
 - 아코디언 2개(`신랑측 계좌번호`/`신부측 계좌번호`). 헤더 클릭 시 `.open` 토글.
-- 각 행: 이름 + 계좌번호(`.tag`에 `entry.account`를 표시) / `[ (클립보드 아이콘) 복사하기 ]` 형태의 아이콘+텍스트 버튼(`.contact-btn.copy-btn`, pink 테두리 라운드 버튼). 행 데이터(`CONTACTS`)에 `kakaoId`가 있을 때만 그 옆에 `[ (카카오 말풍선 아이콘) 카카오페이 송금 ]` 버튼(`a.contact-btn.copy-btn.kakao`, 카카오 노란색 `#FEE500` 배경)을 노출하고, 클릭 시 `https://qr.kakaopay.com/${kakaoId}`를 새 탭으로 연다.
+- 각 행: 이름 + 계좌번호(`.tag`에 `entry.account`를 표시) / `[ (클립보드 아이콘) 복사하기 ]` 형태의 아이콘+텍스트 버튼(`.contact-btn.copy-btn`, pink 테두리 라운드 버튼). 행 데이터(`CONTACTS`)에 `kakaoId`가 있을 때만 그 아래에 `[ (카카오 말풍선 아이콘) 카카오 송금 ]` 버튼(`a.contact-btn.copy-btn.kakao`, 카카오 노란색 `#FEE500` 배경)을 노출하고, 클릭 시 `https://qr.kakaopay.com/${kakaoId}`를 새 탭으로 연다. 가로로 두면 계좌번호 영역이 좁아지므로 이 섹션의 `.contact-btns`만 세로로 쌓고 두 버튼 폭을 맞춘다(`.gift-section .contact-btns`).
 - 복사하기: 계좌번호에서 하이픈(`-`)을 제거한 숫자만 `navigator.clipboard.writeText(account.replace(/-/g, ''))`로 복사(은행 앱 입력란에 바로 붙여넣기 위함) → 토스트 `${name}님의 계좌번호가 복사되었어요` / 실패 `복사에 실패했어요`.
 
 ### 5.11 ContactModal

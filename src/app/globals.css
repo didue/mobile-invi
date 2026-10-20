@@ -628,6 +628,14 @@ img,
   align-items: center;
   gap: 4px;
 }
+/* 복사하기·카카오 송금을 가로로 두면 계좌번호 영역이 좁아져 세로로 쌓고, 두 버튼 폭을 맞춘다. */
+.gift-section .contact-btns {
+  flex-direction: column;
+  align-items: stretch;
+}
+.gift-section .copy-btn {
+  justify-content: center;
+}
 
 .acc-group {
   border-radius: 6px;

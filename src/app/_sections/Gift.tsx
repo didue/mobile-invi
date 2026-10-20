@@ -69,7 +69,7 @@ function GiftGroup({
                 {ROLE_LABEL[entry.role] ?? entry.role} {entry.name}
                 <span className="tag">{entry.bank}  {entry.account}</span>
               </div>
-              <div className="contact-btns">
+              <div className="contact-btns" style={{gap:'10px'}}>
                 <button
                   type="button"
                   className="contact-btn copy-btn"
@@ -86,7 +86,7 @@ function GiftGroup({
                     rel="noopener noreferrer"
                   >
                     <KakaoIcon />
-                    카카오 송금
+                    카카오송금
                   </a>
                 )}
               </div>
